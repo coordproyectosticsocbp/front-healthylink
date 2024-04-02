@@ -19,6 +19,10 @@ import VueAxios from 'vue-axios'
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 
+/** Vue Notification */
+import Vue3Toasity from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 /** Vu3 Tables */
 import Vue3EasyDataTable from 'vue3-easy-data-table'
 import 'vue3-easy-data-table/dist/style.css'
@@ -29,6 +33,7 @@ const app = createApp(App)
 app.config.productionTip = false
 app.use(router)
 app.use(store)
+app.use(Vue3Toasity, { autoClose: 3000 });
 app.use(VueAxios, axios)
 app.use(VueSweetalert2)
 
