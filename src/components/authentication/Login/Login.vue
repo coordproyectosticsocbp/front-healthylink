@@ -73,7 +73,7 @@ async function loginFunction() {
       <div v-if="!error" class="mb-3 text-danger fw-bold">
         <ul class="list-group list-unstyled">
           <li>
-            <!--            {{ error }}-->Cule Error Cv
+            <!--            {{ error }}-->
           </li>
         </ul>
       </div>

@@ -101,11 +101,11 @@ function logoutFuntion() {
            role="button"
         >
           <span class="mr-2 d-none d-lg-inline text-gray-600">
-            {{ authUser ? authUser.firstName : '' }} {{ authUser ? authUser.lastName : '' }}
+            {{ authUser.firstName }} {{ authUser.lastName }}
           </span>
           <img alt="mdo" class="img-profile rounded-circle" src="https://github.com/mdo.png">
         </a>
-        <ul class="dropdown-menu text-small shadow" style="">
+        <ul class="dropdown-menu text-small shadow">
           <li>
             <a class="dropdown-item cursor-pointer" @click="logoutFuntion">
               <font-awesome-icon :icon="['fas', 'right-from-bracket']"

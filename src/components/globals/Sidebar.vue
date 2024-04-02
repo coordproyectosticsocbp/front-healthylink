@@ -9,9 +9,9 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
       <div class="sidebar-brand-icon rotate-n-15">
-        <i class="fas fa-laugh-wink"></i>
+        <font-awesome-icon :icon="['fas', 'h']" />
       </div>
-      <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+      <div class="sidebar-brand-text mx-3">HealthyLink</div>
     </a>
 
     <!-- Divider -->
@@ -45,11 +45,14 @@
         <font-awesome-icon :icon="['fas', 'user']" class="fa-fw" />
         <span>Pacientes</span>
 
-        <font-awesome-icon :icon="['fas', 'arrow-down']" class="fa-fw float-end" />
+        <font-awesome-icon :icon="['fas', 'arrow-down']" class="fa-fw float-end d-sm-none" />
       </a>
       <div id="collapseTwo" aria-labelledby="headingTwo" class="collapse" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">PACIENTES:</h6>
+          <router-link :to="{name: 'create-patient'}" class="collapse-item">
+            Creación de Paciente
+          </router-link>
           <router-link :to="{name: 'patient-list'}" class="collapse-item">
             Listado de pacientes
           </router-link>
@@ -67,7 +70,7 @@
       >
         <font-awesome-icon :icon="['fas', 'microscope']" class="fa-fw" />
         <span>Estudios</span>
-        <font-awesome-icon :icon="['fas', 'arrow-down']" class="fa-fw float-end" />
+        <font-awesome-icon :icon="['fas', 'arrow-down']" class="fa-fw float-end d-sm-none" />
       </a>
       <div id="collapseUtilities" aria-labelledby="headingUtilities" class="collapse"
            data-parent="#accordionSidebar">

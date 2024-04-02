@@ -10,7 +10,7 @@
         <div class="col-12 align-self-center">
           <div class="card-body">
             <div class="row">
-              <div class="col-lg-4 mx-auto">
+              <div class="col-lg-6 mx-auto">
                 <div class="card">
 
                   <div class="card-body p-0 auth-header-box">
