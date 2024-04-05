@@ -19,6 +19,7 @@ export const getters = {
   },
   isAdmin: (state) => {
     return !!(state.user && state.user.roles[0].id === 1)
+    //return !!(state.user && state.user.roles[0].id === 'SUPER-ADMIN')
   },
   pw_expired: (state) => {
     return state.pw_expired
@@ -71,16 +72,18 @@ export const actions = {
       const today = dateCurrent.getFullYear() + '-' + String(dateCurrent.getMonth() + 1).padStart(2, '0') + '-' + dateCurrent.getDate()
 
       const response = await AuthService.getAuthUser()
-      if (response.data.passwordExpirationDate <= today) commit('SET_PASSWORD_EXPIRED_TODAY', true)
+      if (response.data.passwordExpirationDate >= today) commit('SET_PASSWORD_EXPIRED_TODAY', true)
       //console.log(response.data)
       commit('SET_USER', response.data)
       //commit('SET_PERMISSIONS', response.data.roles[0].permissions)
       commit('SET_LOADING_USER', false)
       return response.data
+      //
     } catch (error) {
       commit('SET_LOADING_USER', false)
       commit('SET_USER', null)
       commit('SET_ERROR', getError(error))
+      console.log(getError(error))
     }
   },
   setGuest(context, { value }) {

@@ -50,15 +50,21 @@ const routes = [
     name: 'dashboard',
     meta: { middleware: [auth] },
     component: DashboardView,
+  },
+  {
+    path: '/patient',
+    name: 'patient',
+    meta: { middleware: [auth] },
+    component: DashboardView,
     children: [
       {
-        path: '/dashboard/create-patient',
+        path: '/patient/create-patient',
         name: 'create-patient',
         meta: { middleware: [auth] },
         component: CreatePatientComponent
       },
       {
-        path: '/dashboard/patient-list',
+        path: '/patient/patient-list',
         name: 'patient-list',
         meta: { middleware: [auth] },
         component: PatientsMainComponent

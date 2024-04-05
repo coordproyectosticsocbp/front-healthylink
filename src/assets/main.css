@@ -1,5 +1,26 @@
 @import './base.css';
 
+/*Content*/
+.content {
+    padding-left: 290px;
+    transition: 0.3s ease;
+}
+.content-collapsed {
+    padding-left: 0;
+    transition: 0.3s ease;
+}
+
+/*Card*/
+.card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px 0 rgba(136, 144, 195, 0.2),
+    0 5px 15px 0 rgba(37, 44, 97, 0.15);
+}
+.card .card-header {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
 
 .btn-global-color {
     background-image: var(--vt-c-button-global-color) !important;
@@ -8,4 +29,8 @@
 
 .btn-aqua-color {
     background-color: var(--vt-c-button-aqua-color) !important;
+}
+
+.dark-theme{
+    background: #1c294e !important;
 }

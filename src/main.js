@@ -31,6 +31,10 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 /** Vue Signature PAD */
 import Vue3Signature from "vue3-signature"
 
+/** Vue Sidebar */
+import vueAwesomeSidebar from 'vue-awesome-sidebar'
+import 'vue-awesome-sidebar/dist/vue-awesome-sidebar.css'
+
 const app = createApp(App)
 
 app.config.productionTip = false
@@ -40,6 +44,7 @@ app.use(Vue3Toasity, { autoClose: 3000 });
 app.use(VueAxios, axios)
 app.use(VueSweetalert2)
 app.use(Vue3Signature)
+app.use(vueAwesomeSidebar)
 window.Swal =  app.config.globalProperties.$swal; //to make a global property
 
 app.component('font-awesome-icon', FontAwesomeIcon)

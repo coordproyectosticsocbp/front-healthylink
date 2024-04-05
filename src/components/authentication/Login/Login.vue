@@ -25,6 +25,8 @@ async function loginFunction() {
     await AuthService.login(form)
     const authUser = await store.dispatch('auth/getAuthUser')
 
+    console.log(authUser)
+
     if (authUser) {
       store.commit('auth/SET_LOADING_USER', false)
       await store.dispatch('auth/setGuest', { value: 'isNotGuest' })
@@ -33,7 +35,7 @@ async function loginFunction() {
       const error = Error(
         'Unable to fetch user after login, check your API settings.'
       )
-      error.value = 'Fetch User'
+      error.value.name = 'Fetch User'
       throw error
     }
 
@@ -48,10 +50,11 @@ async function loginFunction() {
 
 <template>
   <!-- Login Component -->
-  <div class="card-body pt-0" @submit.prevent="loginFunction">
+  <div class="card-body pt-0">
 
-    <form action="index.html" class="my-4">
-      <div class="form-group mb-2">
+    <form class="my-4 was-validated" @submit.prevent="loginFunction">
+
+      <div class="mb-3">
         <label class="form-label" for="username">Email o Usuario:</label>
         <input id="username" v-model="form.email" autofocus
                class="form-control form-control-sm"
@@ -59,39 +62,32 @@ async function loginFunction() {
                placeholder="Email o Usuario"
                required
                type="text">
-      </div><!--end form-group-->
+      </div>
 
-      <div class="form-group mb-2">
+      <div class="mb-3">
         <label class="form-label" for="userpassword">Contraseña:</label>
         <input id="userpassword" v-model="form.password" class="form-control form-control-sm"
                name="password"
                placeholder="Contraseña"
                required
                type="password">
-      </div><!--end form-group-->
-
-      <div v-if="!error" class="mb-3 text-danger fw-bold">
-        <ul class="list-group list-unstyled">
-          <li>
-            <!--            {{ error }}-->
-          </li>
-        </ul>
       </div>
 
-      <div class="form-group row mt-3">
-        <div class="col-sm-6">
-          <div class="form-check form-switch form-switch-success">
-            <input id="customSwitchSuccess" class="form-check-input" type="checkbox">
-            <label class="form-check-label" for="customSwitchSuccess">Recordarme</label>
-          </div>
-        </div><!--end col-->
-        <div class="col-sm-6 text-end">
+      <div class="mb-3">
+        <div class="d-flex justify-content-end">
           <router-link :to="{name: 'reset-password'}" class="text-muted text-decoration-none">
             <font-awesome-icon :icon="['fas', 'key']" />
             Olvidé mi Contraseña?
           </router-link>
-        </div><!--end col-->
-      </div><!--end form-group-->
+        </div>
+      </div>
+
+      <div v-if="error" class="mb-3 text-danger fw-bold">
+        <p class="text-danger">
+          <font-awesome-icon :icon="['fas', 'triangle-exclamation']" />
+          Credendiales invalidas, Verifique...
+        </p>
+      </div>
 
       <div class="form-group mb-0 row">
         <div class="col-12">

@@ -4,41 +4,27 @@ import { useStore } from 'vuex'
 import { computed } from 'vue'
 
 const store = useStore()
-
 const authUser = computed(() => store.getters['auth/authUser'])
 
-function logoutFuntion() {
+function logoutFunction() {
   store.dispatch('auth/logout')
+}
+function updateCollapsed() {
+  store.dispatch('sidebar/updateCollapsed')
 }
 
 </script>
 
 <template>
   <!-- Topbar -->
-  <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+  <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow ">
 
     <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+    <button id="sidebarToggleTop"
+            class="btn btn-link rounded-circle mr-3"
+            @click="updateCollapsed">
       <font-awesome-icon :icon="['fas', 'bars']" />
     </button>
-
-    <!-- Topbar Search -->
-    <form
-      class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-      <div class="input-group">
-        <input aria-describedby="basic-addon2" aria-label="Search" class="form-control bg-light border-0 small"
-               placeholder="Search for..." type="text">
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button">
-            <i class="fas fa-search fa-sm"></i>
-          </button>
-        </div>
-      </div>
-    </form>
-
-    <!--    <button class="btn btn-primary mr-3" data-bs-target="#informedConsentModal" data-bs-toggle="modal">
-          <font-awesome-icon :icon="['fas', 'plus']" />
-        </button>-->
 
     <!-- Modal -->
     <div id="informedConsentModal" aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade"
@@ -107,7 +93,7 @@ function logoutFuntion() {
         </a>
         <ul class="dropdown-menu text-small shadow">
           <li>
-            <a class="dropdown-item cursor-pointer" @click="logoutFuntion">
+            <a class="dropdown-item cursor-pointer" @click="logoutFunction">
               <font-awesome-icon :icon="['fas', 'right-from-bracket']"
                                  class="btn-quick-menu-icon me-2"></font-awesome-icon>
               Cerrar Sesión
@@ -123,5 +109,4 @@ function logoutFuntion() {
 </template>
 
 <style scoped>
-
 </style>
