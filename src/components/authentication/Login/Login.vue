@@ -10,7 +10,7 @@ const form = reactive({
   password: ''
 })
 
-const error = ref(null)
+const errors = ref(null)
 
 const store = useStore()
 const isLoading = computed(() => store.state.auth.loading)
@@ -18,14 +18,12 @@ const isLoading = computed(() => store.state.auth.loading)
 async function loginFunction() {
 
   store.commit('auth/SET_LOADING_USER', true)
-  error.value = null
+  errors.value = null
 
   try {
 
     await AuthService.login(form)
     const authUser = await store.dispatch('auth/getAuthUser')
-
-    console.log(authUser)
 
     if (authUser) {
       store.commit('auth/SET_LOADING_USER', false)
@@ -35,12 +33,12 @@ async function loginFunction() {
       const error = Error(
         'Unable to fetch user after login, check your API settings.'
       )
-      error.value.name = 'Fetch User'
+      error.name = 'Fetch User'
       throw error
     }
 
   } catch (error) {
-    error.value = getError(error)
+    errors.value = getError(error)
     store.commit('auth/SET_LOADING_USER', false)
   }
 
@@ -52,16 +50,21 @@ async function loginFunction() {
   <!-- Login Component -->
   <div class="card-body pt-0">
 
-    <form class="my-4 was-validated" @submit.prevent="loginFunction">
+    <form class="my-4 needs-validation" @submit.prevent="loginFunction">
 
       <div class="mb-3">
         <label class="form-label" for="username">Email o Usuario:</label>
-        <input id="username" v-model="form.email" autofocus
+        <input id="username"
+               v-model="form.email"
+               autofocus
                class="form-control form-control-sm"
                name="username"
                placeholder="Email o Usuario"
                required
-               type="text">
+               type="email">
+        <div class="valid-feedback">
+          Looks good!
+        </div>
       </div>
 
       <div class="mb-3">
@@ -82,7 +85,7 @@ async function loginFunction() {
         </div>
       </div>
 
-      <div v-if="error" class="mb-3 text-danger fw-bold">
+      <div v-if="errors" class="mb-3 text-danger fw-bold">
         <p class="text-danger">
           <font-awesome-icon :icon="['fas', 'triangle-exclamation']" />
           Credendiales invalidas, Verifique...
