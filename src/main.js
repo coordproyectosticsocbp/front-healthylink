@@ -26,7 +26,6 @@ import 'vue3-toastify/dist/index.css';
 /** Vu3 Tables */
 import Vue3EasyDataTable from 'vue3-easy-data-table'
 import 'vue3-easy-data-table/dist/style.css'
-import 'bootstrap/dist/js/bootstrap.min.js'
 
 /** Vue Signature PAD */
 import Vue3Signature from "vue3-signature"
@@ -34,6 +33,10 @@ import Vue3Signature from "vue3-signature"
 /** Vue Sidebar */
 import vueAwesomeSidebar from 'vue-awesome-sidebar'
 import 'vue-awesome-sidebar/dist/vue-awesome-sidebar.css'
+
+/** Vue Wizard Stepper */
+import Vue3FormWizard from 'vue3-form-wizard'
+import 'vue3-form-wizard/dist/style.css'
 
 const app = createApp(App)
 
@@ -45,7 +48,8 @@ app.use(VueAxios, axios)
 app.use(VueSweetalert2)
 app.use(Vue3Signature)
 app.use(vueAwesomeSidebar)
-window.Swal =  app.config.globalProperties.$swal; //to make a global property
+app.use(Vue3FormWizard)
+window.Swal =  app.config.globalProperties.$swal; //to make a globals property
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.component('EasyDataTable', Vue3EasyDataTable)

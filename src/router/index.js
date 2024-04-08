@@ -61,7 +61,7 @@ const routes = [
         path: '/patient/create-patient',
         name: 'create-patient',
         meta: { middleware: [auth] },
-        component: CreatePatientComponent
+        component: PatientsMainComponent
       },
       {
         path: '/patient/patient-list',

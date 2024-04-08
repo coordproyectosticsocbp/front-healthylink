@@ -311,15 +311,6 @@ function createPatient() {
                 >
               </div>
 
-              <!-- Fecha de Expedición -->
-              <!--                    <div class="col-md-6">
-                                    <label class="form-label" for="input8">Fecha de Expedición:</label>
-                                    <input id="input8" v-model="patient.fecha_expedicion"
-                                           class="form-control"
-                                           type="date"
-                                    >
-                                  </div>-->
-
               <!-- País -->
               <div class="col-md-4">
                 <label class="form-label" for="input11">País:</label>

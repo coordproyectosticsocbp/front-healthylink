@@ -109,4 +109,5 @@ function updateCollapsed() {
 </template>
 
 <style scoped>
+
 </style>

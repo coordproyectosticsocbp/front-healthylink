@@ -10,6 +10,11 @@
     transition: 0.3s ease;
 }
 
+/*Buttons*/
+.btn {
+    border-radius: 20px !important;
+}
+
 /*Card*/
 .card {
     border: none;
@@ -25,10 +30,18 @@
 .btn-global-color {
     background-image: var(--vt-c-button-global-color) !important;
     color: #f8f8f8 !important;
+    border: none !important;
 }
 
 .btn-aqua-color {
     background-color: var(--vt-c-button-aqua-color) !important;
+    color: #1c294e !important;
+    border: none !important;
+}
+.btn-aqua-color:hover {
+    border: 1px solid #1c294e !important;
+    color: #1c294e !important;
+    transition: 0.2s ease-in-out;
 }
 
 .dark-theme{
