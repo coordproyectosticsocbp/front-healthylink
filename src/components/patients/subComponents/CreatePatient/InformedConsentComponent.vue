@@ -2,21 +2,29 @@
   import {useStore} from "vuex";
   import {computed, onMounted, ref} from "vue";
   import {Modal} from "bootstrap";
+  import useLocalStorage from "@/composables/useLocalStorage.js";
 
   const store = useStore()
   const authUser = computed(() => store.getters["auth/authUser"])
   const loggedUser = authUser.value.firstName + ' ' + authUser.value.lastName
 
   const getPatientData = ref([])
+  const consentComponentSignature = useLocalStorage({
+    signature: null
+  }, 'patientSignature')
   const signature1 = ref(null)
+  const storageSignature = ref(null)
 
   function save(t){
+    consentComponentSignature.value.signature = signature1.value.save(t)
     console.log(signature1.value.save(t))
   }
   function cancel() {
     Modal.getInstance('#exampleModal')?.hide()
   }
   function clear() {
+    const storageVal = window.localStorage.getItem('patientSignature')
+    if (storageVal) window.localStorage.removeItem('patientSignature')
     signature1.value.clear()
   }
   function undo(){
@@ -25,7 +33,15 @@
 
   onMounted(() => {
     const storageVal = window.localStorage.getItem('patientForm')
+    const storagePatientSignatureVal = window.localStorage.getItem('patientSignature')
     if (storageVal) getPatientData.value = JSON.parse(storageVal)
+    if (storagePatientSignatureVal) storageSignature.value = JSON.parse(storagePatientSignatureVal).signature
+    //const storageSignature = window.localStorage.getItem('patientSignature')
+
+   /* if (storageSignature) {
+      console.log(JSON.parse(storageSignature).signature)
+      signature1.value = JSON.parse(storageSignature).signature
+    }*/
   })
 
 </script>
@@ -322,13 +338,16 @@
                   <div class="signature-box">
                     <Vue3Signature id="signaturePad" ref="signature1"
                                    :w="'1052.8px'" :h="'400px'"
-                                   class="signature-pad mb-4" />
+                                   class="signature-pad mb-4"
+                                   v-if="!storageSignature"
+                    />
+                    <img :src="storageSignature" v-else>
                   </div>
 
                 </div>
               </div>
 
-            <div class="row">
+            <div class="row" v-if="!storageSignature">
               <div class="col">
                 <div class="text-center">
                   <button class="btn btn-sm btn-danger me-1" @click="cancel">

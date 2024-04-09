@@ -54,6 +54,7 @@ export const actions = {
       .then(() => {
         commit('SET_USER', null)
         dispatch('setGuest', { value: 'isGuest' })
+        window.localStorage.clear()
         commit('SET_IS_LOGGING_OUT', false)
         if (router.currentRoute.value.name !== 'login')
           router.push({ path: '/auth' })

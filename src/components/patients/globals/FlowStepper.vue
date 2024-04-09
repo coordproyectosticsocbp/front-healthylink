@@ -24,7 +24,12 @@ async function validateStep(props) {
       return props.nextTab()
     }
   } else if (props.activeTabIndex === 1) {
-    return props.nextTab()
+    const patientSignatureExists = window.localStorage.getItem('patientSignature')
+    if (patientSignatureExists) {
+      return props.nextTab()
+    } else {
+      alert('No se puede Continuar, falta firma consentimiento')
+    }
   }
 
 

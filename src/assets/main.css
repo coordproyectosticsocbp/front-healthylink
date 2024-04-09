@@ -52,3 +52,7 @@
 .dark-theme{
     background: #1c294e !important;
 }
+
+.active, .exact-active, a {
+    color: #1cc88a !important;
+}

@@ -7,10 +7,6 @@ const store = useStore()
 const collapsed = computed( () => store.getters["sidebar/collapsed"])
 const miniMenu = computed( () => store.getters["sidebar/miniMenu"])
 
-/*function updateCollapsed() {
-  store.dispatch('sidebar/updateCollapsed')
-}*/
-
  const menu = [
    {
      header: `${import.meta.env.VITE_APP_NAME}`,
