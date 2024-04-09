@@ -12,6 +12,7 @@ import Login from '@/components/authentication/Login/Login.vue'
 import ResetPassword from '@/components/authentication/ResetPassword/ResetPassword.vue'
 import PatientsMainComponent from '@/components/patients/PatientsMainComponent.vue'
 import CreatePatientComponent from "@/components/patients/subComponents/CreatePatient/CreatePatientComponent.vue";
+import PatientList from "@/components/patients/subComponents/PatientList.vue";
 
 const routes = [
   {
@@ -67,7 +68,7 @@ const routes = [
         path: '/patient/patient-list',
         name: 'patient-list',
         meta: { middleware: [auth] },
-        component: PatientsMainComponent
+        component: PatientList
       }
     ]
   }

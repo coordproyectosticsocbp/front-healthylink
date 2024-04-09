@@ -247,7 +247,7 @@
                   }}
                   <span>Identificado con</span> {{ getPatientData.tipo_doc }}
                   <span>#</span> {{ getPatientData.numero_documento }}
-                  <span>, residente en la ciudad de </span> {{ getPatientData.ciudad_residencia }}, {{ getPatientData.departamento_residencia }}, {{ getPatientData.pais_residencia }}
+                  <span>, residente en la ciudad de </span> {{ getPatientData.ciudad_residencia }}
                   <span>y con el número de teléfono celular </span> {{ getPatientData.telefono_celular }},
                   reconozco que he leído, entendido y aceptado participar en el estudio: Plataforma Clínico-Genómica Integrada
                   para la Investigación Biomédica en Colombia, según se define en este documento. He leído la siguiente

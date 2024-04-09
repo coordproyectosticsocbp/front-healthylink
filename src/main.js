@@ -38,6 +38,10 @@ import 'vue-awesome-sidebar/dist/vue-awesome-sidebar.css'
 import Vue3FormWizard from 'vue3-form-wizard'
 import 'vue3-form-wizard/dist/style.css'
 
+/** Vue Loading Overlay */
+import {LoadingPlugin} from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
+
 const app = createApp(App)
 
 app.config.productionTip = false
@@ -49,6 +53,7 @@ app.use(VueSweetalert2)
 app.use(Vue3Signature)
 app.use(vueAwesomeSidebar)
 app.use(Vue3FormWizard)
+app.use(LoadingPlugin)
 window.Swal =  app.config.globalProperties.$swal; //to make a globals property
 
 app.component('font-awesome-icon', FontAwesomeIcon)

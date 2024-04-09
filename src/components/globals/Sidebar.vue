@@ -34,6 +34,11 @@ const miniMenu = computed( () => store.getters["sidebar/miniMenu"])
          href: '/patient/create-patient',
          name: 'Crear Pacientes',
          icon: {text: 'Crear Pacientes', class: 'fa fa-user-plus'},
+       },
+       {
+         href: '/patient/patient-list',
+         name: 'Listado de Pacientes',
+         icon: {text: 'Listado de Pacientes', class: 'fa fa-users'},
        }
      ]
    },

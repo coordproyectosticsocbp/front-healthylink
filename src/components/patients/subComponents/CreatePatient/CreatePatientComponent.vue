@@ -35,6 +35,7 @@ const rules = computed(() => {
     numero_documento: { required, minLength: minLength(5) },
     primer_nombre: { required },
     primer_apellido: { required },
+    segundo_apellido: { required },
     fecha_nacimiento: { required },
     sexo: { required },
     grupo_sanguineo: { required },
@@ -64,12 +65,13 @@ const states = ref([])
 const cities = ref([])
 
 function getStatesOfCountry() {
-  states.value = State.getStatesOfCountry(patient.pais_residencia)
+  states.value = State.getStatesOfCountry(patient.value.pais_residencia)
+  //console.log(states)
 }
 
 function getCitiesOfState() {
-  console.log(patient.pais_residencia, patient.departamento_residencia)
-  cities.value = City.getCitiesOfState(patient.pais_residencia, patient.departamento_residencia)
+  //console.log(patient.pais_residencia, patient.departamento_residencia)
+  cities.value = City.getCitiesOfState(patient.value.pais_residencia, patient.value.departamento_residencia)
 }
 
 function placeFocusOnDocNum() {
@@ -263,6 +265,11 @@ defineExpose({
                        placeholder="Segundo Apellido"
                        type="text"
                 >
+                <span v-if="v$.segundo_apellido.$error"
+                      class="text-danger"
+                >
+                  {{ v$.segundo_apellido.$errors[0]?.$message }}
+                </span>
               </div>
 
               <!-- Fecha de Nacimiento -->
