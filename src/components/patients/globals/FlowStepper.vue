@@ -2,8 +2,10 @@
 
 import CreatePatientComponent from "@/components/patients/subComponents/CreatePatient/CreatePatientComponent.vue";
 import {ref} from "vue";
+import InformedConsentComponent from "@/components/patients/subComponents/CreatePatient/InformedConsentComponent.vue";
 
 const wizard = ref(null)
+const createPatientComponentRef = ref()
 
 function isLastStep() {
   if (wizard.value) {
@@ -12,8 +14,21 @@ function isLastStep() {
   return false
 }
 
-function validateStep(props) {
-  return props.prevTab()
+async function validateStep(props) {
+
+  if (props.activeTabIndex === 0) {
+    const submitState = await createPatientComponentRef.value.handleSubmit()
+    //console.log(submitState)
+    if (submitState) {
+      //console.log('hay un error')
+      return props.nextTab()
+    }
+  } else if (props.activeTabIndex === 1) {
+    return props.nextTab()
+  }
+
+
+  //return props.nextTab()
 }
 
 function onComplete() {
@@ -28,13 +43,13 @@ function onComplete() {
 
     <!-- Fisrt Step -->
     <tab-content title="Datos Personales">
-      <CreatePatientComponent />
+      <CreatePatientComponent ref="createPatientComponentRef" />
     </tab-content>
     <!-- End Fisrt Step -->
 
     <!-- Second Step -->
     <tab-content title="Consentimiento">
-      My second tab content
+      <InformedConsentComponent />
     </tab-content>
     <!-- End Second Step -->
 
@@ -46,16 +61,16 @@ function onComplete() {
 
     <template v-slot:footer="props">
       <div class="wizard-footer-left">
-        <wizard-button  v-if="props.activeTabIndex > 0 " class="btn btn-global-color" @click="validateStep(props)" :style="props.fillButtonStyle">
+        <wizard-button  v-if="props.activeTabIndex > 0" class="btn btn-global-color" @click="props.prevTab()" :style="props.fillButtonStyle">
           Atrás
         </wizard-button>
       </div>
       <div class="wizard-footer-right">
-        <wizard-button v-if="!props.isLastStep" @click="props.nextTab()" class="wizard-footer-right btn btn-global-color" :style="props.fillButtonStyle">
+        <wizard-button v-if="!props.isLastStep" @click="validateStep(props)" class="wizard-footer-right btn btn-global-color" :style="props.fillButtonStyle">
           Continuar
         </wizard-button>
 
-        <wizard-button v-else @click="onComplete" class="wizard-footer-right btn btn-aqua-color" :style="props.fillButtonStyle">  {{props.isLastStep ? 'Finalizar' : 'Continuar'}}</wizard-button>
+        <wizard-button v-else @click="onComplete" class="wizard-footer-right btn btn-aqua-color" :style="props.fillButtonStyle">  {{ props.isLastStep ? 'Finalizar' : 'Continuar'}}</wizard-button>
       </div>
     </template>
 

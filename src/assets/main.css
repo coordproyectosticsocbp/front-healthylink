@@ -27,6 +27,11 @@
     border-top-right-radius: 20px;
 }
 
+.card .card-footer {
+    border-bottom-left-radius: 20px !important;
+    border-bottom-right-radius: 20px !important;
+}
+
 .btn-global-color {
     background-image: var(--vt-c-button-global-color) !important;
     color: #f8f8f8 !important;
