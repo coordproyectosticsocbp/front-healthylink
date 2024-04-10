@@ -2,14 +2,17 @@
 
 import {documentTypes} from "@/utils/const/documentTypes.js";
 import {userGender} from "@/utils/const/userGender.js";
-import {computed, ref} from "vue";
-import {City, Country, State} from "country-state-city";
-//import PatientService from "@/services/patients/Patient.service.js";
-//import {getError} from "@/utils/helpers/getError.js";
+import {computed, onMounted} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
 import {required, minLength} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {toast} from "vue3-toastify";
+import {useStore} from "vuex";
+
+const store = useStore()
+//const geoCountries = computed( () => store.getters["geocoding/countries"])
+const getGeoCountries = store.dispatch('geocoding/geoCountries')
+const geoCountries = computed( () => store.getters["geocoding/countries"])
 
 const patient = useLocalStorage({
   tipo_doc: null,
@@ -60,20 +63,6 @@ const handleSubmit = async () => {
 
 }
 
-const countries = Country.getAllCountries();
-const states = ref([])
-const cities = ref([])
-
-function getStatesOfCountry() {
-  states.value = State.getStatesOfCountry(patient.value.pais_residencia)
-  //console.log(states)
-}
-
-function getCitiesOfState() {
-  //console.log(patient.pais_residencia, patient.departamento_residencia)
-  cities.value = City.getCitiesOfState(patient.value.pais_residencia, patient.value.departamento_residencia)
-}
-
 function placeFocusOnDocNum() {
   document.getElementById('input2').focus()
 }
@@ -81,81 +70,14 @@ function placeFocusOnDocNum() {
 const alertEvent = (message) => {
   console.log(message)
 }
-/*function createPatient() {
-  console.log(patient)
-
-  try {
-
-    Swal.fire({
-      title: "Deseas Registrar el paciente?",
-      text: "Esta Acción es Inrreversible!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      cancelButtonText: "Cancelar",
-      confirmButtonText: "Guardar Paciente!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        savingPatient.value = true
-        PatientService.createPatient(patient)
-            .then((response) => {
-              if (response.data.statusCode === 201) {
-                console.log(response.data.message)
-                //toast.success(response.data.message)
-
-                Swal.fire({
-                  title: "Paciente Creado!",
-                  text: "Debe Crear el Consentimiento Informado",
-                  icon: "success",
-                  showCancelButton: false,
-                  //cancelButtonText: "No, Cancelar",
-                  confirmButtonText: "Si, Crearlo!"
-                }).then( (result) => {
-                  if (result.isConfirmed) {
-
-                    new Modal('#exampleModal').show()
-                    console.log('Aquí')
-
-                  }
-                })
-
-                //clearField()
-                savingPatient.value = false
-              } else {
-                console.log(response.data.message)
-                //toast.error(response.data.message)
-
-                Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: `${response.data.message}`,
-                });
-
-                savingPatient.value = false
-              }
-            })
-
-      }
-    });
-    savingPatient.value = false
-  } catch (e) {
-    console.log(getError(e))
-    //toast.error(getError(e))
-
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: `${getError(e)}`,
-    });
-
-    savingPatient.value = false
-  }
-}*/
 
 defineExpose({
   alertEvent,
   handleSubmit
+})
+
+onMounted( () => {
+  getGeoCountries
 })
 
 </script>
@@ -357,20 +279,19 @@ defineExpose({
                 <label class="form-label" for="input11">País:</label>
                 <select id="input11" v-model="patient.pais_residencia"
                         class="form-select"
-                        @change="getStatesOfCountry"
                         required
                 >
                   <option selected :value="null">Seleccione el país</option>
-                  <option v-for="country in countries"
-                          :key="country.name"
-                          :value="country.isoCode"
+                  <option v-for="country in getGeoCountries"
+                          :key="country.id"
+                          :value="country.id"
                           v-text="country.name.toUpperCase()"
                   />
                 </select>
               </div>
 
               <!-- Departamento -->
-              <div class="col-md-4">
+<!--              <div class="col-md-4">
                 <label class="form-label" for="input12">Departamento:</label>
                 <select id="input12" v-model="patient.departamento_residencia"
                         class="form-select"
@@ -384,10 +305,10 @@ defineExpose({
                           v-text="state.name.toUpperCase()"
                   />
                 </select>
-              </div>
+              </div>-->
 
               <!-- Ciudad -->
-              <div class="col-md-4">
+<!--              <div class="col-md-4">
                 <label class="form-label" for="input13">Ciudad:</label>
                 <select id="input13" v-model="patient.ciudad_residencia" class="form-select" required>
                   <option selected :value="null">Seleccione la Ciudad</option>
@@ -397,7 +318,7 @@ defineExpose({
                           v-text="city.name.toUpperCase()"
                   />
                 </select>
-              </div>
+              </div>-->
 
 
             </form>

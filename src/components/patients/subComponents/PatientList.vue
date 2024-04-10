@@ -1,12 +1,9 @@
 <script setup>
 
-import {onMounted, reactive, ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import PatientService from '@/services/patients/Patient.service.js'
-import {City, Country, State} from "country-state-city";
-import {documentTypes} from "@/utils/const/documentTypes.js";
-import {userGender} from "@/utils/const/userGender.js";
 import {getError} from "@/utils/helpers/getError.js";
-import {toast} from "vue3-toastify";
+import {useLoading} from "vue-loading-overlay";
 
 const headers = [
   {text: 'Tipo Doc', value: 'tipo_doc'},
@@ -22,105 +19,50 @@ const headers = [
   {text: 'Ciudad', value: 'ciudad_residencia'},
   {text: 'Teléfono', value: 'telefono_celular'}
 ]
+
 const patients = ref([])
+const fullPage = ref(true)
+const errors = ref(null)
 
-const patient = reactive({
-  tipo_doc: null,
-  numero_documento: null,
-  primer_nombre: null,
-  segundo_nombre: null,
-  primer_apellido: null,
-  segundo_apellido: null,
-  fecha_nacimiento: null,
-  sexo: null,
-  grupo_sanguineo: null,
-  pais_residencia: null,
-  departamento_residencia: null,
-  ciudad_residencia: null,
-  correo_electronico: null,
-  telefono_celular: null
+const $loading = useLoading({
+  loader: 'dots',
+  isFullPage: fullPage,
+  width: 64,
+  height: 64,
+  backgroundColor: '#ffffff',
+  opacity: 0.5,
+  zIndex: 999,
 })
+const getPatientsFullList = async () => {
 
-const countries = Country.getAllCountries();
-const states = ref([])
-const cities = ref([])
-const savingPatient = ref(false)
-//const errors = ref(null)
+  const loader = $loading.show()
 
-async function getPatientsFullList() {
-  let response = await PatientService.getPatientsFullList()
-  patients.value = response.data.data
+  await PatientService.getPatientsFullList()
+      .then((response) => {
+        patients.value = response.data.data
+        loader.hide()
+      })
+      .catch((error) => {
+        loader.hide()
+        errors.value = getError(error)
+      })
 }
 
-function getStatesOfCountry() {
-  states.value = State.getStatesOfCountry(patient.pais_residencia)
-}
-
-function getCitiesOfState() {
-  console.log(patient.pais_residencia, patient.departamento_residencia)
-  cities.value = City.getCitiesOfState(patient.pais_residencia, patient.departamento_residencia)
-}
-
-function placeFocusOnDocNum() {
-  document.getElementById('input2').focus()
-}
-
-function clearField() {
-
-  patient.tipo_doc = null;
-  patient.numero_documento = null;
-  patient.primer_nombre = null;
-  patient.segundo_nombre = null;
-  patient.primer_apellido = null;
-  patient.segundo_apellido = null;
-  patient.fecha_nacimiento = null;
-  patient.sexo = null;
-  patient.grupo_sanguineo = null;
-  patient.pais_residencia = null;
-  patient.departamento_residencia = null;
-  patient.ciudad_residencia = null;
-  patient.correo_electronico = null;
-  patient.telefono_celular = null
-}
-
-async function createPatient() {
-  console.log(patient)
-  savingPatient.value = true
-  try {
-    await PatientService.createPatient(patient)
-        .then((response) => {
-          if (response.data.statusCode === 201) {
-            console.log(response.data.message)
-            toast.success(response.data.message)
-            getPatientsFullList()
-            clearField()
-            savingPatient.value = false
-          } else {
-            console.log(response.data.message)
-            toast.error(response.data.message)
-            savingPatient.value = false
-          }
-        })
-  } catch (e) {
-    console.log(getError(e))
-    toast.error(getError(e))
-    savingPatient.value = false
-  }
-}
 
 onMounted(
-    getPatientsFullList
+  getPatientsFullList
 )
 
 </script>
 
 <template>
 
-  <div class="container-fluid">
+  <div class="container-fluid" ref="fullPageContainer">
     <div class="row">
       <div class="col">
         <div class="card">
           <div class="card-body">
+
             <EasyDataTable :headers="headers" :items="patients"/>
           </div>
         </div>
