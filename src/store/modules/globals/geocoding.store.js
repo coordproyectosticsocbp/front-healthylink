@@ -3,26 +3,26 @@ import geocodingService from "@/services/geocoding/geocoding.service.js";
 export const namespaced = true
 
 export const state = {
-    countries: [],
-    states: [],
-    cities: [],
-    error: null
+    countries: [],/*
+    states: null,
+    cities: null,
+    error: null*/
 }
 
 export const getters = {
     countries: (state) => {
         return state.countries
     },
-    states: (state) => {
+    /*states: (state) => {
         return state.states
     },
     cities: (state) => {
         return state.cities
-    }
+    }*/
 }
 
 export const actions = {
-    async geoCountries({commit}) {
+    async geoCountries({ commit }) {
 
         const response = await geocodingService.getCountries()
         console.log(response.data.data)
@@ -35,13 +35,13 @@ export const actions = {
 }
 
 export const mutations = {
-    SET_GEO_COUNTRIES(countries) {
+    SET_GEO_COUNTRIES(state, countries) {
         state.countries = countries
     },
-    SET_GEO_STATES(states) {
+    /*SET_GEO_STATES(states) {
         state.states = states
     },
     SET_GEO_CITIES(cities) {
         state.cities = cities
-    }
+    }*/
 }

@@ -4,15 +4,16 @@ import {documentTypes} from "@/utils/const/documentTypes.js";
 import {userGender} from "@/utils/const/userGender.js";
 import {computed, onMounted} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
-import {required, minLength} from "@vuelidate/validators";
+import {minLength, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {toast} from "vue3-toastify";
 import {useStore} from "vuex";
 
 const store = useStore()
-//const geoCountries = computed( () => store.getters["geocoding/countries"])
-const getGeoCountries = store.dispatch('geocoding/geoCountries')
-const geoCountries = computed( () => store.getters["geocoding/countries"])
+const countriesObject = computed( () => store.getters["geocoding/countries"])
+const getGeoCountries = () => {
+  store.dispatch('geocoding/geoCountries')
+}
 
 const patient = useLocalStorage({
   tipo_doc: null,
@@ -31,20 +32,19 @@ const patient = useLocalStorage({
   telefono_celular: ''
 }, 'patientForm')
 
-
 const rules = computed(() => {
   return {
-    tipo_doc: { required },
-    numero_documento: { required, minLength: minLength(5) },
-    primer_nombre: { required },
-    primer_apellido: { required },
-    segundo_apellido: { required },
-    fecha_nacimiento: { required },
-    sexo: { required },
-    grupo_sanguineo: { required },
-    pais_residencia: { required },
-    correo_electronico: { required },
-    telefono_celular: { required, minLength: minLength(10) },
+    tipo_doc: {required},
+    numero_documento: {required, minLength: minLength(5)},
+    primer_nombre: {required},
+    primer_apellido: {required},
+    segundo_apellido: {required},
+    fecha_nacimiento: {required},
+    sexo: {required},
+    grupo_sanguineo: {required},
+    pais_residencia: {required},
+    correo_electronico: {required},
+    telefono_celular: {required, minLength: minLength(10)},
   }
 })
 
@@ -76,9 +76,7 @@ defineExpose({
   handleSubmit
 })
 
-onMounted( () => {
-  getGeoCountries
-})
+onMounted(getGeoCountries)
 
 </script>
 
@@ -282,7 +280,7 @@ onMounted( () => {
                         required
                 >
                   <option selected :value="null">Seleccione el país</option>
-                  <option v-for="country in getGeoCountries"
+                  <option v-for="country in countriesObject"
                           :key="country.id"
                           :value="country.id"
                           v-text="country.name.toUpperCase()"
@@ -291,34 +289,34 @@ onMounted( () => {
               </div>
 
               <!-- Departamento -->
-<!--              <div class="col-md-4">
-                <label class="form-label" for="input12">Departamento:</label>
-                <select id="input12" v-model="patient.departamento_residencia"
-                        class="form-select"
-                        @change="getCitiesOfState"
-                        required
-                >
-                  <option selected :value="null">Seleccione el Departamento</option>
-                  <option v-for="state in states"
-                          :key="state.name"
-                          :value="state.isoCode"
-                          v-text="state.name.toUpperCase()"
-                  />
-                </select>
-              </div>-->
+              <!--              <div class="col-md-4">
+                              <label class="form-label" for="input12">Departamento:</label>
+                              <select id="input12" v-model="patient.departamento_residencia"
+                                      class="form-select"
+                                      @change="getCitiesOfState"
+                                      required
+                              >
+                                <option selected :value="null">Seleccione el Departamento</option>
+                                <option v-for="state in states"
+                                        :key="state.name"
+                                        :value="state.isoCode"
+                                        v-text="state.name.toUpperCase()"
+                                />
+                              </select>
+                            </div>-->
 
               <!-- Ciudad -->
-<!--              <div class="col-md-4">
-                <label class="form-label" for="input13">Ciudad:</label>
-                <select id="input13" v-model="patient.ciudad_residencia" class="form-select" required>
-                  <option selected :value="null">Seleccione la Ciudad</option>
-                  <option v-for="city in cities"
-                          :key="city.name"
-                          :value="city.name.toUpperCase()"
-                          v-text="city.name.toUpperCase()"
-                  />
-                </select>
-              </div>-->
+              <!--              <div class="col-md-4">
+                              <label class="form-label" for="input13">Ciudad:</label>
+                              <select id="input13" v-model="patient.ciudad_residencia" class="form-select" required>
+                                <option selected :value="null">Seleccione la Ciudad</option>
+                                <option v-for="city in cities"
+                                        :key="city.name"
+                                        :value="city.name.toUpperCase()"
+                                        v-text="city.name.toUpperCase()"
+                                />
+                              </select>
+                            </div>-->
 
 
             </form>
