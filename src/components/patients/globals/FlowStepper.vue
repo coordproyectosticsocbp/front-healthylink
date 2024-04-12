@@ -1,11 +1,16 @@
 <script setup>
 
-import CreatePatientComponent from "@/components/patients/subComponents/CreatePatient/CreatePatientComponent.vue";
-import {ref} from "vue";
-import InformedConsentComponent from "@/components/patients/subComponents/CreatePatient/InformedConsentComponent.vue";
+import CreatePatientComponent from "@/components/patients/subComponents/CreatePatient/CreatePatientForm/CreatePatientComponent.vue";
+import {computed, ref} from "vue";
+import InformedConsentComponent from "@/components/patients/subComponents/CreatePatient/InformedConsent/InformedConsentComponent.vue";
+import PatientHealthSurvey from "@/components/patients/subComponents/CreatePatient/HealthSurvey/PatientHealthSurvey.vue";
 
 const wizard = ref(null)
 const createPatientComponentRef = ref()
+const patientSignatureExtist = computed( () => {
+  const storageVal = window.localStorage.getItem('patientSignature')
+  if (storageVal) return true;
+})
 
 function isLastStep() {
   if (wizard.value) {
@@ -60,7 +65,7 @@ function onComplete() {
 
     <!-- Third Step -->
     <tab-content title="Encuesta">
-      Yuhuuu! This seems pretty damn simple
+      <PatientHealthSurvey />
     </tab-content>
     <!-- End Third Step -->
 
@@ -70,7 +75,7 @@ function onComplete() {
           Atrás
         </wizard-button>
       </div>
-      <div class="wizard-footer-right">
+      <div class="wizard-footer-right" v-if="patientSignatureExtist">
         <wizard-button v-if="!props.isLastStep" @click="validateStep(props)" class="wizard-footer-right btn btn-global-color" :style="props.fillButtonStyle">
           Continuar
         </wizard-button>

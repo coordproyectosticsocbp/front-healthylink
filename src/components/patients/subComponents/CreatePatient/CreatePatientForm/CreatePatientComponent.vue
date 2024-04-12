@@ -2,17 +2,94 @@
 
 import {documentTypes} from "@/utils/const/documentTypes.js";
 import {userGender} from "@/utils/const/userGender.js";
-import {computed, onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
 import {minLength, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {toast} from "vue3-toastify";
 import {useStore} from "vuex";
+import {useLoading} from "vue-loading-overlay";
+
+const fullPage = ref(true)
+const $loading = useLoading({
+  loader: 'dots',
+  isFullPage: fullPage,
+  width: 64,
+  height: 64,
+  backgroundColor: '#ffffff',
+  opacity: 0.5,
+  zIndex: 999,
+})
 
 const store = useStore()
-const countriesObject = computed( () => store.getters["geocoding/countries"])
+const countriesObject = computed(() => store.getters["geocoding/countries"])
+const statesObject = computed(() => store.getters["geocoding/states"])
+const citiesObject = computed(() => store.getters["geocoding/cities"])
 const getGeoCountries = () => {
+  const loader = $loading.show()
   store.dispatch('geocoding/geoCountries')
+      .then((response) => {
+        loader.hide()
+        return response
+      })
+      .catch((error) => {
+        loader.hide()
+        Swal.fire({
+          icon: "error",
+          title: "Error al obtener geo codificacion!",
+          text: error
+        })
+      })
+}
+
+const getStatesOfCountry = (event) => {
+
+  if (event.target.value === 'null') {
+    return true
+  } else {
+
+    console.log(event.target.value)
+    const loader = $loading.show()
+    store.dispatch('geocoding/getStatesOfCountry', event.target.value)
+        .then((response) => {
+          loader.hide()
+          return response
+        })
+        .catch((error) => {
+          loader.hide()
+          Swal.fire({
+            icon: "error",
+            title: "Error al obtener geo codificacion!",
+            text: error
+          })
+        })
+
+  }
+}
+
+const getCitiesOfState = (event) => {
+
+  if (event.target.value === 'null') {
+    return true
+  } else {
+
+    console.log(event.target.value)
+    const loader = $loading.show()
+    store.dispatch('geocoding/getCitiesOfState', event.target.value)
+        .then((response) => {
+          loader.hide()
+          return response
+        })
+        .catch((error) => {
+          loader.hide()
+          Swal.fire({
+            icon: "error",
+            title: "Error al obtener geo codificacion!",
+            text: error
+          })
+        })
+
+  }
 }
 
 const patient = useLocalStorage({
@@ -25,9 +102,9 @@ const patient = useLocalStorage({
   fecha_nacimiento: null,
   sexo: null,
   grupo_sanguineo: '',
-  pais_residencia: null,
-  departamento_residencia: null,
-  ciudad_residencia: null,
+  pais_residencia: '',
+  departamento_residencia: '',
+  ciudad_residencia: '',
   correo_electronico: '',
   telefono_celular: ''
 }, 'patientForm')
@@ -278,8 +355,9 @@ onMounted(getGeoCountries)
                 <select id="input11" v-model="patient.pais_residencia"
                         class="form-select"
                         required
+                        @change.prevent="getStatesOfCountry($event)"
                 >
-                  <option selected :value="null">Seleccione el país</option>
+                  <option value="null">Seleccione el país</option>
                   <option v-for="country in countriesObject"
                           :key="country.id"
                           :value="country.id"
@@ -289,34 +367,34 @@ onMounted(getGeoCountries)
               </div>
 
               <!-- Departamento -->
-              <!--              <div class="col-md-4">
-                              <label class="form-label" for="input12">Departamento:</label>
-                              <select id="input12" v-model="patient.departamento_residencia"
-                                      class="form-select"
-                                      @change="getCitiesOfState"
-                                      required
-                              >
-                                <option selected :value="null">Seleccione el Departamento</option>
-                                <option v-for="state in states"
-                                        :key="state.name"
-                                        :value="state.isoCode"
-                                        v-text="state.name.toUpperCase()"
-                                />
-                              </select>
-                            </div>-->
+              <div class="col-md-4">
+                <label class="form-label" for="input12">Departamento:</label>
+                <select id="input12" v-model="patient.departamento_residencia"
+                        class="form-select"
+                        required
+                        @change.prevent="getCitiesOfState($event)"
+                >
+                  <option value="null">Seleccione el Departamento</option>
+                  <option v-for="state in statesObject"
+                          :key="state.id"
+                          :value="state.id"
+                          v-text="state.name.toUpperCase()"
+                  />
+                </select>
+              </div>
 
               <!-- Ciudad -->
-              <!--              <div class="col-md-4">
+                            <div class="col-md-4">
                               <label class="form-label" for="input13">Ciudad:</label>
                               <select id="input13" v-model="patient.ciudad_residencia" class="form-select" required>
-                                <option selected :value="null">Seleccione la Ciudad</option>
-                                <option v-for="city in cities"
-                                        :key="city.name"
-                                        :value="city.name.toUpperCase()"
+                                <option value="null">Seleccione la Ciudad</option>
+                                <option v-for="city in citiesObject"
+                                        :key="city.id"
+                                        :value="city.id"
                                         v-text="city.name.toUpperCase()"
                                 />
                               </select>
-                            </div>-->
+                            </div>
 
 
             </form>

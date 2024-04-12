@@ -11,8 +11,8 @@ import AuthenticationView from '@/views/Authentication/AuthenticationView.vue'
 import Login from '@/components/authentication/Login/Login.vue'
 import ResetPassword from '@/components/authentication/ResetPassword/ResetPassword.vue'
 import PatientsMainComponent from '@/components/patients/PatientsMainComponent.vue'
-import CreatePatientComponent from "@/components/patients/subComponents/CreatePatient/CreatePatientComponent.vue";
-import PatientList from "@/components/patients/subComponents/PatientList.vue";
+import CreatePatientComponent from "@/components/patients/subComponents/CreatePatient/CreatePatientForm/CreatePatientComponent.vue";
+import PatientList from "@/components/patients/subComponents/PatientsList/PatientList.vue";
 
 const routes = [
   {

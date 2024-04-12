@@ -1,4 +1,4 @@
-import CreatePatientComponent from "@/components/patients/subComponents/CreatePatient/CreatePatientComponent.vue";
+import CreatePatientComponent from "@/components/patients/subComponents/CreatePatient/CreatePatientForm/CreatePatientComponent.vue";
 
 export const patientFlow = [
     {

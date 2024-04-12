@@ -14,14 +14,32 @@
   }, 'patientSignature')
   const signature1 = ref(null)
   const storageSignature = ref(null)
+  const patientSignatureExists = ref(false)
 
   function save(t){
     consentComponentSignature.value.signature = signature1.value.save(t)
-    console.log(signature1.value.save(t))
+    const storageVal = window.localStorage.getItem('patientSignature')
+
+    if (storageVal) storageSignature.value = JSON.parse(storageVal).signature
+    patientSignatureExists.value = true
+    //storageSignature.value = consentComponentSignature.value.signature
+    /*const storageVal = window.localStorage.getItem('patientSignature')
+    if (!storageVal) {
+      consentComponentSignature.value.signature = signature1.value.save(t)
+      patientSignatureExists.value = true
+    } else {
+      storageSignature.value = JSON.parse(storageVal).signature
+      patientSignatureExists.value = true
+    }*/
+    //console.log(signature1.value.save(t))
   }
-  function cancel() {
-    Modal.getInstance('#exampleModal')?.hide()
-  }
+/*  function cancel() {
+    const storageVal = window.localStorage.getItem('patientSignature')
+    if (storageVal) {
+      window.localStorage.removeItem('patientSignature')
+      patientSignatureExists.value = false
+    }
+  }*/
   function clear() {
     const storageVal = window.localStorage.getItem('patientSignature')
     if (storageVal) window.localStorage.removeItem('patientSignature')
@@ -35,7 +53,10 @@
     const storageVal = window.localStorage.getItem('patientForm')
     const storagePatientSignatureVal = window.localStorage.getItem('patientSignature')
     if (storageVal) getPatientData.value = JSON.parse(storageVal)
-    if (storagePatientSignatureVal) storageSignature.value = JSON.parse(storagePatientSignatureVal).signature
+    if (storagePatientSignatureVal) {
+      storageSignature.value = JSON.parse(storagePatientSignatureVal).signature
+      patientSignatureExists.value = true
+    }
     //const storageSignature = window.localStorage.getItem('patientSignature')
 
    /* if (storageSignature) {
@@ -339,7 +360,7 @@
                     <Vue3Signature id="signaturePad" ref="signature1"
                                    :w="'1052.8px'" :h="'400px'"
                                    class="signature-pad mb-4"
-                                   v-if="!storageSignature"
+                                   v-if="!patientSignatureExists"
                     />
                     <img :src="storageSignature" v-else>
                   </div>
@@ -350,10 +371,6 @@
             <div class="row" v-if="!storageSignature">
               <div class="col">
                 <div class="text-center">
-                  <button class="btn btn-sm btn-danger me-1" @click="cancel">
-                    <font-awesome-icon :icon="['fas', 'x']" />
-                    Cancelar
-                  </button>
                   <button class="btn btn-sm btn-warning me-1" @click="clear">
                     <font-awesome-icon :icon="['fas', 'brush']" />
                     Limpiar
@@ -369,6 +386,17 @@
                 </div>
               </div>
             </div>
+
+<!--            <div class="row" v-else>
+              <div class="col">
+                <div class="text-center">
+                  <button class="btn btn-sm btn-danger me-1" @click="cancel">
+                    <font-awesome-icon :icon="['fas', 'x']" />
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            </div>-->
 
           </div>
 
