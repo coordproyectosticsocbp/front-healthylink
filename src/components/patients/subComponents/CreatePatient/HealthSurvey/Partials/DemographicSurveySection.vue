@@ -54,7 +54,7 @@ const onIndigenousSelected = (event) => {
 
           <div class="row mb-3">
             <div class="col">
-              <ol type="A" class="mb-0">
+              <ol class="mb-0" type="A">
                 <li>
                   <p class="fw-bold">DEMOGRAFÍA:</p>
                 </li>
@@ -64,50 +64,53 @@ const onIndigenousSelected = (event) => {
 
           <div class="row mb-3 g-3 align-items-center">
             <div class="col-auto">
-              <label for="inputAge" class="col-form-label">EDAD:</label>
-              <input type="number" id="inputAge" class="form-control form-control-sm" aria-describedby="ageHelpInline"
+              <label class="col-form-label" for="inputAge">EDAD:</label>
+              <input id="inputAge" v-model="demographicVariables.edad" aria-describedby="ageHelpInline"
+                     class="form-control form-control-sm"
                      placeholder="Edad en años"
-                     v-model="demographicVariables.edad"
+                     type="number"
               >
             </div>
           </div>
 
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
-              <label for="inputAge" class="col-form-label">ALTURA:</label>
-              <input type="number" id="inputAge" class="form-control form-control-sm" aria-describedby="ageHelpInline"
+              <label class="col-form-label" for="inputAge">ALTURA:</label>
+              <input id="inputAge" v-model="demographicVariables.altura" aria-describedby="ageHelpInline"
+                     class="form-control form-control-sm"
                      placeholder="(Unidad: cm)"
-                     v-model="demographicVariables.altura"
+                     type="number"
               >
             </div>
             <div class="col">
-              <label for="inputAge" class="col-form-label">PESO:</label>
-              <input type="number" id="inputAge" class="form-control form-control-sm" aria-describedby="ageHelpInline"
+              <label class="col-form-label" for="inputAge">PESO:</label>
+              <input id="inputAge" v-model="demographicVariables.peso" aria-describedby="ageHelpInline"
+                     class="form-control form-control-sm"
                      placeholder="(Unidad: Kg)"
-                     v-model="demographicVariables.peso"
+                     type="number"
               >
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col">
-              <label for="formGroupExampleInput2" class="form-label">
+              <label class="form-label" for="formGroupExampleInput2">
                 <font-awesome-icon :icon="['fas', 'people-group']"/>
                 ETNIA:
               </label>
 
-              <select class="form-select-sm form-select mb-3" aria-label="One select"
-                      v-model="demographicVariables.etnia"
+              <select v-model="demographicVariables.etnia" aria-label="One select"
+                      class="form-select-sm form-select mb-3"
                       size="6"
                       @change.prevent="onIndigenousSelected"
               >
-                <option selected value="null">Seleccione su etnia</option>
-                <option v-for="et in etnias" :key="et" v-text="et.label.toUpperCase()" :value="et.value"/>
+                <option disabled selected value="null">Seleccione su etnia</option>
+                <option v-for="et in etnias" :key="et" :value="et.value" v-text="et.label.toUpperCase()"/>
               </select>
 
               <div v-if="patientIsIndigenous">
-                <label for="exampleFormControlTextarea1" class="form-label">A cual pueblo indígena pertenece?:</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" />
+                <label class="form-label" for="exampleFormControlTextarea1">A cual pueblo indígena pertenece?:</label>
+                <textarea id="exampleFormControlTextarea1" class="form-control" rows="2"/>
               </div>
             </div>
           </div>
@@ -115,22 +118,27 @@ const onIndigenousSelected = (event) => {
           <!-- Paciente Pais, Ciudad Nacimiento -->
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
-              <label for="exampleDataList" class="col-form-label">PAÍS DE NACIMIENTO:</label>
-              <input class="form-control form-control-sm" list="datalistOptions" id="exampleDataList" placeholder="Escribe el País"
-                     v-model="demographicVariables.pais_nacimiento"
+              <label class="col-form-label" for="exampleDataList">PAÍS DE NACIMIENTO:</label>
+              <input id="exampleDataList" v-model="demographicVariables.pais_nacimiento"
+                     class="form-control form-control-sm"
+                     list="datalistOptions"
+                     placeholder="Escribe el País"
                      @change="getCityOfBirth($event)"
               >
               <datalist id="datalistOptions">
-                <option v-for="country in countriesObject" :key="country.id" :value="country.name" v-text="country.name" />
+                <option v-for="country in countriesObject" :key="country.id" :value="country.name"
+                        v-text="country.name"/>
               </datalist>
             </div>
             <div class="col">
-              <label for="inputAge" class="col-form-label">CIUDAD DE NACIMIENTO:</label>
-              <input class="form-control form-control-sm" list="datalistOptions" id="exampleDataList" placeholder="Escribe la Ciudad"
-                     v-model="demographicVariables.ciudad_nacimiento"
+              <label class="col-form-label" for="inputAge">CIUDAD DE NACIMIENTO:</label>
+              <input id="exampleDataList" v-model="demographicVariables.ciudad_nacimiento"
+                     class="form-control form-control-sm"
+                     list="datalistOptions"
+                     placeholder="Escribe la Ciudad"
               >
               <datalist id="datalistOptions">
-                <option v-for="city in citiesObject" :key="city.id" :value="city.name" v-text="city.name" />
+                <option v-for="city in citiesObject" :key="city.id" :value="city.name" v-text="city.name"/>
               </datalist>
             </div>
           </div>
@@ -139,21 +147,26 @@ const onIndigenousSelected = (event) => {
           <!-- Abuelo Materno Pais, Ciudad Nacimiento -->
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
-              <label for="exampleDataList" class="col-form-label">PAÍS DE NACIMIENTO DE ABUELO MATERNO:</label>
-              <input class="form-control form-control-sm" list="datalistOptions" id="exampleDataList" placeholder="Escribe el País"
-                     v-model="demographicVariables.pais_abuelo_materno"
+              <label class="col-form-label" for="exampleDataList">PAÍS DE NACIMIENTO DE ABUELO MATERNO:</label>
+              <input id="exampleDataList" v-model="demographicVariables.pais_abuelo_materno"
+                     class="form-control form-control-sm"
+                     list="datalistOptions"
+                     placeholder="Escribe el País"
               >
               <datalist id="datalistOptions">
-                <option v-for="country in countriesObject" :key="country.id" :value="country.name" v-text="country.name" />
+                <option v-for="country in countriesObject" :key="country.id" :value="country.name"
+                        v-text="country.name"/>
               </datalist>
             </div>
             <div class="col">
-              <label for="inputAge" class="col-form-label">CIUDAD DE NACIMIENTO DE ABUELO MATERNO:</label>
-              <input class="form-control form-control-sm" list="datalistOptions" id="exampleDataList" placeholder="Escribe la Ciudad"
-                     v-model="demographicVariables.ciudad_abuelo_materno"
+              <label class="col-form-label" for="inputAge">CIUDAD DE NACIMIENTO DE ABUELO MATERNO:</label>
+              <input id="exampleDataList" v-model="demographicVariables.ciudad_abuelo_materno"
+                     class="form-control form-control-sm"
+                     list="datalistOptions"
+                     placeholder="Escribe la Ciudad"
               >
               <datalist id="datalistOptions">
-                <option v-for="city in citiesObject" :key="city.id" :value="city.name" v-text="city.name" />
+                <option v-for="city in citiesObject" :key="city.id" :value="city.name" v-text="city.name"/>
               </datalist>
             </div>
           </div> <!-- End Abuelo Materno Pais, Ciudad Nacimiento -->
@@ -162,21 +175,26 @@ const onIndigenousSelected = (event) => {
           <!-- Abuela Materna Pais, Ciudad Nacimiento -->
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
-              <label for="exampleDataList" class="col-form-label">PAÍS DE NACIMIENTO DE ABUELA MATERNA:</label>
-              <input class="form-control form-control-sm" list="datalistOptions" id="exampleDataList" placeholder="Escribe el País"
-                     v-model="demographicVariables.pais_abuela_materna"
+              <label class="col-form-label" for="exampleDataList">PAÍS DE NACIMIENTO DE ABUELA MATERNA:</label>
+              <input id="exampleDataList" v-model="demographicVariables.pais_abuela_materna"
+                     class="form-control form-control-sm"
+                     list="datalistOptions"
+                     placeholder="Escribe el País"
               >
               <datalist id="datalistOptions">
-                <option v-for="country in countriesObject" :key="country.id" :value="country.name" v-text="country.name" />
+                <option v-for="country in countriesObject" :key="country.id" :value="country.name"
+                        v-text="country.name"/>
               </datalist>
             </div>
             <div class="col">
-              <label for="inputAge" class="col-form-label">CIUDAD DE NACIMIENTO DE ABUELA MATERNA:</label>
-              <input class="form-control form-control-sm" list="datalistOptions" id="exampleDataList" placeholder="Escribe la Ciudad"
-                     v-model="demographicVariables.ciudad_abuela_materna"
+              <label class="col-form-label" for="inputAge">CIUDAD DE NACIMIENTO DE ABUELA MATERNA:</label>
+              <input id="exampleDataList" v-model="demographicVariables.ciudad_abuela_materna"
+                     class="form-control form-control-sm"
+                     list="datalistOptions"
+                     placeholder="Escribe la Ciudad"
               >
               <datalist id="datalistOptions">
-                <option v-for="city in citiesObject" :key="city.id" :value="city.name" v-text="city.name" />
+                <option v-for="city in citiesObject" :key="city.id" :value="city.name" v-text="city.name"/>
               </datalist>
             </div>
           </div> <!-- End Abuela Materna Pais, Ciudad Nacimiento -->
@@ -185,21 +203,26 @@ const onIndigenousSelected = (event) => {
           <!-- Abuelo Paterno Pais, Ciudad Nacimiento -->
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
-              <label for="exampleDataList" class="col-form-label">PAÍS DE NACIMIENTO DE ABUELO PATERNO:</label>
-              <input class="form-control form-control-sm" list="datalistOptions" id="exampleDataList" placeholder="Escribe el País"
-                     v-model="demographicVariables.pais_abuelo_paterno"
+              <label class="col-form-label" for="exampleDataList">PAÍS DE NACIMIENTO DE ABUELO PATERNO:</label>
+              <input id="exampleDataList" v-model="demographicVariables.pais_abuelo_paterno"
+                     class="form-control form-control-sm"
+                     list="datalistOptions"
+                     placeholder="Escribe el País"
               >
               <datalist id="datalistOptions">
-                <option v-for="country in countriesObject" :key="country.id" :value="country.name" v-text="country.name" />
+                <option v-for="country in countriesObject" :key="country.id" :value="country.name"
+                        v-text="country.name"/>
               </datalist>
             </div>
             <div class="col">
-              <label for="inputAge" class="col-form-label">CIUDAD DE NACIMIENTO DE ABUELO PATERNO:</label>
-              <input class="form-control form-control-sm" list="datalistOptions" id="exampleDataList" placeholder="Escribe la Ciudad"
-                     v-model="demographicVariables.ciudad_abuelo_paterno"
+              <label class="col-form-label" for="inputAge">CIUDAD DE NACIMIENTO DE ABUELO PATERNO:</label>
+              <input id="exampleDataList" v-model="demographicVariables.ciudad_abuelo_paterno"
+                     class="form-control form-control-sm"
+                     list="datalistOptions"
+                     placeholder="Escribe la Ciudad"
               >
               <datalist id="datalistOptions">
-                <option v-for="city in citiesObject" :key="city.id" :value="city.name" v-text="city.name" />
+                <option v-for="city in citiesObject" :key="city.id" :value="city.name" v-text="city.name"/>
               </datalist>
             </div>
           </div> <!-- End Abuelo Paterno Pais, Ciudad Nacimiento -->
@@ -208,21 +231,26 @@ const onIndigenousSelected = (event) => {
           <!-- Abuela Paterna Pais, Ciudad Nacimiento -->
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
-              <label for="exampleDataList" class="col-form-label">PAÍS DE NACIMIENTO DE ABUELA PATERNA:</label>
-              <input class="form-control form-control-sm" list="datalistOptions" id="exampleDataList" placeholder="Escribe el País"
-                     v-model="demographicVariables.pais_abuela_materna"
+              <label class="col-form-label" for="exampleDataList">PAÍS DE NACIMIENTO DE ABUELA PATERNA:</label>
+              <input id="exampleDataList" v-model="demographicVariables.pais_abuela_materna"
+                     class="form-control form-control-sm"
+                     list="datalistOptions"
+                     placeholder="Escribe el País"
               >
               <datalist id="datalistOptions">
-                <option v-for="country in countriesObject" :key="country.id" :value="country.name" v-text="country.name" />
+                <option v-for="country in countriesObject" :key="country.id" :value="country.name"
+                        v-text="country.name"/>
               </datalist>
             </div>
             <div class="col">
-              <label for="inputAge" class="col-form-label">CIUDAD DE NACIMIENTO DE ABUELA PATERNA:</label>
-              <input class="form-control form-control-sm" list="datalistOptions" id="exampleDataList" placeholder="Escribe la Ciudad"
-                     v-model="demographicVariables.ciudad_abuela_paterna"
+              <label class="col-form-label" for="inputAge">CIUDAD DE NACIMIENTO DE ABUELA PATERNA:</label>
+              <input id="exampleDataList" v-model="demographicVariables.ciudad_abuela_paterna"
+                     class="form-control form-control-sm"
+                     list="datalistOptions"
+                     placeholder="Escribe la Ciudad"
               >
               <datalist id="datalistOptions">
-                <option v-for="city in citiesObject" :key="city.id" :value="city.name" v-text="city.name" />
+                <option v-for="city in citiesObject" :key="city.id" :value="city.name" v-text="city.name"/>
               </datalist>
             </div>
           </div> <!-- End Abuela Paterna Pais, Ciudad Nacimiento -->
@@ -230,22 +258,27 @@ const onIndigenousSelected = (event) => {
           <!-- Paciente Pais, Ciudad Residencia -->
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
-              <label for="exampleDataList" class="col-form-label">CUAL ES SU PAÍS DE RESIDENCIA?:</label>
-              <input class="form-control form-control-sm" list="datalistOptions" id="exampleDataList" placeholder="Escribe el País"
-                     v-model="demographicVariables.pais_residencia_paciente"
+              <label class="col-form-label" for="exampleDataList">CUAL ES SU PAÍS DE RESIDENCIA?:</label>
+              <input id="exampleDataList" v-model="demographicVariables.pais_residencia_paciente"
+                     class="form-control form-control-sm"
+                     list="datalistOptions"
+                     placeholder="Escribe el País"
                      @change="getCityOfBirth($event)"
               >
               <datalist id="datalistOptions">
-                <option v-for="country in countriesObject" :key="country.id" :value="country.name" v-text="country.name" />
+                <option v-for="country in countriesObject" :key="country.id" :value="country.name"
+                        v-text="country.name"/>
               </datalist>
             </div>
             <div class="col">
-              <label for="inputAge" class="col-form-label">CUAL ES SU CIUDAD DE RESIDENCIA?:</label>
-              <input class="form-control form-control-sm" list="datalistOptions" id="exampleDataList" placeholder="Escribe la Ciudad"
-                     v-model="demographicVariables.ciudad_residencia_paciente"
+              <label class="col-form-label" for="inputAge">CUAL ES SU CIUDAD DE RESIDENCIA?:</label>
+              <input id="exampleDataList" v-model="demographicVariables.ciudad_residencia_paciente"
+                     class="form-control form-control-sm"
+                     list="datalistOptions"
+                     placeholder="Escribe la Ciudad"
               >
               <datalist id="datalistOptions">
-                <option v-for="city in citiesObject" :key="city.id" :value="city.name" v-text="city.name" />
+                <option v-for="city in citiesObject" :key="city.id" :value="city.name" v-text="city.name"/>
               </datalist>
             </div>
           </div>

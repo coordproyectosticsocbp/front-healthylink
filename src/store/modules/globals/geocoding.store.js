@@ -24,19 +24,19 @@ export const actions = {
     async geoCountries({ commit }) {
 
         const response = await geocodingService.getCountries()
-        console.log(response.data.data)
+        //console.log(response.data.data)
         commit('SET_GEO_COUNTRIES', response.data.data)
 
     },
     async getStatesOfCountry({commit}, payload) {
         const response = await geocodingService.getStatesByCountryId(payload)
-        console.log(response.data.data)
+        //console.log(response.data.data)
         commit('SET_GEO_STATES', response.data.data)
 
     },
     async getCitiesOfState({commit}, payload) {
         const response = await geocodingService.getCitiesOfState(payload)
-        console.log(response.data.data)
+        //console.log(response.data.data)
         commit('SET_GEO_CITIES', response.data.data)
 
     }

@@ -15,8 +15,8 @@ export const getters = {
 }
 
 export const actions = {
-    updateCollapsed({commit}) {
-        commit('SET_COLLAPSED')
+    updateCollapsed({commit, state}) {
+        commit('SET_COLLAPSED', state)
     },
     updateMiniMenu({commit}) {
         commit('SET_MINI_MENU')

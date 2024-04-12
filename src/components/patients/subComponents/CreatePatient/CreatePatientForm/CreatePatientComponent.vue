@@ -47,8 +47,7 @@ const getStatesOfCountry = (event) => {
   if (event.target.value === 'null') {
     return true
   } else {
-
-    console.log(event.target.value)
+    //console.log(event.target.value)
     const loader = $loading.show()
     store.dispatch('geocoding/getStatesOfCountry', event.target.value)
         .then((response) => {
@@ -63,7 +62,6 @@ const getStatesOfCountry = (event) => {
             text: error
           })
         })
-
   }
 }
 
@@ -180,10 +178,10 @@ onMounted(getGeoCountries)
                 <label class="form-label" for="input1">Tipo de Documento:</label>
                 <select id="input1" v-model="patient.tipo_doc"
                         class="form-select"
-                        @change="placeFocusOnDocNum"
                         required
+                        @change="placeFocusOnDocNum"
                 >
-                  <option selected :value="null">Seleccione el tipo</option>
+                  <option :value="null" selected>Seleccione el tipo</option>
                   <option v-for="doctype in documentTypes" :key="doctype.value"
                           :value="doctype.value"
                           v-text="doctype.name"
@@ -204,8 +202,8 @@ onMounted(getGeoCountries)
                        v-model="patient.numero_documento"
                        class="form-control"
                        placeholder="Documento"
-                       type="text"
                        required
+                       type="text"
 
                 >
                 <span v-if="v$.numero_documento.$error"
@@ -221,8 +219,8 @@ onMounted(getGeoCountries)
                 <input id="input3" v-model="patient.primer_nombre"
                        class="form-control"
                        placeholder="Primer Nombre"
-                       type="text"
                        required
+                       type="text"
                 >
                 <span v-if="v$.primer_nombre.$error"
                       class="text-danger"
@@ -246,8 +244,8 @@ onMounted(getGeoCountries)
                 <input id="input5" v-model="patient.primer_apellido"
                        class="form-control"
                        placeholder="Primer Apellido"
-                       type="text"
                        required
+                       type="text"
                 >
                 <span v-if="v$.primer_apellido.$error"
                       class="text-danger"
@@ -274,8 +272,8 @@ onMounted(getGeoCountries)
                 <label class="form-label" for="input7">Fecha de Nacimiento:</label>
                 <input id="input7" v-model="patient.fecha_nacimiento"
                        class="form-control"
-                       type="date"
                        required
+                       type="date"
                 >
                 <span v-if="v$.fecha_nacimiento.$error"
                       class="text-danger"
@@ -291,7 +289,7 @@ onMounted(getGeoCountries)
                         class="form-select"
                         required
                 >
-                  <option selected :value="null">Seleccione el Sexo</option>
+                  <option :value="null" selected>Seleccione el Sexo</option>
                   <option v-for="gender in userGender"
                           :key="gender.value"
                           :value="gender.value"
@@ -309,9 +307,9 @@ onMounted(getGeoCountries)
                 <label class="form-label" for="input8">G.S. RH:</label>
                 <input id="input8" v-model="patient.grupo_sanguineo"
                        class="form-control"
-                       type="text"
                        placeholder="G.S. R.H. (o+)"
                        required
+                       type="text"
                 >
                 <span v-if="v$.grupo_sanguineo.$error"
                       class="text-danger"
@@ -339,8 +337,8 @@ onMounted(getGeoCountries)
                 <input id="input10" v-model="patient.telefono_celular"
                        class="form-control"
                        placeholder="Teléfono"
-                       type="number"
                        required
+                       type="number"
                 >
                 <span v-if="v$.telefono_celular.$error"
                       class="text-danger"
@@ -384,17 +382,17 @@ onMounted(getGeoCountries)
               </div>
 
               <!-- Ciudad -->
-                            <div class="col-md-4">
-                              <label class="form-label" for="input13">Ciudad:</label>
-                              <select id="input13" v-model="patient.ciudad_residencia" class="form-select" required>
-                                <option value="null">Seleccione la Ciudad</option>
-                                <option v-for="city in citiesObject"
-                                        :key="city.id"
-                                        :value="city.id"
-                                        v-text="city.name.toUpperCase()"
-                                />
-                              </select>
-                            </div>
+              <div class="col-md-4">
+                <label class="form-label" for="input13">Ciudad:</label>
+                <select id="input13" v-model="patient.ciudad_residencia" class="form-select" required>
+                  <option value="null">Seleccione la Ciudad</option>
+                  <option v-for="city in citiesObject"
+                          :key="city.id"
+                          :value="city.id"
+                          v-text="city.name.toUpperCase()"
+                  />
+                </select>
+              </div>
 
 
             </form>
