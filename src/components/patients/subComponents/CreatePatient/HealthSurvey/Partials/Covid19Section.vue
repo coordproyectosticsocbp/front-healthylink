@@ -99,8 +99,8 @@ const covidVariables = useLocalStorage({
           <!-- cuantas dosis -->
           <div class="row mb-3">
             <div class="col-6">
-              <label class="form-label" for="exampleFormControlInput1">Cuantas Dosis?</label>
-              <input id="exampleFormControlInput1" v-model="covidVariables.cantidad_dosis_vacunacion_recibida"
+              <label class="form-label" for="inputDosisVacunacion">Cuantas Dosis?</label>
+              <input id="inputDosisVacunacion" v-model="covidVariables.cantidad_dosis_vacunacion_recibida"
                      class="form-control form-control-sm"
                      placeholder="Escriba # de dosis"
                      type="number"
@@ -112,12 +112,13 @@ const covidVariables = useLocalStorage({
           <!-- Tipo de Vacuna -->
           <div class="row mb-3">
             <div class="col">
-              <label class="form-label" for="exampleFormControlInput1">
+              <label class="form-label" for="selectTipoVacuna">
                 Si se ha vacunado, ¿qué vacuna recibió?
               </label>
               <select v-model="covidVariables.tipo_vacuna_recibida" aria-label="Multiple select example"
                       class="form-select form-select-sm" multiple
                       size="7"
+                      id="selectTipoVacuna"
               >
                 <option disabled value="null">Seleccione una o varias opciones</option>
                 <option v-for="vaccine in vaccineTypes" :key="vaccine" :value="vaccine.value">
@@ -158,7 +159,7 @@ const covidVariables = useLocalStorage({
           <!-- que sintomas tuvo -->
           <div v-if="covidVariables.presento_sintomas_por_covid === 'Si'" class="row mb-3">
             <div class="col">
-              <label class="form-label" for="exampleFormControlInput1">
+              <label class="form-label" for="selectSintomasCovid">
                 Si su respuesta es afirmativa, ¿qué síntomas tuvo? (tenga en cuenta en el diagrama a continuación todos
                 los que se aplican de los 50 más comunes, o agregue cualquier síntoma adicional que haya experimentado
                 personalmente) MULTIPLE:
@@ -166,6 +167,7 @@ const covidVariables = useLocalStorage({
               <select v-model="covidVariables.sintomas_tenidos_por_covid" aria-label="Multiple select example"
                       class="form-select form-select-sm" multiple
                       size="10"
+                      id="selectSintomasCovid"
               >
                 <option disabled value="null">Seleccione una o varias opciones</option>
                 <option v-for="vaccine in covidSymptoms" :key="vaccine" :value="vaccine.value">
@@ -234,7 +236,7 @@ const covidVariables = useLocalStorage({
           <!-- sintomas que aún persisten -->
           <div v-if="covidVariables.tiempo_recuperacion_covid_19 === 'Más de 12 semanas'" class="row mb-3">
             <div class="col">
-              <label class="form-label" for="exampleFormControlInput1">
+              <label class="form-label" for="selectSintomasCovidPersisten">
                 Si respondió con la opción e. (más de 12 semanas); anote en el diagrama cuáles de los síntomas aún
                 persisten o persisten después de 12 semanas desde que se enteró de su diagnóstico de COVID-19 (todos los
                 que se aplican de los 50 más comunes, o agregue cualquier síntoma adicional que haya experimentado
@@ -243,6 +245,7 @@ const covidVariables = useLocalStorage({
               <select v-model="covidVariables.sintomas_q_persisten_por_covid_19" aria-label="Multiple select example"
                       class="form-select form-select-sm" multiple
                       size="10"
+                      id="selectSintomasCovidPersisten"
               >
                 <option disabled value="null">Seleccione una o varias opciones</option>
                 <option v-for="vaccine in covidSymptoms" :key="vaccine" :value="vaccine.value">

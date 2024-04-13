@@ -80,7 +80,7 @@ const removeIllnessFromArray = (variableArray, item) => {
           <!-- Paciente es Fumador? -->
           <div class="row mb-3">
             <div class="col">
-              <label class="form-label" for="formGroupExampleInput2">
+              <label class="form-label" for="selectPacienteFumador">
                 <font-awesome-icon :icon="['fas', 'smoking']"/>
                 ¿Eres fumador o has sido fumador toda tu vida? UNICA
               </label>
@@ -88,6 +88,7 @@ const removeIllnessFromArray = (variableArray, item) => {
               <select v-model="healthHabitsVariables.es_fumador" aria-label="One select"
                       class="form-select-sm form-select mb-3"
                       size="5"
+                      id="selectPacienteFumador"
               >
                 <option disabled value="null">Seleccione una opcion</option>
                 <option v-for="st in smokerType" :key="st" :value="st.value" v-text="st.label.toUpperCase()"/>
@@ -100,7 +101,7 @@ const removeIllnessFromArray = (variableArray, item) => {
           <!-- Paciente es Fumador? -->
           <div class="row mb-3">
             <div class="col">
-              <label class="form-label" for="formGroupExampleInput2">
+              <label class="form-label" for="presionArterial">
                 <font-awesome-icon :icon="['fas', 'heart-pulse']"/>
                 ¿Tiene presión arterial alta? UNICA
               </label>
@@ -108,6 +109,7 @@ const removeIllnessFromArray = (variableArray, item) => {
               <select v-model="healthHabitsVariables.presion_arterial" aria-label="One select"
                       class="form-select-sm form-select mb-3"
                       size="4"
+                      id="presionArterial"
                       @change.prevent="onHighBloodPressureSelected"
               >
                 <option disabled value="null">Seleccione una opcion</option>
@@ -115,11 +117,13 @@ const removeIllnessFromArray = (variableArray, item) => {
               </select>
 
               <div v-if="patientHasHighBloodPressure">
-                <label class="form-label" for="exampleFormControlTextarea1">
+                <label class="form-label" for="areaMedicamentoControl">
                   Si respondiste afirmativamente a la presión arterial alta, ¿estás tomando algún medicamento para
                   controlarla?
                 </label>
-                <textarea id="exampleFormControlTextarea1" class="form-control" rows="2" v-model="healthHabitsVariables.medicamento_para_presion_arterial"  />
+                <textarea id="areaMedicamentoControl" class="form-control" rows="2"
+                          v-model="healthHabitsVariables.medicamento_para_presion_arterial"
+                />
               </div>
             </div>
           </div>
@@ -128,7 +132,7 @@ const removeIllnessFromArray = (variableArray, item) => {
           <!-- Paciente Colesterol Alto -->
           <div class="row mb-3">
             <div class="col">
-              <label class="form-label" for="formGroupExampleInput2">
+              <label class="form-label" for="selectColesterolNivel">
                 <font-awesome-icon :icon="['fas', 'heart']"/>
                 ¿Tienes niveles altos de colesterol? UNICA
               </label>
@@ -136,6 +140,7 @@ const removeIllnessFromArray = (variableArray, item) => {
               <select v-model="healthHabitsVariables.alto_nivel_colesterol" aria-label="One select"
                       class="form-select-sm form-select mb-3"
                       size="4"
+                      id="selectColesterolNivel"
               >
                 <option disabled value="null">Seleccione una opcion</option>
                 <option v-for="st in highCholesterolLevels" :key="st" :value="st.value"
@@ -148,7 +153,7 @@ const removeIllnessFromArray = (variableArray, item) => {
           <!-- Paciente Colesterol Alto -->
           <div class="row mb-3">
             <div class="col">
-              <label class="form-label" for="formGroupExampleInput2">
+              <label class="form-label" for="selectBebidasAlcoholicas">
                 <font-awesome-icon :icon="['fas', 'champagne-glasses']"/>
                 ¿Con qué frecuencia consumes bebidas alcohólicas? UNICA
               </label>
@@ -156,6 +161,7 @@ const removeIllnessFromArray = (variableArray, item) => {
               <select v-model="healthHabitsVariables.frecuencia_bebidas_alcoholicas" aria-label="One select"
                       class="form-select-sm form-select mb-3"
                       size="6"
+                      id="selectBebidasAlcoholicas"
               >
                 <option disabled value="null">Seleccione una opcion</option>
                 <option v-for="st in alcoholConsumptionFrequency" :key="st" :value="st.value"
@@ -196,15 +202,23 @@ const removeIllnessFromArray = (variableArray, item) => {
                   </ul>
                 </div>
                 <div v-if="healthHabitsVariables.afeccion_o_enfermededad_cronica__madre === 'Si'"
-                     class="col-xl-4 col-md-4 col-sm-12">
-                  <p>Cuales Enfermedades?</p>
+                     class="col-xl-4 col-md-4 col-sm-12"
+                >
+                  <label class="form-label" for="inputCualEnfermedad">
+                    <font-awesome-icon :icon="['fas', 'hospital-user']"/>
+                    Cuales Enfermedades?
+                  </label>
+<!--                  <p>Cuales Enfermedades?</p>-->
                   <div class="row mb-3">
-                    <input
-                        v-model="cualEnfermedad"
-                        class="form-control form-control-sm"
-                        placeholder="Escriba la enfermedad" type="text"
-                        @keyup.prevent.enter="addIllnessToArray(1)"
-                    />
+                    <div class="col">
+                      <input
+                          v-model="cualEnfermedad"
+                          id="inputCualEnfermedad"
+                          class="form-control form-control-sm"
+                          placeholder="Escriba la enfermedad" type="text"
+                          @keyup.prevent.enter="addIllnessToArray(1)"
+                      />
+                    </div>
                   </div>
                   <div class="row">
                     <div class="col">
@@ -249,15 +263,22 @@ const removeIllnessFromArray = (variableArray, item) => {
               </ul>
             </div>
             <div v-if="healthHabitsVariables.afeccion_o_enfermededad_cronica__padre === 'Si'"
-                 class="col-xl-4 col-md-4 col-sm-12">
-              <p>Cuales Enfermedades?</p>
+                 class="col-xl-4 col-md-4 col-sm-12"
+            >
+              <label class="form-label" for="inputCualEnfermedadPadre">
+                <font-awesome-icon :icon="['fas', 'hospital-user']"/>
+                Cuales Enfermedades?
+              </label>
               <div class="row mb-3">
-                <input
-                    v-model="cualEnfermedad"
-                    class="form-control form-control-sm"
-                    placeholder="Escriba la enfermedad" type="text"
-                    @keyup.prevent.enter="addIllnessToArray(2)"
-                />
+                <div class="col">
+                  <input
+                      v-model="cualEnfermedad"
+                      id="inputCualEnfermedadPadre"
+                      class="form-control form-control-sm"
+                      placeholder="Escriba la enfermedad" type="text"
+                      @keyup.prevent.enter="addIllnessToArray(2)"
+                  />
+                </div>
               </div>
               <div class="row">
                 <div class="col">
@@ -302,14 +323,20 @@ const removeIllnessFromArray = (variableArray, item) => {
             <div v-if="healthHabitsVariables.afeccion_o_enfermededad_cronica__hermanos === 'Si'"
                  class="col-xl-4 col-md-4 col-sm-12"
             >
-              <p>Cuales Enfermedades?</p>
+              <label class="form-label" for="inputCualEnfermedad">
+                <font-awesome-icon :icon="['fas', 'hospital-user']"/>
+                Cuales Enfermedades?
+              </label>
               <div class="row mb-3">
-                <input
-                    v-model="cualEnfermedad"
-                    class="form-control form-control-sm"
-                    placeholder="Escriba la enfermedad" type="text"
-                    @keyup.prevent.enter="addIllnessToArray(3)"
-                />
+                <div class="col">
+                  <input
+                      v-model="cualEnfermedad"
+                      class="form-control form-control-sm"
+                      placeholder="Escriba la enfermedad" type="text"
+                      @keyup.prevent.enter="addIllnessToArray(3)"
+                  />
+                </div>
+
               </div>
               <div class="row">
                 <div class="col">

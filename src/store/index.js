@@ -11,7 +11,8 @@ const store = createStore({
     auth,
     sidebar,
     geocoding
-  }
+  },
+  //plugins
 })
 
 export default store

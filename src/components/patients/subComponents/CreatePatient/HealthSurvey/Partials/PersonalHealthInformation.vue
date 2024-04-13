@@ -19,7 +19,7 @@ const personalHealthVariables = useLocalStorage({
   enfermedades_reumaticas: null,
   diagnosticado_cancer_ultimos_cinco_anos: null,
   cancer_diagnosticado: null,
-  afecciones_diagnosticadas: null,
+  afecciones_diagnosticadas: [],
   analisis_sangre_ultimos_seis_meses: null,
 }, 'PersonalHealthInformation')
 
@@ -310,13 +310,14 @@ const personalHealthVariables = useLocalStorage({
           <!-- Enfermedades afecciones -->
           <div class="row mb-3">
             <div class="col">
-              <label class="form-label" for="exampleFormControlInput1">
+              <label class="form-label" for="selectPacienteConAfecciones">
                 ¿Alguna vez tu médico te ha diagnosticado alguna de las siguientes afecciones? Puede marcar más de una
                 respuesta.
               </label>
               <select v-model="personalHealthVariables.afecciones_diagnosticadas" aria-label="Multiple select example"
                       class="form-select form-select-sm" multiple
                       size="7"
+                      id="selectPacienteConAfecciones"
               >
                 <option disabled value="null">Seleccione una o varias opciones</option>
                 <option v-for="mci in personalConditions" :key="mci.value" :value="mci.value">

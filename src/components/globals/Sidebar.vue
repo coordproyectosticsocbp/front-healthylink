@@ -56,7 +56,13 @@ const menu = [
       keepChildrenOpen
       menuType="fully"
       vueRouterEnabel
-  />
+  >
+    <template #footer>
+      <div class="p-2 text-center">
+        <img src="@/assets/images/logohle-1.gif" width="250">
+      </div>
+    </template>
+  </VueAwesomeSideBar>
   <!-- End of Sidebar -->
 
 </template>

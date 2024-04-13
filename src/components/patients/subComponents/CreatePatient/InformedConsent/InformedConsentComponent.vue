@@ -9,37 +9,26 @@
   const loggedUser = authUser.value.firstName + ' ' + authUser.value.lastName
 
   const getPatientData = ref([])
-  const consentComponentSignature = useLocalStorage({
-    signature: null
-  }, 'patientSignature')
+  /*const consentComponentSignature = useLocalStorage({
+    signature: ''
+  }, 'patientSignature')*/
+  const consentComponentSignature = ref(null)
   const signature1 = ref(null)
   const storageSignature = ref(null)
   const patientSignatureExists = ref(false)
 
   function save(t){
-    consentComponentSignature.value.signature = signature1.value.save(t)
+    consentComponentSignature.value = signature1.value.save(t)
     const storageVal = window.localStorage.getItem('patientSignature')
-
-    if (storageVal) storageSignature.value = JSON.parse(storageVal).signature
-    patientSignatureExists.value = true
-    //storageSignature.value = consentComponentSignature.value.signature
-    /*const storageVal = window.localStorage.getItem('patientSignature')
     if (!storageVal) {
-      consentComponentSignature.value.signature = signature1.value.save(t)
+      console.log(consentComponentSignature.value.toString())
+      window.localStorage.setItem('patientSignature', JSON.stringify(consentComponentSignature.value.toString()))
+      storageSignature.value = consentComponentSignature.value.toString()
       patientSignatureExists.value = true
-    } else {
-      storageSignature.value = JSON.parse(storageVal).signature
-      patientSignatureExists.value = true
-    }*/
-    //console.log(signature1.value.save(t))
-  }
-/*  function cancel() {
-    const storageVal = window.localStorage.getItem('patientSignature')
-    if (storageVal) {
-      window.localStorage.removeItem('patientSignature')
-      patientSignatureExists.value = false
     }
-  }*/
+    //storageSignature.value = JSON.parse(storageVal).signature
+  }
+
   function clear() {
     const storageVal = window.localStorage.getItem('patientSignature')
     if (storageVal) window.localStorage.removeItem('patientSignature')
@@ -54,7 +43,7 @@
     const storagePatientSignatureVal = window.localStorage.getItem('patientSignature')
     if (storageVal) getPatientData.value = JSON.parse(storageVal)
     if (storagePatientSignatureVal) {
-      storageSignature.value = JSON.parse(storagePatientSignatureVal).signature
+      storageSignature.value = JSON.parse(storagePatientSignatureVal)
       patientSignatureExists.value = true
     }
     //const storageSignature = window.localStorage.getItem('patientSignature')
@@ -362,7 +351,7 @@
                                    class="signature-pad mb-4"
                                    v-if="!patientSignatureExists"
                     />
-                    <img :src="storageSignature" v-else>
+                    <img class="img-in-signature-box" :src="storageSignature" width="100%" height="100%" v-else >
                   </div>
 
                 </div>
@@ -434,6 +423,7 @@
 }
 
 #signaturePad canvas {
+  max-width: 100%;
   width: 100% !important;
 }
 

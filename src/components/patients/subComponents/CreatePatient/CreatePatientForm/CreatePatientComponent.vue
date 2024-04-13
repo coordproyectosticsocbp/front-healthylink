@@ -2,93 +2,34 @@
 
 import {documentTypes} from "@/utils/const/documentTypes.js";
 import {userGender} from "@/utils/const/userGender.js";
-import {computed, onMounted, ref} from "vue";
+import {computed} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
 import {minLength, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {toast} from "vue3-toastify";
-import {useStore} from "vuex";
-import {useLoading} from "vue-loading-overlay";
 
-const fullPage = ref(true)
-const $loading = useLoading({
-  loader: 'dots',
-  isFullPage: fullPage,
-  width: 64,
-  height: 64,
-  backgroundColor: '#ffffff',
-  opacity: 0.5,
-  zIndex: 999,
+const storageCountryVal = window.localStorage.getItem('countries')
+const storageStateVal = window.localStorage.getItem('states')
+const storageCitiesVal = window.localStorage.getItem('cities')
+
+/** Logic */
+const countriesObject = computed(() => {
+  let arrayCountry = null;
+  if (storageCountryVal) arrayCountry = JSON.parse(storageCountryVal)
+  return arrayCountry
 })
 
-const store = useStore()
-const countriesObject = computed(() => store.getters["geocoding/countries"])
-const statesObject = computed(() => store.getters["geocoding/states"])
-const citiesObject = computed(() => store.getters["geocoding/cities"])
-const getGeoCountries = () => {
-  const loader = $loading.show()
-  store.dispatch('geocoding/geoCountries')
-      .then((response) => {
-        loader.hide()
-        return response
-      })
-      .catch((error) => {
-        loader.hide()
-        Swal.fire({
-          icon: "error",
-          title: "Error al obtener geo codificacion!",
-          text: error
-        })
-      })
-}
+const statesObject = computed(() => {
+  let arrayStates = []
+  if (storageStateVal) arrayStates = JSON.parse(storageStateVal)
+  return arrayStates.filter((state) => state.pais_id === parseInt(patient.value.pais_residencia))
+})
 
-const getStatesOfCountry = (event) => {
-
-  if (event.target.value === 'null') {
-    return true
-  } else {
-    //console.log(event.target.value)
-    const loader = $loading.show()
-    store.dispatch('geocoding/getStatesOfCountry', event.target.value)
-        .then((response) => {
-          loader.hide()
-          return response
-        })
-        .catch((error) => {
-          loader.hide()
-          Swal.fire({
-            icon: "error",
-            title: "Error al obtener geo codificacion!",
-            text: error
-          })
-        })
-  }
-}
-
-const getCitiesOfState = (event) => {
-
-  if (event.target.value === 'null') {
-    return true
-  } else {
-
-    console.log(event.target.value)
-    const loader = $loading.show()
-    store.dispatch('geocoding/getCitiesOfState', event.target.value)
-        .then((response) => {
-          loader.hide()
-          return response
-        })
-        .catch((error) => {
-          loader.hide()
-          Swal.fire({
-            icon: "error",
-            title: "Error al obtener geo codificacion!",
-            text: error
-          })
-        })
-
-  }
-}
+const citiesObject = computed(() => {
+  let arrayCountries = [];
+  if (storageCitiesVal) arrayCountries = JSON.parse(storageCitiesVal)
+  return arrayCountries.filter((city) => city.departamentos_regiones_id === parseInt(patient.value.departamento_residencia))
+})
 
 const patient = useLocalStorage({
   tipo_doc: null,
@@ -151,7 +92,7 @@ defineExpose({
   handleSubmit
 })
 
-onMounted(getGeoCountries)
+//onMounted(getGeoCountries)
 
 </script>
 
@@ -204,7 +145,7 @@ onMounted(getGeoCountries)
                        placeholder="Documento"
                        required
                        type="text"
-
+                       readonly
                 >
                 <span v-if="v$.numero_documento.$error"
                       class="text-danger"
@@ -221,6 +162,8 @@ onMounted(getGeoCountries)
                        placeholder="Primer Nombre"
                        required
                        type="text"
+                       readonly
+                       disabled
                 >
                 <span v-if="v$.primer_nombre.$error"
                       class="text-danger"
@@ -235,6 +178,8 @@ onMounted(getGeoCountries)
                        class="form-control"
                        placeholder="Segundo Nombre"
                        type="text"
+                       readonly
+                       disabled
                 >
               </div>
 
@@ -246,6 +191,8 @@ onMounted(getGeoCountries)
                        placeholder="Primer Apellido"
                        required
                        type="text"
+                       readonly
+                       disabled
                 >
                 <span v-if="v$.primer_apellido.$error"
                       class="text-danger"
@@ -259,6 +206,8 @@ onMounted(getGeoCountries)
                        class="form-control"
                        placeholder="Segundo Apellido"
                        type="text"
+                       readonly
+                       disabled
                 >
                 <span v-if="v$.segundo_apellido.$error"
                       class="text-danger"
@@ -274,6 +223,8 @@ onMounted(getGeoCountries)
                        class="form-control"
                        required
                        type="date"
+                       readonly
+                       disabled
                 >
                 <span v-if="v$.fecha_nacimiento.$error"
                       class="text-danger"
@@ -288,6 +239,8 @@ onMounted(getGeoCountries)
                 <select id="input7" v-model="patient.sexo"
                         class="form-select"
                         required
+                        readonly
+                        disabled
                 >
                   <option :value="null" selected>Seleccione el Sexo</option>
                   <option v-for="gender in userGender"
@@ -310,6 +263,8 @@ onMounted(getGeoCountries)
                        placeholder="G.S. R.H. (o+)"
                        required
                        type="text"
+                       readonly
+                       disabled
                 >
                 <span v-if="v$.grupo_sanguineo.$error"
                       class="text-danger"
@@ -353,7 +308,6 @@ onMounted(getGeoCountries)
                 <select id="input11" v-model="patient.pais_residencia"
                         class="form-select"
                         required
-                        @change.prevent="getStatesOfCountry($event)"
                 >
                   <option value="null">Seleccione el país</option>
                   <option v-for="country in countriesObject"
@@ -370,7 +324,6 @@ onMounted(getGeoCountries)
                 <select id="input12" v-model="patient.departamento_residencia"
                         class="form-select"
                         required
-                        @change.prevent="getCitiesOfState($event)"
                 >
                   <option value="null">Seleccione el Departamento</option>
                   <option v-for="state in statesObject"
