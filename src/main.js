@@ -42,6 +42,13 @@ import 'vue3-form-wizard/dist/style.css'
 import {LoadingPlugin} from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/css/index.css';
 
+/** Vue DaysJs */
+import * as dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+
 const app = createApp(App)
 
 app.config.productionTip = false
@@ -58,6 +65,10 @@ window.Swal =  app.config.globalProperties.$swal; //to make a globals property
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.component('EasyDataTable', Vue3EasyDataTable)
+
+app.config.globalProperties.$dayjs = dayjs.extend(relativeTime);
+app.config.globalProperties.$dayjs = dayjs.extend(utc);
+app.config.globalProperties.$dayjs = dayjs.extend(timezone);
 
 app.mount('#app')
 

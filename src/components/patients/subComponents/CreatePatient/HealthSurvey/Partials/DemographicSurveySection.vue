@@ -1,9 +1,12 @@
 <script setup>
 
 import {etnias} from "@/utils/const/patientHealthSurvey.js";
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useStore} from "vuex";
 import useLocalStorage from "@/composables/useLocalStorage.js";
+//import {ageCalculate} from "@/utils/helpers/ageCalculate.js";
+import dayjs from "dayjs";
+import {ageCalculate} from "@/utils/helpers/ageCalculate.js";
 
 const store = useStore()
 
@@ -29,6 +32,24 @@ const demographicVariables = useLocalStorage({
 const patientIsIndigenous = ref(false)
 const countriesObject = computed(() => store.getters["geocoding/countries"])
 const citiesObject = ref([])
+
+const patientAge = computed( () => {
+
+  const patientStorage = window.localStorage.getItem('patientForm')
+  let dateFixed = null
+  let year = null
+  let month = null
+  let day = null
+
+  if (patientStorage) {
+    dateFixed = JSON.parse(patientStorage)
+    year = dayjs(dateFixed.fecha_nacimiento).format('YYYY')
+    month = dayjs(dateFixed.fecha_nacimiento).format('MM')
+    day = dayjs(dateFixed.fecha_nacimiento).format('DD')
+  }
+
+  return ageCalculate(day, month, year)
+})
 const getCityOfBirth = (event) => {
   console.log(event.target.value)
 }
@@ -40,6 +61,7 @@ const onIndigenousSelected = (event) => {
     patientIsIndigenous.value = false
   }
 }
+
 
 </script>
 
@@ -65,7 +87,7 @@ const onIndigenousSelected = (event) => {
           <div class="row mb-3 g-3 align-items-center">
             <div class="col-auto">
               <label class="col-form-label" for="inputAge">EDAD:</label>
-              <input id="inputAge" v-model="demographicVariables.edad" aria-describedby="ageHelpInline"
+              <input id="inputAge" v-model="patientAge" aria-describedby="ageHelpInline"
                      class="form-control form-control-sm"
                      placeholder="Edad en años"
                      type="number"
