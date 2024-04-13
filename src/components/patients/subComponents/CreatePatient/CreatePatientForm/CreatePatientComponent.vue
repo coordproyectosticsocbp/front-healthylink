@@ -145,7 +145,6 @@ defineExpose({
                        placeholder="Documento"
                        required
                        type="text"
-                       readonly
                 >
                 <span v-if="v$.numero_documento.$error"
                       class="text-danger"
