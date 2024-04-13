@@ -91,6 +91,8 @@ const onIndigenousSelected = (event) => {
                      class="form-control form-control-sm"
                      placeholder="Edad en años"
                      type="number"
+                     readonly
+                     disabled
               >
             </div>
           </div>

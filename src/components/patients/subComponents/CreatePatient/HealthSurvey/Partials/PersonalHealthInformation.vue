@@ -1,6 +1,11 @@
 <script setup>
 
-import {digestiveDiseases, motherWithChronicIllness, personalConditions} from "@/utils/const/patientHealthSurvey.js";
+import {
+  digestiveDiseases,
+  motherWithChronicIllness,
+  personalConditions,
+  vaccineTypes
+} from "@/utils/const/patientHealthSurvey.js";
 import useLocalStorage from "@/composables/useLocalStorage.js";
 
 const personalHealthVariables = useLocalStorage({
@@ -305,28 +310,19 @@ const personalHealthVariables = useLocalStorage({
           <!-- Enfermedades afecciones -->
           <div class="row mb-3">
             <div class="col">
-              <p class="text-justify">
+              <label class="form-label" for="exampleFormControlInput1">
                 ¿Alguna vez tu médico te ha diagnosticado alguna de las siguientes afecciones? Puede marcar más de una
                 respuesta.
-              </p>
-              <div class="row">
-                <div class="col">
-                  <fieldset class="row mb-3">
-                    <div class="col-8">
-                      <div v-for="(mci, index) in personalConditions" :key="mci.value" class="form-check">
-                        <input :id="`gridRadiosAfecciones-${index}`"
-                               v-model="personalHealthVariables.afecciones_diagnosticadas"
-                               :name="`gridRadiosAfecciones-${index}`"
-                               :value="mci.value" class="form-check-input" type="radio">
-                        <label :for="`gridRadiosAfecciones-${index}`" class="form-check-label">
-                          {{ mci.label }}
-                        </label>
-                      </div>
-                    </div>
-                  </fieldset>
-                </div>
-
-              </div>
+              </label>
+              <select v-model="personalHealthVariables.afecciones_diagnosticadas" aria-label="Multiple select example"
+                      class="form-select form-select-sm" multiple
+                      size="7"
+              >
+                <option disabled value="null">Seleccione una o varias opciones</option>
+                <option v-for="mci in personalConditions" :key="mci.value" :value="mci.value">
+                  {{ mci.label }}
+                </option>
+              </select>
             </div>
           </div>
           <!-- End Enfermedades afecciones -->

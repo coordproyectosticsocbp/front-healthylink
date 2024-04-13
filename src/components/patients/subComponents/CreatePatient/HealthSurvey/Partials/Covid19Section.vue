@@ -116,7 +116,7 @@ const covidVariables = useLocalStorage({
                 Si se ha vacunado, ¿qué vacuna recibió?
               </label>
               <select v-model="covidVariables.tipo_vacuna_recibida" aria-label="Multiple select example"
-                      class="form-select" multiple
+                      class="form-select form-select-sm" multiple
                       size="7"
               >
                 <option disabled value="null">Seleccione una o varias opciones</option>
@@ -164,7 +164,7 @@ const covidVariables = useLocalStorage({
                 personalmente) MULTIPLE:
               </label>
               <select v-model="covidVariables.sintomas_tenidos_por_covid" aria-label="Multiple select example"
-                      class="form-select" multiple
+                      class="form-select form-select-sm" multiple
                       size="10"
               >
                 <option disabled value="null">Seleccione una o varias opciones</option>
@@ -241,7 +241,7 @@ const covidVariables = useLocalStorage({
                 personalmente)
               </label>
               <select v-model="covidVariables.sintomas_q_persisten_por_covid_19" aria-label="Multiple select example"
-                      class="form-select" multiple
+                      class="form-select form-select-sm" multiple
                       size="10"
               >
                 <option disabled value="null">Seleccione una o varias opciones</option>

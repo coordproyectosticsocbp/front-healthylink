@@ -119,7 +119,7 @@ const removeIllnessFromArray = (variableArray, item) => {
                   Si respondiste afirmativamente a la presión arterial alta, ¿estás tomando algún medicamento para
                   controlarla?
                 </label>
-                <textarea id="exampleFormControlTextarea1" class="form-control" rows="2"/>
+                <textarea id="exampleFormControlTextarea1" class="form-control" rows="2" v-model="healthHabitsVariables.medicamento_para_presion_arterial"  />
               </div>
             </div>
           </div>
