@@ -65,11 +65,15 @@ const citiesObject = async () => {
 }
 
 
-
 onMounted(() => {
-  countriesObject()
-  statesObject()
-  citiesObject()
+
+  const storageVal = window.localStorage.getItem('countries')
+  if (!storageVal) {
+    countriesObject()
+    statesObject()
+    citiesObject()
+  }
+  //console.log('Información ya en Línea')
 })
 /*const statesObject = computed(() => store.getters["geocoding/states"])
 const citiesObject = computed(() => store.getters["geocoding/cities"])*/

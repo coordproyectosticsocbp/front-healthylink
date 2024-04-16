@@ -4,7 +4,7 @@ import {documentTypes} from "@/utils/const/documentTypes.js";
 import {userGender} from "@/utils/const/userGender.js";
 import {computed} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
-import {minLength, required} from "@vuelidate/validators";
+import {email, minLength, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {toast} from "vue3-toastify";
 
@@ -59,7 +59,7 @@ const rules = computed(() => {
     sexo: {required},
     grupo_sanguineo: {required},
     pais_residencia: {required},
-    correo_electronico: {required},
+    correo_electronico: {required, email},
     telefono_celular: {required, minLength: minLength(10)},
   }
 })
@@ -161,8 +161,7 @@ defineExpose({
                        placeholder="Primer Nombre"
                        required
                        type="text"
-                       readonly
-                       disabled
+
                 >
                 <span v-if="v$.primer_nombre.$error"
                       class="text-danger"
@@ -177,8 +176,7 @@ defineExpose({
                        class="form-control"
                        placeholder="Segundo Nombre"
                        type="text"
-                       readonly
-                       disabled
+
                 >
               </div>
 
@@ -190,8 +188,7 @@ defineExpose({
                        placeholder="Primer Apellido"
                        required
                        type="text"
-                       readonly
-                       disabled
+
                 >
                 <span v-if="v$.primer_apellido.$error"
                       class="text-danger"
@@ -205,8 +202,7 @@ defineExpose({
                        class="form-control"
                        placeholder="Segundo Apellido"
                        type="text"
-                       readonly
-                       disabled
+
                 >
                 <span v-if="v$.segundo_apellido.$error"
                       class="text-danger"
@@ -222,8 +218,7 @@ defineExpose({
                        class="form-control"
                        required
                        type="date"
-                       readonly
-                       disabled
+
                 >
                 <span v-if="v$.fecha_nacimiento.$error"
                       class="text-danger"
@@ -238,8 +233,7 @@ defineExpose({
                 <select id="input7" v-model="patient.sexo"
                         class="form-select"
                         required
-                        readonly
-                        disabled
+
                 >
                   <option :value="null" selected>Seleccione el Sexo</option>
                   <option v-for="gender in userGender"
@@ -259,11 +253,8 @@ defineExpose({
                 <label class="form-label" for="input8">G.S. RH:</label>
                 <input id="input8" v-model="patient.grupo_sanguineo"
                        class="form-control"
-                       placeholder="G.S. R.H. (o+)"
-                       required
+                       placeholder="O+, O-, AB, etc..."
                        type="text"
-                       readonly
-                       disabled
                 >
                 <span v-if="v$.grupo_sanguineo.$error"
                       class="text-danger"
