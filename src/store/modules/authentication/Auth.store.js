@@ -84,7 +84,6 @@ export const actions = {
       commit('SET_LOADING_USER', false)
       commit('SET_USER', null)
       commit('SET_ERROR', getError(error))
-      console.log(getError(error))
     }
   },
   setGuest(context, { value }) {

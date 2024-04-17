@@ -1,3 +1,4 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
 @import './base.css';
 
 /*Content*/
@@ -53,6 +54,6 @@
     background: #1c294e !important;
 }
 
-.active, .exact-active, a {
+.active, .exact-active {
     color: #1cc88a !important;
 }

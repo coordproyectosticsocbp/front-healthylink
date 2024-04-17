@@ -7,8 +7,11 @@ import {
   motherWithChronicIllness,
   smokerType
 } from "@/utils/const/patientHealthSurvey.js";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
+import useVuelidate from "@vuelidate/core";
+import {required} from "@vuelidate/validators";
+import {toast} from "vue3-toastify";
 
 const healthHabitsVariables = useLocalStorage({
   es_fumador: null,
@@ -23,6 +26,34 @@ const healthHabitsVariables = useLocalStorage({
   afeccion_o_enfermededad_cronica__hermanos: false,
   cual_afeccion_o_enfermededad_cronica__hermanos: [],
 }, 'HealthHabitsInformation')
+
+const rules = computed(() => {
+  return {
+    es_fumador: {required},
+    presion_arterial: {required},
+    medicamento_para_presion_arterial: {required},
+    alto_nivel_colesterol: {required},
+    frecuencia_bebidas_alcoholicas: {required},
+    afeccion_o_enfermededad_cronica__madre: {required},
+    afeccion_o_enfermededad_cronica__padre: {required},
+    afeccion_o_enfermededad_cronica__hermanos: {required},
+  }
+})
+
+const v$ = useVuelidate(rules, healthHabitsVariables)
+
+const handleSubmit = async () => {
+  const result = await v$.value.$validate()
+  if (!result) {
+    toast.error('Habitos de salud INCOMPLETOS')
+    return false
+  }
+  // If the form is valid, perform some action with the form data
+  toast.success('Habitos de salud completos')
+  return true;
+}
+
+
 const cualEnfermedad = ref(null)
 
 const patientHasHighBloodPressure = ref(false)
@@ -48,8 +79,11 @@ const removeIllnessFromArray = (variableArray, item) => {
     const index = healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__hermanos.indexOf(item)
     if (index > -1) healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__hermanos.splice(index, 1)
   }
-
 }
+
+defineExpose({
+  handleSubmit
+})
 
 
 </script>
@@ -87,13 +121,18 @@ const removeIllnessFromArray = (variableArray, item) => {
 
               <select id="selectPacienteFumador" v-model="healthHabitsVariables.es_fumador"
                       aria-label="One select"
-                      class="form-select-sm form-select mb-3"
+                      class="form-select-sm form-select"
                       size="5"
               >
                 <option disabled value="null">Seleccione una opcion</option>
                 <option v-for="st in smokerType" :key="st" :value="st.value" v-text="st.label.toUpperCase()"/>
               </select>
 
+              <span v-if="v$.es_fumador.$error"
+                    class="text-danger"
+              >
+                  {{ v$.es_fumador.$errors[0]?.$message }}
+                </span>
             </div>
           </div>
           <!-- End Paciente es Fumador? -->
@@ -108,13 +147,19 @@ const removeIllnessFromArray = (variableArray, item) => {
 
               <select id="presionArterial" v-model="healthHabitsVariables.presion_arterial"
                       aria-label="One select"
-                      class="form-select-sm form-select mb-3"
+                      class="form-select-sm form-select"
                       size="4"
                       @change.prevent="onHighBloodPressureSelected"
               >
                 <option disabled value="null">Seleccione una opcion</option>
                 <option v-for="st in highBloodPressure" :key="st" :value="st.value" v-text="st.label.toUpperCase()"/>
               </select>
+
+              <span v-if="v$.presion_arterial.$error"
+                    class="text-danger"
+              >
+                  {{ v$.presion_arterial.$errors[0]?.$message }}
+                </span>
 
               <div v-if="healthHabitsVariables.presion_arterial === 'Si'">
                 <label class="form-label" for="areaMedicamentoControl">
@@ -125,6 +170,7 @@ const removeIllnessFromArray = (variableArray, item) => {
                           rows="2"
                 />
               </div>
+
             </div>
           </div>
           <!-- End Paciente es Fumador? -->
@@ -139,13 +185,19 @@ const removeIllnessFromArray = (variableArray, item) => {
 
               <select id="selectColesterolNivel" v-model="healthHabitsVariables.alto_nivel_colesterol"
                       aria-label="One select"
-                      class="form-select-sm form-select mb-3"
+                      class="form-select-sm form-select"
                       size="4"
               >
                 <option disabled value="null">Seleccione una opcion</option>
                 <option v-for="st in highCholesterolLevels" :key="st" :value="st.value"
                         v-text="st.label.toUpperCase()"/>
               </select>
+
+              <span v-if="v$.alto_nivel_colesterol.$error"
+                    class="text-danger"
+              >
+                  {{ v$.alto_nivel_colesterol.$errors[0]?.$message }}
+                </span>
             </div>
           </div>
           <!-- End Paciente Colesterol Alto -->
@@ -160,13 +212,19 @@ const removeIllnessFromArray = (variableArray, item) => {
 
               <select id="selectBebidasAlcoholicas" v-model="healthHabitsVariables.frecuencia_bebidas_alcoholicas"
                       aria-label="One select"
-                      class="form-select-sm form-select mb-3"
+                      class="form-select-sm form-select"
                       size="6"
               >
                 <option disabled value="null">Seleccione una opcion</option>
                 <option v-for="st in alcoholConsumptionFrequency" :key="st" :value="st.value"
                         v-text="st.label.toUpperCase()"/>
               </select>
+
+              <span v-if="v$.frecuencia_bebidas_alcoholicas.$error"
+                    class="text-danger"
+              >
+                  {{ v$.frecuencia_bebidas_alcoholicas.$errors[0]?.$message }}
+                </span>
             </div>
           </div>
           <!-- End Paciente Colesterol Alto -->
@@ -235,6 +293,11 @@ const removeIllnessFromArray = (variableArray, item) => {
                   </div>
                 </div>
 
+                <span v-if="v$.afeccion_o_enfermededad_cronica__madre.$error"
+                      class="text-danger"
+                >
+                  {{ v$.afeccion_o_enfermededad_cronica__madre.$errors[0]?.$message }}
+                </span>
               </div>
             </div>
           </div>
@@ -295,6 +358,11 @@ const removeIllnessFromArray = (variableArray, item) => {
               </div>
             </div>
 
+            <span v-if="v$.afeccion_o_enfermededad_cronica__padre.$error"
+                  class="text-danger"
+            >
+                  {{ v$.afeccion_o_enfermededad_cronica__padre.$errors[0]?.$message }}
+                </span>
           </div>
           <!-- End Enfermedades cronicas del padre -->
 
@@ -355,6 +423,11 @@ const removeIllnessFromArray = (variableArray, item) => {
           </div>
           <!-- End Enfermedades cronicas de los Hermanos -->
 
+          <span v-if="v$.afeccion_o_enfermededad_cronica__hermanos.$error"
+                class="text-danger"
+          >
+                  {{ v$.afeccion_o_enfermededad_cronica__hermanos.$errors[0]?.$message }}
+                </span>
         </div>
       </div>
     </div>

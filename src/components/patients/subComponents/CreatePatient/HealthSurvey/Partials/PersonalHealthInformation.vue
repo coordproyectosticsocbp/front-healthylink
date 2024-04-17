@@ -4,9 +4,12 @@ import {
   digestiveDiseases,
   motherWithChronicIllness,
   personalConditions,
-  vaccineTypes
 } from "@/utils/const/patientHealthSurvey.js";
 import useLocalStorage from "@/composables/useLocalStorage.js";
+import {computed} from "vue";
+import {required} from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
+import {toast} from "vue3-toastify";
 
 const personalHealthVariables = useLocalStorage({
   enfermedades_cronicas: null,
@@ -23,6 +26,39 @@ const personalHealthVariables = useLocalStorage({
   analisis_sangre_ultimos_seis_meses: null,
 }, 'PersonalHealthInformation')
 
+const rules = computed(() => {
+  return {
+    enfermedades_cronicas: {required},
+    enfermedades_pulmonares: {required},
+    enfermedades_endocrinas_metabolicas: {required},
+    enfermedades_digestivas: {required},
+    enfermedades_renales: {required},
+    enfermedades_neurologicas: {required},
+    enfermedades_dermatologicas: {required},
+    enfermedades_reumaticas: {required},
+    diagnosticado_cancer_ultimos_cinco_anos: {required},
+    //cancer_diagnosticado: {required},
+    afecciones_diagnosticadas: {required},
+    analisis_sangre_ultimos_seis_meses: {required},
+  }
+})
+
+const v$ = useVuelidate(rules, personalHealthVariables)
+
+const handleSubmit = async () => {
+  const result = await v$.value.$validate()
+  if (!result) {
+    toast.error('datos de salud INCOMPLETOS')
+    return false
+  }
+  // If the form is valid, perform some action with the form data
+  toast.success('datos de salud completos')
+  return true;
+}
+
+defineExpose({
+  handleSubmit
+})
 
 </script>
 
@@ -66,6 +102,12 @@ const personalHealthVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.enfermedades_cronicas.$error"
+                        class="text-danger"
+                  >
+                  {{ v$.enfermedades_cronicas.$errors[0]?.$message }}
+                </span>
                 </div>
 
               </div>
@@ -94,8 +136,13 @@ const personalHealthVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
-                </div>
 
+                  <span v-if="v$.enfermedades_pulmonares.$error"
+                        class="text-danger"
+                  >
+                    {{ v$.enfermedades_pulmonares.$errors[0]?.$message }}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -123,6 +170,12 @@ const personalHealthVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.enfermedades_endocrinas_metabolicas.$error"
+                        class="text-danger"
+                  >
+                    {{ v$.enfermedades_endocrinas_metabolicas.$errors[0]?.$message }}
+                  </span>
                 </div>
 
               </div>
@@ -152,6 +205,12 @@ const personalHealthVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.enfermedades_digestivas.$error"
+                        class="text-danger"
+                  >
+                    {{ v$.enfermedades_digestivas.$errors[0]?.$message }}
+                  </span>
                 </div>
 
               </div>
@@ -180,6 +239,12 @@ const personalHealthVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.enfermedades_renales.$error"
+                        class="text-danger"
+                  >
+                    {{ v$.enfermedades_renales.$errors[0]?.$message }}
+                  </span>
                 </div>
 
               </div>
@@ -209,6 +274,12 @@ const personalHealthVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.enfermedades_neurologicas.$error"
+                        class="text-danger"
+                  >
+                    {{ v$.enfermedades_neurologicas.$errors[0]?.$message }}
+                  </span>
                 </div>
 
               </div>
@@ -237,6 +308,12 @@ const personalHealthVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.enfermedades_dermatologicas.$error"
+                        class="text-danger"
+                  >
+                    {{ v$.enfermedades_dermatologicas.$errors[0]?.$message }}
+                  </span>
                 </div>
 
               </div>
@@ -265,6 +342,12 @@ const personalHealthVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.enfermedades_reumaticas.$error"
+                        class="text-danger"
+                  >
+                    {{ v$.enfermedades_reumaticas.$errors[0]?.$message }}
+                  </span>
                 </div>
 
               </div>
@@ -294,14 +377,20 @@ const personalHealthVariables = useLocalStorage({
                      class="col-xl-6 col-md-6 col-sm-12">
                   <p>De que tipo?</p>
                   <div class="row mb-3">
-                    <textarea id="exampleFormControlTextarea1" v-model="personalHealthVariables.cancer_diagnosticado"
-                              class="form-control form-control-sm"
-                              placeholder="Escriba la enfermedad"
-                              rows="3"
-                    />
+                    <div class="col">
+                      <textarea id="exampleFormControlTextarea1" v-model="personalHealthVariables.cancer_diagnosticado"
+                                class="form-control form-control-sm"
+                                placeholder="Escriba la enfermedad"
+                                rows="3"
+                      />
+                    </div>
                   </div>
                 </div>
-
+                <span v-if="v$.diagnosticado_cancer_ultimos_cinco_anos.$error"
+                      class="text-danger"
+                >
+                    {{ v$.diagnosticado_cancer_ultimos_cinco_anos.$errors[0]?.$message }}
+                  </span>
               </div>
             </div>
           </div>
@@ -324,6 +413,12 @@ const personalHealthVariables = useLocalStorage({
                   {{ mci.label }}
                 </option>
               </select>
+
+              <span v-if="v$.afecciones_diagnosticadas.$error"
+                    class="text-danger"
+              >
+                    {{ v$.afecciones_diagnosticadas.$errors[0]?.$message }}
+                  </span>
             </div>
           </div>
           <!-- End Enfermedades afecciones -->
@@ -349,6 +444,12 @@ const personalHealthVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.analisis_sangre_ultimos_seis_meses.$error"
+                        class="text-danger"
+                  >
+                    {{ v$.analisis_sangre_ultimos_seis_meses.$errors[0]?.$message }}
+                  </span>
                 </div>
               </div>
             </div>

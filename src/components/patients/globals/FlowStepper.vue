@@ -9,7 +9,8 @@ import PatientHealthSurvey
   from "@/components/patients/subComponents/CreatePatient/HealthSurvey/PatientHealthSurvey.vue";
 
 const wizard = ref(null)
-const createPatientComponentRef = ref()
+const createPatientComponentRef = ref(null)
+const patientHealthSurveyRef = ref(null)
 
 const currentFormStepIndexVal = computed(() => {
   const index = window.localStorage.getItem('currentFormStepIndex')
@@ -30,14 +31,16 @@ async function validateStep(props) {
   if (!currentFormStepIndex) window.localStorage.setItem('currentFormStepIndex', JSON.stringify(0))
 
   if (props.activeTabIndex === 0) {
-    const submitState = await createPatientComponentRef.value.handleSubmit()
 
+    const submitState = await createPatientComponentRef.value.handleSubmit()
     if (submitState) {
       //console.log('hay un error')
       window.localStorage.setItem('currentFormStepIndex', JSON.stringify(1))
       return props.nextTab()
     }
+
   } else if (props.activeTabIndex === 1) {
+
     const patientSignatureExists = window.localStorage.getItem('patientSignature')
     if (patientSignatureExists) {
       window.localStorage.setItem('currentFormStepIndex', JSON.stringify(2))
@@ -45,6 +48,7 @@ async function validateStep(props) {
     } else {
       alert('No se puede Continuar, falta firma consentimiento')
     }
+
   }
 }
 
@@ -60,23 +64,15 @@ const validatePrevStep = (props) => {
   }
 }
 
-function onComplete() {
-  alert('Yay!!')
-  return true
+async function onComplete () {
+  await patientHealthSurveyRef.value.testEvent()
+  /*if (!demographicSubmitState) {
+    alert('Yay!!')
+  }*/
+  //console.log(demographicSubmitState)
+  //return true
 }
 
-
-/*const getCurrentFormStepIndex = () => {
-
-  const index = window.localStorage.getItem('currentFormStepIndex')
-  if (index) {
-    console.log(JSON.parse(index))
-    currentFormStepIndexVal.value = 1
-    wizard.value.activeTabIndex = 2
-  }
-}
-
-onMounted(getCurrentFormStepIndex)*/
 
 </script>
 
@@ -95,13 +91,13 @@ onMounted(getCurrentFormStepIndex)*/
 
     <!-- Second Step -->
     <tab-content title="Consentimiento">
-      <InformedConsentComponent/>
+      <InformedConsentComponent />
     </tab-content>
     <!-- End Second Step -->
 
     <!-- Third Step -->
     <tab-content title="Encuesta">
-      <PatientHealthSurvey/>
+      <PatientHealthSurvey ref="patientHealthSurveyRef" />
     </tab-content>
     <!-- End Third Step -->
 

@@ -8,6 +8,24 @@ import HealthHabitsSection
 import PersonalHealthInformation
   from "@/components/patients/subComponents/CreatePatient/HealthSurvey/Partials/PersonalHealthInformation.vue";
 import Covid19Section from "@/components/patients/subComponents/CreatePatient/HealthSurvey/Partials/Covid19Section.vue";
+import {ref} from "vue";
+
+const demographicSurveySectionRef = ref(null)
+const healthHabitsSectionRef = ref(null)
+const personalHealthInformationRef = ref(null)
+const covid19SectionRef = ref(null)
+
+async function testEvent() {
+  await demographicSurveySectionRef.value.handleSubmit()
+  await healthHabitsSectionRef.value.handleSubmit()
+  await personalHealthInformationRef.value.handleSubmit()
+  await covid19SectionRef.value.handleSubmit()
+}
+
+defineExpose({
+  testEvent
+})
+
 </script>
 
 <template>
@@ -15,13 +33,13 @@ import Covid19Section from "@/components/patients/subComponents/CreatePatient/He
 
     <SurveyHeader/>
 
-    <DemographicSurveySection/>
+    <DemographicSurveySection ref="demographicSurveySectionRef" />
 
-    <HealthHabitsSection/>
+    <HealthHabitsSection ref="healthHabitsSectionRef" />
 
-    <PersonalHealthInformation/>
+    <PersonalHealthInformation ref="personalHealthInformationRef" />
 
-    <Covid19Section/>
+    <Covid19Section ref="covid19SectionRef" />
 
   </div>
 </template>

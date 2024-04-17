@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap'
 import '@/assets/sb-admin-2.min.css'
 
 import '@/assets/main.css'
@@ -20,7 +21,7 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 /** Vue Notification */
-import Vue3Toasity from 'vue3-toastify';
+import Vue3Toastify from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
 /** Vu3 Tables */
@@ -54,7 +55,7 @@ const app = createApp(App)
 app.config.productionTip = false
 app.use(router)
 app.use(store)
-app.use(Vue3Toasity, { autoClose: 3000 });
+app.use(Vue3Toastify, { autoClose: 3000 });
 app.use(VueAxios, axios)
 app.use(VueSweetalert2)
 app.use(Vue3Signature)

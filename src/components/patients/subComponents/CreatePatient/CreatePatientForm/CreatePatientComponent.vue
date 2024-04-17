@@ -67,16 +67,13 @@ const rules = computed(() => {
 const v$ = useVuelidate(rules, patient)
 
 const handleSubmit = async () => {
-
   const result = await v$.value.$validate()
   if (!result) {
-    alert('error in form')
+    toast.error('Datos personales incompletos')
     return false
   }
   // If the form is valid, perform some action with the form data
-  toast.success('Datos Personales Completados')
   return true;
-
 }
 
 function placeFocusOnDocNum() {

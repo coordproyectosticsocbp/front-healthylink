@@ -5,26 +5,62 @@ import {computed, onMounted, ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
 import dayjs from "dayjs";
 import {ageCalculate} from "@/utils/helpers/ageCalculate.js";
-
+import {required, minLength} from "@vuelidate/validators";
+import useVuelidate from "@vuelidate/core";
+import {toast} from "vue3-toastify";
 
 const demographicVariables = useLocalStorage({
-  edad: null,
-  altura: null,
-  peso: null,
+  edad: '',
+  altura: '',
+  peso: '',
   etnia: null,
-  pais_nacimiento: null,
-  ciudad_nacimiento: null,
-  pais_abuelo_materno: null,
-  ciudad_abuelo_materno: null,
-  pais_abuela_materna: null,
-  ciudad_abuela_materna: null,
-  pais_abuelo_paterno: null,
-  ciudad_abuelo_paterno: null,
-  pais_abuela_paterna: null,
-  ciudad_abuela_paterna: null,
-  pais_residencia_paciente: null,
-  ciudad_residencia_paciente: null,
+  pais_nacimiento: '',
+  ciudad_nacimiento: '',
+  pais_abuelo_materno: '',
+  ciudad_abuelo_materno: '',
+  pais_abuela_materna: '',
+  ciudad_abuela_materna: '',
+  pais_abuelo_paterno: '',
+  ciudad_abuelo_paterno: '',
+  pais_abuela_paterna: '',
+  ciudad_abuela_paterna: '',
+  pais_residencia_paciente: '',
+  ciudad_residencia_paciente: '',
 }, 'patientDemographicInformation')
+
+const rules = computed( () => {
+  return  {
+    edad: { required },
+    altura: { required, minLength: minLength(2) },
+    peso: { required },
+    etnia: { required },
+    pais_nacimiento: { required },
+    ciudad_nacimiento: { required },
+    pais_abuelo_materno: { required },
+    ciudad_abuelo_materno: { required },
+    pais_abuela_materna: { required },
+    ciudad_abuela_materna: { required },
+    pais_abuelo_paterno: { required },
+    ciudad_abuelo_paterno: { required },
+    pais_abuela_paterna: { required },
+    ciudad_abuela_paterna: { required },
+    pais_residencia_paciente: { required },
+    ciudad_residencia_paciente: { required },
+  }
+})
+
+const v$ = useVuelidate(rules, demographicVariables)
+
+const handleSubmit = async () => {
+  const result = await v$.value.$validate()
+  if (!result) {
+    alert('error in form')
+    return false
+  }
+  // If the form is valid, perform some action with the form data
+  toast.success('Datos demograficos completos')
+  return true;
+}
 
 const patientIsIndigenous = ref(false)
 
@@ -75,6 +111,15 @@ const onIndigenousSelected = (event) => {
   }
 }
 
+const alertEvent = (message) => {
+  console.log(message)
+}
+
+defineExpose({
+  alertEvent,
+  handleSubmit
+})
+
 onMounted(patientAge)
 
 </script>
@@ -119,6 +164,11 @@ onMounted(patientAge)
                      placeholder="(Unidad: cm)"
                      type="number"
               >
+              <span v-if="v$.altura.$error"
+                    class="text-danger"
+              >
+                  {{ v$.altura.$errors[0]?.$message }}
+                </span>
             </div>
             <div class="col">
               <label class="col-form-label" for="inputWeight">PESO:</label>
@@ -126,7 +176,13 @@ onMounted(patientAge)
                      class="form-control form-control-sm"
                      placeholder="(Unidad: Kg)"
                      type="number"
+                     required
               >
+              <span v-if="v$.peso.$error"
+                    class="text-danger"
+              >
+                  {{ v$.peso.$errors[0]?.$message }}
+                </span>
             </div>
           </div>
 
@@ -146,6 +202,12 @@ onMounted(patientAge)
                 <option disabled selected value="null">Seleccione su etnia</option>
                 <option v-for="et in etnias" :key="et" :value="et.value" v-text="et.label.toUpperCase()"/>
               </select>
+
+              <span v-if="v$.etnia.$error"
+                    class="text-danger"
+              >
+                  {{ v$.etnia.$errors[0]?.$message }}
+                </span>
 
               <div v-if="patientIsIndigenous">
                 <label class="form-label" for="cualPuebloIndigena">A cual pueblo indígena pertenece?:</label>
@@ -170,6 +232,13 @@ onMounted(patientAge)
                 <option v-for="country in countriesObject" :key="country.id" :value="country.name"
                         v-text="country.name"/>
               </datalist>
+
+              <span v-if="v$.pais_nacimiento.$error"
+                    class="text-danger"
+              >
+                  {{ v$.pais_nacimiento.$errors[0]?.$message }}
+                </span>
+
             </div>
             <div class="col">
               <label class="col-form-label" for="ciudadNacimientoEncuestado">
@@ -183,6 +252,12 @@ onMounted(patientAge)
               <datalist id="datalistOptionsCiudadNacimiento">
                 <option v-for="city in citiesObject" :key="city.id" :value="city.name.toUpperCase()"/>
               </datalist>
+
+              <span v-if="v$.ciudad_nacimiento.$error"
+                    class="text-danger"
+              >
+                  {{ v$.ciudad_nacimiento.$errors[0]?.$message }}
+                </span>
             </div>
           </div>
           <!-- End Paciente Pais, Ciudad Nacimiento -->
@@ -202,6 +277,12 @@ onMounted(patientAge)
                 <option v-for="country in countriesObject" :key="country.id" :value="country.name"
                         v-text="country.name"/>
               </datalist>
+
+              <span v-if="v$.pais_abuelo_materno.$error"
+                    class="text-danger"
+              >
+                  {{ v$.pais_abuelo_materno.$errors[0]?.$message }}
+                </span>
             </div>
             <div class="col">
               <label class="col-form-label" for="ciudadNacimientoAbueloMaterno">
@@ -215,6 +296,12 @@ onMounted(patientAge)
               <datalist id="datalistOptionsCiudadNacimientoAbueloMaterno">
                 <option v-for="city in citiesObject" :key="city.id" :value="city.name.toUpperCase()"/>
               </datalist>
+
+              <span v-if="v$.ciudad_abuelo_materno.$error"
+                    class="text-danger"
+              >
+                  {{ v$.ciudad_abuelo_materno.$errors[0]?.$message }}
+                </span>
             </div>
           </div> <!-- End Abuelo Materno Pais, Ciudad Nacimiento -->
 
@@ -234,6 +321,12 @@ onMounted(patientAge)
                 <option v-for="country in countriesObject" :key="country.id" :value="country.name"
                         v-text="country.name"/>
               </datalist>
+
+              <span v-if="v$.pais_abuela_materna.$error"
+                    class="text-danger"
+              >
+                  {{ v$.pais_abuela_materna.$errors[0]?.$message }}
+                </span>
             </div>
             <div class="col">
               <label class="col-form-label" for="ciudadNacimientoAbuelaMaterna">
@@ -247,6 +340,12 @@ onMounted(patientAge)
               <datalist id="datalistOptionsCiudadNacimientoAbuelaMaterna">
                 <option v-for="city in citiesObject" :key="city.id" :value="city.name.toUpperCase()"/>
               </datalist>
+
+              <span v-if="v$.ciudad_abuela_materna.$error"
+                    class="text-danger"
+              >
+                  {{ v$.ciudad_abuela_materna.$errors[0]?.$message }}
+                </span>
             </div>
           </div> <!-- End Abuela Materna Pais, Ciudad Nacimiento -->
 
@@ -266,6 +365,12 @@ onMounted(patientAge)
                 <option v-for="country in countriesObject" :key="country.id" :value="country.name"
                         v-text="country.name"/>
               </datalist>
+
+              <span v-if="v$.pais_abuelo_paterno.$error"
+                    class="text-danger"
+              >
+                  {{ v$.pais_abuelo_paterno.$errors[0]?.$message }}
+                </span>
             </div>
             <div class="col">
               <label class="col-form-label" for="ciudadNacimientoAbueloPaterno">
@@ -279,6 +384,12 @@ onMounted(patientAge)
               <datalist id="datalistOptionsCiudadNacimientoAbueloPaterno">
                 <option v-for="city in citiesObject" :key="city.id" :value="city.name.toUpperCase()"/>
               </datalist>
+
+              <span v-if="v$.ciudad_abuelo_paterno.$error"
+                    class="text-danger"
+              >
+                  {{ v$.ciudad_abuelo_paterno.$errors[0]?.$message }}
+                </span>
             </div>
           </div> <!-- End Abuelo Paterno Pais, Ciudad Nacimiento -->
 
@@ -298,6 +409,12 @@ onMounted(patientAge)
                 <option v-for="country in countriesObject" :key="country.id" :value="country.name"
                         v-text="country.name"/>
               </datalist>
+
+              <span v-if="v$.pais_abuela_paterna.$error"
+                    class="text-danger"
+              >
+                  {{ v$.pais_abuela_paterna.$errors[0]?.$message }}
+                </span>
             </div>
             <div class="col">
               <label class="col-form-label" for="ciudadNacimientoAbuelaPaterna">
@@ -311,6 +428,12 @@ onMounted(patientAge)
               <datalist id="datalistOptionsCiudadNacimientoAbuelaPaterna">
                 <option v-for="city in citiesObject" :key="city.id" :value="city.name.toUpperCase()"/>
               </datalist>
+
+              <span v-if="v$.ciudad_abuela_paterna.$error"
+                    class="text-danger"
+              >
+                  {{ v$.ciudad_abuela_paterna.$errors[0]?.$message }}
+                </span>
             </div>
           </div> <!-- End Abuela Paterna Pais, Ciudad Nacimiento -->
 
@@ -330,6 +453,12 @@ onMounted(patientAge)
                 <option v-for="country in countriesObject" :key="country.id" :value="country.name"
                         v-text="country.name"/>
               </datalist>
+
+              <span v-if="v$.pais_residencia_paciente.$error"
+                    class="text-danger"
+              >
+                  {{ v$.pais_residencia_paciente.$errors[0]?.$message }}
+                </span>
             </div>
             <div class="col">
               <label class="col-form-label" for="ciudadResideciaEncuestado">
@@ -343,6 +472,12 @@ onMounted(patientAge)
               <datalist id="datalistOptionsCiudadResideciaEncuestado">
                 <option v-for="city in citiesObject" :key="city.id" :value="city.name.toUpperCase()"/>
               </datalist>
+
+              <span v-if="v$.ciudad_residencia_paciente.$error"
+                    class="text-danger"
+              >
+                  {{ v$.ciudad_residencia_paciente.$errors[0]?.$message }}
+                </span>
             </div>
           </div>
           <!-- End Paciente Pais, Ciudad Residencia -->

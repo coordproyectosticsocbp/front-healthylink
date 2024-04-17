@@ -8,10 +8,14 @@ import {
   vaccineTypes
 } from "@/utils/const/patientHealthSurvey.js";
 import useLocalStorage from "@/composables/useLocalStorage.js";
+import useVuelidate from "@vuelidate/core";
+import {toast} from "vue3-toastify";
+import {computed} from "vue";
+import {required} from "@vuelidate/validators";
 
 const covidVariables = useLocalStorage({
   prueba_positiva_covid_19: null,
-  vacunacion_covid_19: null,
+  vacunacion_covid_19: 'No',
   tipo_vacuna_recibida: [],
   cantidad_dosis_vacunacion_recibida: null,
   presento_sintomas_por_covid: null,
@@ -20,6 +24,33 @@ const covidVariables = useLocalStorage({
   tiempo_recuperacion_covid_19: null,
   sintomas_q_persisten_por_covid_19: [],
 }, 'covid19Information')
+
+const rules = computed(() => {
+  return {
+    prueba_positiva_covid_19: { required },
+    vacunacion_covid_19: { required },
+    presento_sintomas_por_covid: { required },
+    hospitalizado_por_covid_19: { required },
+    tiempo_recuperacion_covid_19: { required },
+  }
+})
+
+const v$ = useVuelidate(rules, covidVariables)
+
+const handleSubmit = async () => {
+  const result = await v$.value.$validate()
+  if (!result) {
+    toast.error('datos sobre covid INCOMPLETOS')
+    return false
+  }
+  // If the form is valid, perform some action with the form data
+  toast.success('datos sobre covid completos')
+  return true;
+}
+
+defineExpose({
+  handleSubmit
+})
 
 </script>
 
@@ -63,6 +94,12 @@ const covidVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.prueba_positiva_covid_19.$error"
+                        class="text-danger"
+                  >
+                  {{ v$.prueba_positiva_covid_19.$errors[0]?.$message }}
+                </span>
                 </div>
               </div>
             </div>
@@ -90,6 +127,12 @@ const covidVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.vacunacion_covid_19.$error"
+                        class="text-danger"
+                  >
+                  {{ v$.vacunacion_covid_19.$errors[0]?.$message }}
+                </span>
                 </div>
               </div>
             </div>
@@ -97,7 +140,7 @@ const covidVariables = useLocalStorage({
           <!-- End te has vacunado -->
 
           <!-- cuantas dosis -->
-          <div class="row mb-3">
+          <div class="row mb-3" v-if="covidVariables.vacunacion_covid_19 === 'Si'">
             <div class="col-6">
               <label class="form-label" for="inputDosisVacunacion">Cuantas Dosis?</label>
               <input id="inputDosisVacunacion" v-model="covidVariables.cantidad_dosis_vacunacion_recibida"
@@ -105,12 +148,18 @@ const covidVariables = useLocalStorage({
                      placeholder="Escriba # de dosis"
                      type="number"
               >
+
+<!--              <span v-if="v$.cantidad_dosis_vacunacion_recibida.$error"
+                    class="text-danger"
+              >
+                  {{ v$.cantidad_dosis_vacunacion_recibida.$errors[0]?.$message }}
+                </span>-->
             </div>
           </div>
           <!-- End cuantas dosis -->
 
           <!-- Tipo de Vacuna -->
-          <div class="row mb-3">
+          <div class="row mb-3" v-if="covidVariables.vacunacion_covid_19 === 'Si'">
             <div class="col">
               <label class="form-label" for="selectTipoVacuna">
                 Si se ha vacunado, ¿qué vacuna recibió?
@@ -125,6 +174,12 @@ const covidVariables = useLocalStorage({
                   {{ vaccine.label }}
                 </option>
               </select>
+
+<!--              <span v-if="v$.tipo_vacuna_recibida.$error"
+                    class="text-danger"
+              >
+                  {{ v$.tipo_vacuna_recibida.$errors[0]?.$message }}
+                </span>-->
             </div>
           </div>
           <!-- End cuantas dosis -->
@@ -150,6 +205,12 @@ const covidVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.presento_sintomas_por_covid.$error"
+                        class="text-danger"
+                  >
+                  {{ v$.presento_sintomas_por_covid.$errors[0]?.$message }}
+                </span>
                 </div>
               </div>
             </div>
@@ -199,6 +260,12 @@ const covidVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.hospitalizado_por_covid_19.$error"
+                        class="text-danger"
+                  >
+                  {{ v$.hospitalizado_por_covid_19.$errors[0]?.$message }}
+                </span>
                 </div>
               </div>
             </div>
@@ -227,6 +294,12 @@ const covidVariables = useLocalStorage({
                       </div>
                     </div>
                   </fieldset>
+
+                  <span v-if="v$.tiempo_recuperacion_covid_19.$error"
+                        class="text-danger"
+                  >
+                  {{ v$.tiempo_recuperacion_covid_19.$errors[0]?.$message }}
+                </span>
                 </div>
               </div>
             </div>
