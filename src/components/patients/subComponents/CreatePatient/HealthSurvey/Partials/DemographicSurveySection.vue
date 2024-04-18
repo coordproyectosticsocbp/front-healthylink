@@ -5,9 +5,8 @@ import {computed, onMounted, ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
 import dayjs from "dayjs";
 import {ageCalculate} from "@/utils/helpers/ageCalculate.js";
-import {required, minLength} from "@vuelidate/validators";
+import {minLength, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
-import {toast} from "vue3-toastify";
 
 const demographicVariables = useLocalStorage({
   edad: '',
@@ -28,24 +27,24 @@ const demographicVariables = useLocalStorage({
   ciudad_residencia_paciente: '',
 }, 'patientDemographicInformation')
 
-const rules = computed( () => {
-  return  {
-    edad: { required },
-    altura: { required, minLength: minLength(2) },
-    peso: { required },
-    etnia: { required },
-    pais_nacimiento: { required },
-    ciudad_nacimiento: { required },
-    pais_abuelo_materno: { required },
-    ciudad_abuelo_materno: { required },
-    pais_abuela_materna: { required },
-    ciudad_abuela_materna: { required },
-    pais_abuelo_paterno: { required },
-    ciudad_abuelo_paterno: { required },
-    pais_abuela_paterna: { required },
-    ciudad_abuela_paterna: { required },
-    pais_residencia_paciente: { required },
-    ciudad_residencia_paciente: { required },
+const rules = computed(() => {
+  return {
+    edad: {required},
+    altura: {required, minLength: minLength(2)},
+    peso: {required},
+    etnia: {required},
+    pais_nacimiento: {required},
+    ciudad_nacimiento: {required},
+    pais_abuelo_materno: {required},
+    ciudad_abuelo_materno: {required},
+    pais_abuela_materna: {required},
+    ciudad_abuela_materna: {required},
+    pais_abuelo_paterno: {required},
+    ciudad_abuelo_paterno: {required},
+    pais_abuela_paterna: {required},
+    ciudad_abuela_paterna: {required},
+    pais_residencia_paciente: {required},
+    ciudad_residencia_paciente: {required},
   }
 })
 
@@ -58,7 +57,6 @@ const handleSubmit = async () => {
     return false
   }
   // If the form is valid, perform some action with the form data
-  toast.success('Datos demograficos completos')
   return true;
 }
 
@@ -175,8 +173,8 @@ onMounted(patientAge)
               <input id="inputWeight" v-model="demographicVariables.peso" aria-describedby="ageHelpInline"
                      class="form-control form-control-sm"
                      placeholder="(Unidad: Kg)"
-                     type="number"
                      required
+                     type="number"
               >
               <span v-if="v$.peso.$error"
                     class="text-danger"

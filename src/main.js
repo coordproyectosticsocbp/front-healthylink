@@ -4,7 +4,7 @@ import '@/assets/sb-admin-2.min.css'
 
 import '@/assets/main.css'
 
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from '@/store/index.js'
@@ -49,23 +49,27 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
+/** Vue Input Multi Select */
+import VueMultiselect from "vue-multiselect";
+import 'vue-multiselect/dist/vue-multiselect.css'
 
 const app = createApp(App)
 
 app.config.productionTip = false
 app.use(router)
 app.use(store)
-app.use(Vue3Toastify, { autoClose: 3000 });
+app.use(Vue3Toastify, {autoClose: 3000});
 app.use(VueAxios, axios)
 app.use(VueSweetalert2)
 app.use(Vue3Signature)
 app.use(vueAwesomeSidebar)
 app.use(Vue3FormWizard)
 app.use(LoadingPlugin)
-window.Swal =  app.config.globalProperties.$swal; //to make a globals property
+window.Swal = app.config.globalProperties.$swal; //to make a globals property
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.component('EasyDataTable', Vue3EasyDataTable)
+app.component('VueMultiselect', VueMultiselect)
 
 app.config.globalProperties.$dayjs = dayjs.extend(relativeTime);
 app.config.globalProperties.$dayjs = dayjs.extend(utc);

@@ -7,6 +7,8 @@ import InformedConsentComponent
   from "@/components/patients/subComponents/CreatePatient/InformedConsent/InformedConsentComponent.vue";
 import PatientHealthSurvey
   from "@/components/patients/subComponents/CreatePatient/HealthSurvey/PatientHealthSurvey.vue";
+import PatientService from "@/services/patients/Patient.service.js";
+import {getError} from "@/utils/helpers/getError.js";
 
 const wizard = ref(null)
 const createPatientComponentRef = ref(null)
@@ -64,13 +66,163 @@ const validatePrevStep = (props) => {
   }
 }
 
-async function onComplete () {
+const saveUserInformation = async () => {
+  const storageVal = window.localStorage.getItem('patientForm')
+  const storageFormatted = JSON.parse(storageVal)
+  let payload = {}
+  if (storageVal) {
+
+    payload = {
+      tipo_doc: storageFormatted.tipo_doc,
+      numero_documento: storageFormatted.numero_documento,
+      telefono_celular: storageFormatted.telefono_celular.toString(),
+      primer_nombre: storageFormatted.primer_nombre,
+      segundo_nombre: storageFormatted.segundo_nombre,
+      primer_apellido: storageFormatted.primer_apellido,
+      segundo_apellido: storageFormatted.segundo_apellido,
+      fecha_nacimiento: storageFormatted.fecha_nacimiento,
+      pais_residencia: storageFormatted.pais_residencia,
+      departamento_residencia: storageFormatted.departamento_residencia,
+      ciudad_residencia: storageFormatted.ciudad_residencia,
+      sexo: storageFormatted.sexo,
+      correo_electronico: storageFormatted.correo_electronico,
+      grupo_sanguineo: storageFormatted.grupo_sanguineo,
+    }
+
+    await PatientService.createPatient(payload)
+        .then((response) => {
+          if (response.data.statusCode !== 201) {
+            Swal.fire({
+              icon: 'error',
+              text: response.data.message
+            })
+          } else {
+            Swal.fire({
+              icon: 'success',
+              text: response.data.message
+            })
+            saveInformedConsent(storageFormatted.tipo_doc, storageFormatted.numero_documento)
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: 'error',
+            text: getError(error)
+          })
+        })
+  }
+}
+const saveInformedConsent = async (tipoDoc, numeroDocumento) => {
+  const storageVal = window.localStorage.getItem('patientSignature')
+  const storageFormatted = JSON.parse(storageVal)
+  let payload = {}
+
+  if (storageVal) {
+    payload = {
+      tipo_consentimiento_id: 1,
+      tipo_estudio_id: 1,
+      tipo_doc: tipoDoc,
+      numero_documento: numeroDocumento,
+      firma: storageFormatted
+    }
+
+    PatientService.saveInformedConsent(payload)
+        .then((response) => {
+          if (response.data.statusCode !== 201) {
+            Swal.fire({
+              icon: 'error',
+              text: response.data.message
+            })
+          } else {
+            Swal.fire({
+              icon: 'success',
+              text: response.data.message
+            })
+            saveHealthSurvey()
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: 'error',
+            text: getError(error)
+          })
+        })
+  }
+}
+const saveHealthSurvey = () => {
+  const storageDemographicVal = window.localStorage.getItem('patientDemographicInformation')
+  const storageHealthHabitsVal = window.localStorage.getItem('HealthHabitsInformation')
+  const storagePersonalHealthVal = window.localStorage.getItem('PersonalHealthInformation')
+  const storageCovid19Val = window.localStorage.getItem('covid19Information')
+
+  if (storageDemographicVal && storageHealthHabitsVal && storagePersonalHealthVal && storageCovid19Val) {
+
+    try {
+
+      const storageDemographicFormatted = JSON.parse(storageDemographicVal)
+      const storageHealthHabitsFormatted = JSON.parse(storageHealthHabitsVal)
+      const storagePersonalHealthFormatted = JSON.parse(storagePersonalHealthVal)
+      const storageCovid19Formatted = JSON.parse(storageCovid19Val)
+      let payload = {
+        altura: storageDemographicFormatted.altura,
+        peso: storageDemographicFormatted.peso,
+        etnia: storageDemographicFormatted.etnia,
+        pais_nacimiento: storageDemographicFormatted.pais_nacimiento,
+        ciudad_nacimiento: storageDemographicFormatted.ciudad_nacimiento,
+        nacionalidad_abuelo_materno: storageDemographicFormatted.nacionalidad_abuelo_materno,
+        nacionalidad_abuela_materno: storageDemographicFormatted.nacionalidad_abuela_materno,
+        nacionalidad_abuelo_paterno: storageDemographicFormatted.nacionalidad_abuelo_paterno,
+        nacionalidad_abuela_paterno: storageDemographicFormatted.nacionalidad_abuela_paterno,
+        nacionalidad_paciente: storageDemographicFormatted.nacionalidad_paciente,
+        es_fumador: storageHealthHabitsFormatted.es_fumador,
+        presion_arterial: storageHealthHabitsFormatted.presion_arterial,
+        medicamento_para_presion_arterial: storageHealthHabitsFormatted.medicamento_para_presion_arterial,
+        altos_niveles_colesterol: storageHealthHabitsFormatted.altos_niveles_colesterol,
+        frecuencia_consumo_bebidas_alcoholicas: storageHealthHabitsFormatted.frecuencia_consumo_bebidas_alcoholicas,
+        afeccion_o_enfermededad_cronica__madre: storageHealthHabitsFormatted.afeccion_o_enfermededad_cronica__madre,
+        cual_afeccion_o_enfermededad_cronica__madre: storageHealthHabitsFormatted.cual_afeccion_o_enfermededad_cronica__madre,
+        afeccion_o_enfermededad_cronica__padre: storageHealthHabitsFormatted.afeccion_o_enfermededad_cronica__padre,
+        cual_afeccion_o_enfermededad_cronica__padre: storageHealthHabitsFormatted.cual_afeccion_o_enfermededad_cronica__padre,
+        afeccion_o_enfermededad_cronica__hermanos: storageHealthHabitsFormatted.afeccion_o_enfermededad_cronica__hermanos,
+        cual_afeccion_o_enfermededad_cronica__hermanos: storageHealthHabitsFormatted.cual_afeccion_o_enfermededad_cronica__hermanos,
+        enfermedades_cronicas: storagePersonalHealthFormatted.enfermedades_cronicas,
+        enfermedades_pulmonares: storagePersonalHealthFormatted.enfermedades_pulmonares,
+        enfermedades_endocrinas_metabolicas: storagePersonalHealthFormatted.enfermedades_endocrinas_metabolicas,
+        enfermedades_digestivas: storagePersonalHealthFormatted.enfermedades_digestivas,
+        enfermedades_renales: storagePersonalHealthFormatted.enfermedades_renales,
+        enfermedades_neurologicas: storagePersonalHealthFormatted.enfermedades_neurologicas,
+        enfermedades_dermatologicas: storagePersonalHealthFormatted.enfermedades_dermatologicas,
+        enfermedades_reumaticas: storagePersonalHealthFormatted.enfermedades_reumaticas,
+        diagnosticado_cancer_ultimos_cinco_anos: storagePersonalHealthFormatted.diagnosticado_cancer_ultimos_cinco_anos,
+        cancer_diagnosticado: storagePersonalHealthFormatted.cancer_diagnosticado,
+        afecciones_diagnosticadas: storagePersonalHealthFormatted.afecciones_diagnosticadas,
+        analisis_sangre_ultimos_seis_meses: storagePersonalHealthFormatted.analisis_sangre_ultimos_seis_meses,
+        prueba_positiva_covid_19: storageCovid19Formatted.prueba_positiva_covid_19,
+        vacunacion_covid_19: storageCovid19Formatted.vacunacion_covid_19,
+        tipo_vacuna_recibida: storageCovid19Formatted.tipo_vacuna_recibida,
+        cantidad_dosis_vacunacion_recibida: storageCovid19Formatted.cantidad_dosis_vacunacion_recibida,
+        sintomas_tenidos_por_covid: storageCovid19Formatted.sintomas_tenidos_por_covid,
+        hospitalizado_por_covid_19: storageCovid19Formatted.hospitalizado_por_covid_19,
+        tiempo_recuperacion_covid_19: storageCovid19Formatted.tiempo_recuperacion_covid_19,
+        sintomas_q_persisten_por_covid_19: storageCovid19Formatted.sintomas_q_persisten_por_covid_19,
+      }
+      console.log(payload)
+      
+    } catch (e) {
+      Swal.fire({
+        icon: 'error',
+        text: getError(e)
+      })
+      throw e
+    }
+
+  }
+}
+
+
+async function onComplete() {
   await patientHealthSurveyRef.value.testEvent()
-  /*if (!demographicSubmitState) {
-    alert('Yay!!')
-  }*/
-  //console.log(demographicSubmitState)
-  //return true
+  await saveUserInformation()
 }
 
 
@@ -91,13 +243,13 @@ async function onComplete () {
 
     <!-- Second Step -->
     <tab-content title="Consentimiento">
-      <InformedConsentComponent />
+      <InformedConsentComponent/>
     </tab-content>
     <!-- End Second Step -->
 
     <!-- Third Step -->
     <tab-content title="Encuesta">
-      <PatientHealthSurvey ref="patientHealthSurveyRef" />
+      <PatientHealthSurvey ref="patientHealthSurveyRef"/>
     </tab-content>
     <!-- End Third Step -->
 

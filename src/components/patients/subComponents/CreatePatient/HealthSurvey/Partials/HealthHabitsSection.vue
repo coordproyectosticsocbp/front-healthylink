@@ -49,7 +49,6 @@ const handleSubmit = async () => {
     return false
   }
   // If the form is valid, perform some action with the form data
-  toast.success('Habitos de salud completos')
   return true;
 }
 
@@ -166,7 +165,8 @@ defineExpose({
                   Si respondiste afirmativamente a la presión arterial alta, ¿estás tomando algún medicamento para
                   controlarla?
                 </label>
-                <textarea id="areaMedicamentoControl" v-model="healthHabitsVariables.medicamento_para_presion_arterial" class="form-control"
+                <textarea id="areaMedicamentoControl" v-model="healthHabitsVariables.medicamento_para_presion_arterial"
+                          class="form-control"
                           rows="2"
                 />
               </div>

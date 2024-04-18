@@ -7,9 +7,7 @@ import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {toast} from "vue3-toastify";
 
-
 const cie10Diagnosis = ref([])
-const showCie10SearchOptions = ref(false)
 const personalHealthVariables = useLocalStorage({
   enfermedades_cronicas: null,
   enfermedades_pulmonares: null,
@@ -36,7 +34,7 @@ const rules = computed(() => {
     enfermedades_dermatologicas: {required},
     enfermedades_reumaticas: {required},
     diagnosticado_cancer_ultimos_cinco_anos: {required},
-    cancer_diagnosticado: {required},
+    /*cancer_diagnosticado: {required},*/
     afecciones_diagnosticadas: {required},
     analisis_sangre_ultimos_seis_meses: {required},
   }
@@ -51,7 +49,6 @@ const handleSubmit = async () => {
     return false
   }
   // If the form is valid, perform some action with the form data
-  toast.success('datos de salud completos')
   return true;
 }
 
@@ -60,20 +57,6 @@ const storageCie10Diagnosis = () => {
   if (!storageVal) toast.error('Error obteniendo Dx desde LocalStorage')
   cie10Diagnosis.value = JSON.parse(storageVal)
   //console.log(cie10Diagnosis.value)
-}
-
-const getDiagnosisFromList = (event) => {
-  const eventHandler = event.target.value
-  if (eventHandler.length >= 3) {
-    cie10Diagnosis.value.filter((item) => item.codigo === eventHandler)
-    showCie10SearchOptions.value = true
-  } else {
-    showCie10SearchOptions.value = false
-  }
-}
-
-const cancerDiagnosisAddToArray = (diagnosis) => {
-  personalHealthVariables.value.cancer_diagnosticado.push(diagnosis)
 }
 
 defineExpose({
@@ -398,44 +381,52 @@ onMounted(storageCie10Diagnosis)
                 </div>
               </div>
 
-              <div v-if="personalHealthVariables.diagnosticado_cancer_ultimos_cinco_anos === 'Si'" class="row">
+              <div v-if="personalHealthVariables.diagnosticado_cancer_ultimos_cinco_anos === 'Si'" class="row mb-3">
                 <div class="col-12">
-                  <p>En Caso de Marcar <strong>SI</strong>, Selecciones de que tipo?</p>
+                  <p>En Caso de Marcar <strong>SI</strong>, Seleccione de que tipo?</p>
 
                   <div class="row">
                     <div class="col">
-                      <input id="exampleDataListCie10" v-model="personalHealthVariables.cancer_diagnosticado"
-                             class="form-control"
-                             list="datalistOptionsCie10"
-                             placeholder="Type to search..."
-                             @input="getDiagnosisFromList($event)"
-                      >
-                      <datalist v-if="showCie10SearchOptions" id="datalistOptionsCie10">
-                        <option v-for="diagnosis in cie10Diagnosis" :key="diagnosis.id"
-                                :value="diagnosis.descripcion"
-                                @change="cancerDiagnosisAddToArray(diagnosis.descripcion)"
-                        >
-                          {{ diagnosis.codigo }}
-                        </option>
-                      </datalist>
-                    </div>
-                    <div class="col">
-                      <textarea id="exampleFormControlTextarea1"
-                                :value="personalHealthVariables.cancer_diagnosticado"
-                                class="form-control form-control-sm"
-                                placeholder="Escriba la enfermedad"
-                                rows="3"
+                      <VueMultiselect
+                          v-model="personalHealthVariables.cancer_diagnosticado"
+                          :close-on-select="true"
+                          :multiple="true"
+                          :options="cie10Diagnosis"
+                          label="descripcion"
+                          placeholder="Pick some"
+                          track-by="descripcion"
                       />
+                      <!--                      <input id="exampleDataListCie10" v-model="personalHealthVariables.cancer_diagnosticado"
+                                                   class="form-control"
+                                                   list="datalistOptionsCie10"
+                                                   placeholder="Type to search..."
+                                                   @input="getDiagnosisFromList($event)"
+                                            >
+                                            <datalist v-if="showCie10SearchOptions" id="datalistOptionsCie10">
+                                              <option v-for="diagnosis in cie10Diagnosis" :key="diagnosis.id"
+                                                      :value="diagnosis.descripcion"
+                                              >
+                                                {{ diagnosis.codigo }}
+                                              </option>
+                                            </datalist>-->
                     </div>
+                    <!--                    <div class="col">
+                                          <textarea id="exampleFormControlTextarea1"
+                                                    :value="personalHealthVariables.cancer_diagnosticado"
+                                                    class="form-control form-control-sm"
+                                                    placeholder="Escriba la enfermedad"
+                                                    rows="3"
+                                          />
+                                        </div>-->
                   </div>
                 </div>
               </div>
 
-              <span v-if="v$.diagnosticado_cancer_ultimos_cinco_anos.$error"
-                    class="text-danger"
-              >
-                    {{ v$.diagnosticado_cancer_ultimos_cinco_anos.$errors[0]?.$message }}
-                  </span>
+              <!--              <span v-if="v$.diagnosticado_cancer_ultimos_cinco_anos.$error"
+                                  class="text-danger"
+                            >
+                                  {{ v$.diagnosticado_cancer_ultimos_cinco_anos.$errors[0]?.$message }}
+                                </span>-->
             </div>
           </div>
           <!-- End Enfermedades de cancer -->

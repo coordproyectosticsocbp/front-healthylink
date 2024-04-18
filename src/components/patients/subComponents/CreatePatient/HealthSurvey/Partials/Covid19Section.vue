@@ -27,11 +27,11 @@ const covidVariables = useLocalStorage({
 
 const rules = computed(() => {
   return {
-    prueba_positiva_covid_19: { required },
-    vacunacion_covid_19: { required },
-    presento_sintomas_por_covid: { required },
-    hospitalizado_por_covid_19: { required },
-    tiempo_recuperacion_covid_19: { required },
+    prueba_positiva_covid_19: {required},
+    vacunacion_covid_19: {required},
+    presento_sintomas_por_covid: {required},
+    hospitalizado_por_covid_19: {required},
+    tiempo_recuperacion_covid_19: {required},
   }
 })
 
@@ -44,7 +44,6 @@ const handleSubmit = async () => {
     return false
   }
   // If the form is valid, perform some action with the form data
-  toast.success('datos sobre covid completos')
   return true;
 }
 
@@ -140,7 +139,7 @@ defineExpose({
           <!-- End te has vacunado -->
 
           <!-- cuantas dosis -->
-          <div class="row mb-3" v-if="covidVariables.vacunacion_covid_19 === 'Si'">
+          <div v-if="covidVariables.vacunacion_covid_19 === 'Si'" class="row mb-3">
             <div class="col-6">
               <label class="form-label" for="inputDosisVacunacion">Cuantas Dosis?</label>
               <input id="inputDosisVacunacion" v-model="covidVariables.cantidad_dosis_vacunacion_recibida"
@@ -149,25 +148,25 @@ defineExpose({
                      type="number"
               >
 
-<!--              <span v-if="v$.cantidad_dosis_vacunacion_recibida.$error"
-                    class="text-danger"
-              >
-                  {{ v$.cantidad_dosis_vacunacion_recibida.$errors[0]?.$message }}
-                </span>-->
+              <!--              <span v-if="v$.cantidad_dosis_vacunacion_recibida.$error"
+                                  class="text-danger"
+                            >
+                                {{ v$.cantidad_dosis_vacunacion_recibida.$errors[0]?.$message }}
+                              </span>-->
             </div>
           </div>
           <!-- End cuantas dosis -->
 
           <!-- Tipo de Vacuna -->
-          <div class="row mb-3" v-if="covidVariables.vacunacion_covid_19 === 'Si'">
+          <div v-if="covidVariables.vacunacion_covid_19 === 'Si'" class="row mb-3">
             <div class="col">
               <label class="form-label" for="selectTipoVacuna">
                 Si se ha vacunado, ¿qué vacuna recibió?
               </label>
-              <select v-model="covidVariables.tipo_vacuna_recibida" aria-label="Multiple select example"
-                      class="form-select form-select-sm" multiple
+              <select id="selectTipoVacuna" v-model="covidVariables.tipo_vacuna_recibida"
+                      aria-label="Multiple select example" class="form-select form-select-sm"
+                      multiple
                       size="7"
-                      id="selectTipoVacuna"
               >
                 <option disabled value="null">Seleccione una o varias opciones</option>
                 <option v-for="vaccine in vaccineTypes" :key="vaccine" :value="vaccine.value">
@@ -175,11 +174,11 @@ defineExpose({
                 </option>
               </select>
 
-<!--              <span v-if="v$.tipo_vacuna_recibida.$error"
-                    class="text-danger"
-              >
-                  {{ v$.tipo_vacuna_recibida.$errors[0]?.$message }}
-                </span>-->
+              <!--              <span v-if="v$.tipo_vacuna_recibida.$error"
+                                  class="text-danger"
+                            >
+                                {{ v$.tipo_vacuna_recibida.$errors[0]?.$message }}
+                              </span>-->
             </div>
           </div>
           <!-- End cuantas dosis -->
@@ -225,10 +224,10 @@ defineExpose({
                 los que se aplican de los 50 más comunes, o agregue cualquier síntoma adicional que haya experimentado
                 personalmente) MULTIPLE:
               </label>
-              <select v-model="covidVariables.sintomas_tenidos_por_covid" aria-label="Multiple select example"
-                      class="form-select form-select-sm" multiple
+              <select id="selectSintomasCovid" v-model="covidVariables.sintomas_tenidos_por_covid"
+                      aria-label="Multiple select example" class="form-select form-select-sm"
+                      multiple
                       size="10"
-                      id="selectSintomasCovid"
               >
                 <option disabled value="null">Seleccione una o varias opciones</option>
                 <option v-for="vaccine in covidSymptoms" :key="vaccine" :value="vaccine.value">
@@ -315,10 +314,10 @@ defineExpose({
                 que se aplican de los 50 más comunes, o agregue cualquier síntoma adicional que haya experimentado
                 personalmente)
               </label>
-              <select v-model="covidVariables.sintomas_q_persisten_por_covid_19" aria-label="Multiple select example"
-                      class="form-select form-select-sm" multiple
+              <select id="selectSintomasCovidPersisten" v-model="covidVariables.sintomas_q_persisten_por_covid_19"
+                      aria-label="Multiple select example" class="form-select form-select-sm"
+                      multiple
                       size="10"
-                      id="selectSintomasCovidPersisten"
               >
                 <option disabled value="null">Seleccione una o varias opciones</option>
                 <option v-for="vaccine in covidSymptoms" :key="vaccine" :value="vaccine.value">
