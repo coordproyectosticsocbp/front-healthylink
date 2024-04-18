@@ -1,16 +1,15 @@
 <script setup>
 
-import {
-  digestiveDiseases,
-  motherWithChronicIllness,
-  personalConditions,
-} from "@/utils/const/patientHealthSurvey.js";
+import {digestiveDiseases, motherWithChronicIllness, personalConditions,} from "@/utils/const/patientHealthSurvey.js";
 import useLocalStorage from "@/composables/useLocalStorage.js";
-import {computed} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {toast} from "vue3-toastify";
 
+
+const cie10Diagnosis = ref([])
+const showCie10SearchOptions = ref(false)
 const personalHealthVariables = useLocalStorage({
   enfermedades_cronicas: null,
   enfermedades_pulmonares: null,
@@ -21,7 +20,7 @@ const personalHealthVariables = useLocalStorage({
   enfermedades_dermatologicas: null,
   enfermedades_reumaticas: null,
   diagnosticado_cancer_ultimos_cinco_anos: null,
-  cancer_diagnosticado: null,
+  cancer_diagnosticado: [],
   afecciones_diagnosticadas: [],
   analisis_sangre_ultimos_seis_meses: null,
 }, 'PersonalHealthInformation')
@@ -37,7 +36,7 @@ const rules = computed(() => {
     enfermedades_dermatologicas: {required},
     enfermedades_reumaticas: {required},
     diagnosticado_cancer_ultimos_cinco_anos: {required},
-    //cancer_diagnosticado: {required},
+    cancer_diagnosticado: {required},
     afecciones_diagnosticadas: {required},
     analisis_sangre_ultimos_seis_meses: {required},
   }
@@ -56,9 +55,32 @@ const handleSubmit = async () => {
   return true;
 }
 
+const storageCie10Diagnosis = () => {
+  const storageVal = window.localStorage.getItem('cie10Diagnosis')
+  if (!storageVal) toast.error('Error obteniendo Dx desde LocalStorage')
+  cie10Diagnosis.value = JSON.parse(storageVal)
+  //console.log(cie10Diagnosis.value)
+}
+
+const getDiagnosisFromList = (event) => {
+  const eventHandler = event.target.value
+  if (eventHandler.length >= 3) {
+    cie10Diagnosis.value.filter((item) => item.codigo === eventHandler)
+    showCie10SearchOptions.value = true
+  } else {
+    showCie10SearchOptions.value = false
+  }
+}
+
+const cancerDiagnosisAddToArray = (diagnosis) => {
+  personalHealthVariables.value.cancer_diagnosticado.push(diagnosis)
+}
+
 defineExpose({
   handleSubmit
 })
+
+onMounted(storageCie10Diagnosis)
 
 </script>
 
@@ -361,8 +383,9 @@ defineExpose({
               <p class="text-justify">
                 ¿Ha recibido un diagnóstico de cáncer de su médico en los últimos 5 años?
               </p>
-              <div class="row">
-                <div class="col-xl-6 col-md-6 col-sm-12">
+
+              <div class="row mb-3">
+                <div class="col-12">
                   <div v-for="(mci, index) in motherWithChronicIllness" :key="mci.value" class="form-check">
                     <input :id="`gridRadiosDxCancer-${index}`"
                            v-model="personalHealthVariables.diagnosticado_cancer_ultimos_cinco_anos"
@@ -373,12 +396,32 @@ defineExpose({
                     </label>
                   </div>
                 </div>
-                <div v-if="personalHealthVariables.diagnosticado_cancer_ultimos_cinco_anos === 'Si'"
-                     class="col-xl-6 col-md-6 col-sm-12">
-                  <p>De que tipo?</p>
-                  <div class="row mb-3">
+              </div>
+
+              <div v-if="personalHealthVariables.diagnosticado_cancer_ultimos_cinco_anos === 'Si'" class="row">
+                <div class="col-12">
+                  <p>En Caso de Marcar <strong>SI</strong>, Selecciones de que tipo?</p>
+
+                  <div class="row">
                     <div class="col">
-                      <textarea id="exampleFormControlTextarea1" v-model="personalHealthVariables.cancer_diagnosticado"
+                      <input id="exampleDataListCie10" v-model="personalHealthVariables.cancer_diagnosticado"
+                             class="form-control"
+                             list="datalistOptionsCie10"
+                             placeholder="Type to search..."
+                             @input="getDiagnosisFromList($event)"
+                      >
+                      <datalist v-if="showCie10SearchOptions" id="datalistOptionsCie10">
+                        <option v-for="diagnosis in cie10Diagnosis" :key="diagnosis.id"
+                                :value="diagnosis.descripcion"
+                                @change="cancerDiagnosisAddToArray(diagnosis.descripcion)"
+                        >
+                          {{ diagnosis.codigo }}
+                        </option>
+                      </datalist>
+                    </div>
+                    <div class="col">
+                      <textarea id="exampleFormControlTextarea1"
+                                :value="personalHealthVariables.cancer_diagnosticado"
                                 class="form-control form-control-sm"
                                 placeholder="Escriba la enfermedad"
                                 rows="3"
@@ -386,12 +429,13 @@ defineExpose({
                     </div>
                   </div>
                 </div>
-                <span v-if="v$.diagnosticado_cancer_ultimos_cinco_anos.$error"
-                      class="text-danger"
-                >
+              </div>
+
+              <span v-if="v$.diagnosticado_cancer_ultimos_cinco_anos.$error"
+                    class="text-danger"
+              >
                     {{ v$.diagnosticado_cancer_ultimos_cinco_anos.$errors[0]?.$message }}
                   </span>
-              </div>
             </div>
           </div>
           <!-- End Enfermedades de cancer -->
@@ -403,10 +447,10 @@ defineExpose({
                 ¿Alguna vez tu médico te ha diagnosticado alguna de las siguientes afecciones? Puede marcar más de una
                 respuesta.
               </label>
-              <select v-model="personalHealthVariables.afecciones_diagnosticadas" aria-label="Multiple select example"
-                      class="form-select form-select-sm" multiple
+              <select id="selectPacienteConAfecciones" v-model="personalHealthVariables.afecciones_diagnosticadas"
+                      aria-label="Multiple select example" class="form-select form-select-sm"
+                      multiple
                       size="7"
-                      id="selectPacienteConAfecciones"
               >
                 <option disabled value="null">Seleccione una o varias opciones</option>
                 <option v-for="mci in personalConditions" :key="mci.value" :value="mci.value">

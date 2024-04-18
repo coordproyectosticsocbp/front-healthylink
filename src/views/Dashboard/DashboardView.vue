@@ -5,6 +5,7 @@ import ContentWrappers from '@/components/globals/ContentWrappers.vue'
 import {useStore} from "vuex";
 import {onMounted, ref} from "vue";
 import {useLoading} from "vue-loading-overlay";
+import diagnosisService from "@/services/diagnosis/diagnosis.service.js";
 
 const store = useStore()
 const fullPage = ref(true)
@@ -64,14 +65,34 @@ const citiesObject = async () => {
   loader.hide()
 }
 
+const getCie10Diagnosis = async () => {
+  const loader = $loading.show()
+  const response = await diagnosisService.getAllCie10Diagnosis()
+
+  //console.log(response)
+  if (response.data.statusCode !== 200) {
+    Swal.fire({
+      icon: 'error',
+      text: 'Error al retornar los Diagnosticos'
+    })
+  }
+  const storageVal = window.localStorage.getItem('cie10Diagnosis')
+  if (!storageVal) window.localStorage.setItem('cie10Diagnosis', JSON.stringify(response.data.data))
+  loader.hide()
+}
+
 
 onMounted(() => {
 
   const storageVal = window.localStorage.getItem('countries')
+  const storageValCie10Diagnosis = window.localStorage.getItem('cie10Diagnosis')
   if (!storageVal) {
     countriesObject()
     statesObject()
     citiesObject()
+  }
+  if (!storageValCie10Diagnosis) {
+    getCie10Diagnosis()
   }
   //console.log('Información ya en Línea')
 })
