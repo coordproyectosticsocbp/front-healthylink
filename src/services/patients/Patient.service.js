@@ -11,7 +11,7 @@ export default {
     getDetailsStudiesForStatus(id) {
         return API.apiClient.get(`api/v1/encuesta/get/encuestasporestado/${id}`)
     },
-    getPatientById(patientId) {
+    //getPatientById(patientId) {
     /*getPatientById(patientId) {
         return API.apiClient.get(`/api/v1/patient/get/patient/${patientId}`)
     },*/
