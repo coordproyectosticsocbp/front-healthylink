@@ -4,6 +4,7 @@ import {onMounted, ref} from 'vue'
 import PatientService from '@/services/patients/Patient.service.js'
 import {getError} from "@/utils/helpers/getError.js";
 import {useLoading} from "vue-loading-overlay";
+import CRFModal from "@/components/patients/subComponents/PatientsList/Modals/CRFModal.vue";
 
 const headers = [
   {text: 'Tipo Doc', value: 'tipo_doc'},
@@ -13,11 +14,11 @@ const headers = [
   {text: 'P. Apellido', value: 'primer_apellido'},
   {text: 'S. Apellido', value: 'segundo_apellido'},
   {text: 'Fech. Nacimiento', value: 'fecha_nacimiento'},
-  {text: 'Fech. Expedición', value: 'fecha_expedicion'},
   {text: 'País', value: 'pais_residencia'},
   {text: 'Departamento', value: 'departamento_residencia'},
   {text: 'Ciudad', value: 'ciudad_residencia'},
-  {text: 'Teléfono', value: 'telefono_celular'}
+  {text: 'Teléfono', value: 'telefono_celular'},
+  {text: 'Acciones', value: 'actions'},
 ]
 
 const patients = ref([])
@@ -50,20 +51,24 @@ const getPatientsFullList = async () => {
 
 
 onMounted(
-  getPatientsFullList
+    getPatientsFullList
 )
 
 </script>
 
 <template>
 
-  <div class="container-fluid" ref="fullPageContainer">
+  <div ref="fullPageContainer" class="container-fluid">
     <div class="row">
       <div class="col">
         <div class="card">
           <div class="card-body">
 
-            <EasyDataTable :headers="headers" :items="patients"/>
+            <EasyDataTable :headers="headers" :items="patients">
+              <template #item-actions="item">
+                <CRFModal :itemInformation="item"/>
+              </template>
+            </EasyDataTable>
           </div>
         </div>
       </div>
