@@ -42,7 +42,7 @@ const getPatientsFullList = async () => {
 const showDetailStatus = (item) => {
 
   //getDetailsStudiesForStatus
-//
+///
 }
 
 onMounted(getPatientsFullList)
