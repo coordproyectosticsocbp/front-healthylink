@@ -5,6 +5,12 @@ export default {
     getPatientsFullList() {
         return API.apiClient.get(`/api/v1/patient/get/patient`)
     },
+    getfollowup() {
+        return API.apiClient.get(`api/v1/encuesta/get/encuestasporestado`)
+    },
+    getDetailsStudiesForStatus(id) {
+        return API.apiClient.get(`api/v1/encuesta/get/encuestasporestado/${id}`)
+    },
     getPatientById(patientId) {
         return API.apiClient.get(`/api/v1/patient/get/patient/${patientId}`)
     },

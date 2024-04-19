@@ -33,7 +33,12 @@ const menu = [
       },
       {
         href: '/patient/patient-list',
-        name: 'Listado de Pacientes',
+        name: 'Autocompletar CRF',
+        icon: {text: 'Listado de Pacientes', class: 'fa fa-users'},
+      },
+      {
+        href: '/patient/FollowUp',
+        name: 'Seguimiento',
         icon: {text: 'Listado de Pacientes', class: 'fa fa-users'},
       }
     ]
