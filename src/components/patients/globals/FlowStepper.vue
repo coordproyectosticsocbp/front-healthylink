@@ -19,6 +19,11 @@ const patientHealthSurveyRef = ref(null)
 const currentFormStepIndex = window.localStorage.getItem('currentFormStepIndex')
 const storagePatientVal = window.localStorage.getItem('patientForm')
 const storageSignatureVal = window.localStorage.getItem('patientSignature')
+/* Survey Local Storage */
+const storageDemographicVal = window.localStorage.getItem('patientDemographicInformation')
+const storageHealthHabitsVal = window.localStorage.getItem('HealthHabitsInformation')
+const storagePersonalHealthVal = window.localStorage.getItem('PersonalHealthInformation')
+const storageCovid19Val = window.localStorage.getItem('covid19Information')
 //const currentStep = window.localStorage.getItem('validateCurrentSaveStep')
 
 const currentFormStepIndexVal = computed(() => {
@@ -174,10 +179,6 @@ const saveInformedConsent = async (tipoDoc, numeroDocumento) => {
 }
 const saveHealthSurvey = () => {
   const storagePatientFormatted = JSON.parse(storagePatientVal)
-  const storageDemographicVal = window.localStorage.getItem('patientDemographicInformation')
-  const storageHealthHabitsVal = window.localStorage.getItem('HealthHabitsInformation')
-  const storagePersonalHealthVal = window.localStorage.getItem('PersonalHealthInformation')
-  const storageCovid19Val = window.localStorage.getItem('covid19Information')
 
   if (storageDemographicVal && storageHealthHabitsVal && storagePersonalHealthVal && storageCovid19Val) {
 
@@ -187,53 +188,61 @@ const saveHealthSurvey = () => {
       const storageHealthHabitsFormatted = JSON.parse(storageHealthHabitsVal)
       const storagePersonalHealthFormatted = JSON.parse(storagePersonalHealthVal)
       const storageCovid19Formatted = JSON.parse(storageCovid19Val)
+
       let payload = {
         tipo_doc: storagePatientFormatted.tipo_doc,
         numero_documento: storagePatientFormatted.numero_documento,
-        altura: storageDemographicFormatted.altura,
-        peso: storageDemographicFormatted.peso,
-        etnia: storageDemographicFormatted.etnia,
-        pais_nacimiento: storageDemographicFormatted.pais_nacimiento,
-        ciudad_nacimiento: storageDemographicFormatted.ciudad_nacimiento,
-        nacionalidad_pais_abuelo_materno: storageDemographicFormatted.pais_abuelo_materno,
-        nacionalidad_ciudad_abuelo_materno: storageDemographicFormatted.ciudad_abuelo_materno,
-        nacionalidad_pais_abuela_materno: storageDemographicFormatted.pais_abuela_materna,
-        nacionalidad_ciudad_abuela_materno: storageDemographicFormatted.ciudad_abuela_materna,
-        nacionalidad_pais_abuelo_paterno: storageDemographicFormatted.pais_abuelo_paterno,
-        nacionalidad_ciudad_abuelo_paterno: storageDemographicFormatted.ciudad_abuelo_paterno,
-        nacionalidad_pais_abuela_paterno: storageDemographicFormatted.pais_abuela_paterna,
-        nacionalidad_ciudad_abuela_paterno: storageDemographicFormatted.ciudad_abuela_paterna,
-        es_fumador: storageHealthHabitsFormatted.es_fumador,
-        presion_arterial: storageHealthHabitsFormatted.presion_arterial,
-        medicamento_para_presion_arterial: storageHealthHabitsFormatted.medicamento_para_presion_arterial,
-        altos_niveles_colesterol: storageHealthHabitsFormatted.alto_nivel_colesterol,
-        frecuencia_consumo_bebidas_alcoholicas: storageHealthHabitsFormatted.frecuencia_bebidas_alcoholicas,
-        afeccion_o_enfermededad_cronica__madre: storageHealthHabitsFormatted.afeccion_o_enfermededad_cronica__madre,
-        cual_afeccion_o_enfermededad_cronica__madre: separateArrayBySemicolon(storageHealthHabitsFormatted.cual_afeccion_o_enfermededad_cronica__madre),
-        afeccion_o_enfermededad_cronica__padre: storageHealthHabitsFormatted.afeccion_o_enfermededad_cronica__padre,
-        cual_afeccion_o_enfermededad_cronica__padre: separateArrayBySemicolon(storageHealthHabitsFormatted.cual_afeccion_o_enfermededad_cronica__padre),
-        afeccion_o_enfermededad_cronica__hermanos: storageHealthHabitsFormatted.afeccion_o_enfermededad_cronica__hermanos,
-        cual_afeccion_o_enfermededad_cronica__hermanos: separateArrayBySemicolon(storageHealthHabitsFormatted.cual_afeccion_o_enfermededad_cronica__hermanos),
-        enfermedades_cronicas: storagePersonalHealthFormatted.enfermedades_cronicas,
-        enfermedades_pulmonares: storagePersonalHealthFormatted.enfermedades_pulmonares,
-        enfermedades_endocrinas_metabolicas: storagePersonalHealthFormatted.enfermedades_endocrinas_metabolicas,
-        enfermedades_digestivas: storagePersonalHealthFormatted.enfermedades_digestivas,
-        enfermedades_renales: storagePersonalHealthFormatted.enfermedades_renales,
-        enfermedades_neurologicas: storagePersonalHealthFormatted.enfermedades_neurologicas,
-        enfermedades_dermatologicas: storagePersonalHealthFormatted.enfermedades_dermatologicas,
-        enfermedades_reumaticas: storagePersonalHealthFormatted.enfermedades_reumaticas,
-        diagnosticado_cancer_ultimos_cinco_anos: storagePersonalHealthFormatted.diagnosticado_cancer_ultimos_cinco_anos,
-        cancer_diagnosticado: separateArrayBySemicolon(storagePersonalHealthFormatted.cancer_diagnosticado),
-        afecciones_diagnosticadas: separateArrayBySemicolon(storagePersonalHealthFormatted.afecciones_diagnosticadas),
-        analisis_sangre_ultimos_seis_meses: storagePersonalHealthFormatted.analisis_sangre_ultimos_seis_meses,
-        prueba_positiva_covid_19: storageCovid19Formatted.prueba_positiva_covid_19,
-        vacunacion_covid_19: storageCovid19Formatted.vacunacion_covid_19,
-        tipo_vacuna_recibida: separateArrayBySemicolon(storageCovid19Formatted.tipo_vacuna_recibida),
-        cantidad_dosis_vacunacion_recibida: storageCovid19Formatted.cantidad_dosis_vacunacion_recibida,
-        sintomas_tenidos_por_covid: separateArrayBySemicolon(storageCovid19Formatted.sintomas_tenidos_por_covid),
-        hospitalizado_por_covid_19: storageCovid19Formatted.hospitalizado_por_covid_19,
-        tiempo_recuperacion_covid_19: storageCovid19Formatted.tiempo_recuperacion_covid_19,
-        sintomas_q_persisten_por_covid_19: separateArrayBySemicolon(storageCovid19Formatted.sintomas_q_persisten_por_covid_19),
+        user_created_id: 1,
+        tipo_estudio_id: 1,
+        sedes_toma_muestras_id: 1,
+        detalle: [
+          {
+            altura: storageDemographicFormatted.altura,
+            peso: storageDemographicFormatted.peso,
+            etnia: storageDemographicFormatted.etnia,
+            pais_nacimiento: storageDemographicFormatted.pais_nacimiento,
+            ciudad_nacimiento: storageDemographicFormatted.ciudad_nacimiento,
+            nacionalidad_pais_abuelo_materno: storageDemographicFormatted.pais_abuelo_materno,
+            nacionalidad_ciudad_abuelo_materno: storageDemographicFormatted.ciudad_abuelo_materno,
+            nacionalidad_pais_abuela_materno: storageDemographicFormatted.pais_abuela_materna,
+            nacionalidad_ciudad_abuela_materno: storageDemographicFormatted.ciudad_abuela_materna,
+            nacionalidad_pais_abuelo_paterno: storageDemographicFormatted.pais_abuelo_paterno,
+            nacionalidad_ciudad_abuelo_paterno: storageDemographicFormatted.ciudad_abuelo_paterno,
+            nacionalidad_pais_abuela_paterno: storageDemographicFormatted.pais_abuela_paterna,
+            nacionalidad_ciudad_abuela_paterno: storageDemographicFormatted.ciudad_abuela_paterna,
+            es_fumador: storageHealthHabitsFormatted.es_fumador,
+            presion_arterial: storageHealthHabitsFormatted.presion_arterial,
+            medicamento_para_presion_arterial: storageHealthHabitsFormatted.medicamento_para_presion_arterial,
+            altos_niveles_colesterol: storageHealthHabitsFormatted.alto_nivel_colesterol,
+            frecuencia_consumo_bebidas_alcoholicas: storageHealthHabitsFormatted.frecuencia_bebidas_alcoholicas,
+            afeccion_o_enfermededad_cronica__madre: storageHealthHabitsFormatted.afeccion_o_enfermededad_cronica__madre,
+            cual_afeccion_o_enfermededad_cronica__madre: separateArrayBySemicolon(storageHealthHabitsFormatted.cual_afeccion_o_enfermededad_cronica__madre),
+            afeccion_o_enfermededad_cronica__padre: storageHealthHabitsFormatted.afeccion_o_enfermededad_cronica__padre,
+            cual_afeccion_o_enfermededad_cronica__padre: separateArrayBySemicolon(storageHealthHabitsFormatted.cual_afeccion_o_enfermededad_cronica__padre),
+            afeccion_o_enfermededad_cronica__hermanos: storageHealthHabitsFormatted.afeccion_o_enfermededad_cronica__hermanos,
+            cual_afeccion_o_enfermededad_cronica__hermanos: separateArrayBySemicolon(storageHealthHabitsFormatted.cual_afeccion_o_enfermededad_cronica__hermanos),
+            enfermedades_cronicas: storagePersonalHealthFormatted.enfermedades_cronicas,
+            enfermedades_pulmonares: storagePersonalHealthFormatted.enfermedades_pulmonares,
+            enfermedades_endocrinas_metabolicas: storagePersonalHealthFormatted.enfermedades_endocrinas_metabolicas,
+            enfermedades_digestivas: storagePersonalHealthFormatted.enfermedades_digestivas,
+            enfermedades_renales: storagePersonalHealthFormatted.enfermedades_renales,
+            enfermedades_neurologicas: storagePersonalHealthFormatted.enfermedades_neurologicas,
+            enfermedades_dermatologicas: storagePersonalHealthFormatted.enfermedades_dermatologicas,
+            enfermedades_reumaticas: storagePersonalHealthFormatted.enfermedades_reumaticas,
+            diagnosticado_cancer_ultimos_cinco_anos: storagePersonalHealthFormatted.diagnosticado_cancer_ultimos_cinco_anos,
+            cancer_diagnosticado: separateArrayBySemicolon(storagePersonalHealthFormatted.cancer_diagnosticado),
+            afecciones_diagnosticadas: separateArrayBySemicolon(storagePersonalHealthFormatted.afecciones_diagnosticadas),
+            analisis_sangre_ultimos_seis_meses: storagePersonalHealthFormatted.analisis_sangre_ultimos_seis_meses,
+            prueba_positiva_covid_19: storageCovid19Formatted.prueba_positiva_covid_19,
+            vacunacion_covid_19: storageCovid19Formatted.vacunacion_covid_19,
+            tipo_vacuna_recibida: separateArrayBySemicolon(storageCovid19Formatted.tipo_vacuna_recibida),
+            cantidad_dosis_vacunacion_recibida: storageCovid19Formatted.cantidad_dosis_vacunacion_recibida,
+            sintomas_tenidos_por_covid: separateArrayBySemicolon(storageCovid19Formatted.sintomas_tenidos_por_covid),
+            hospitalizado_por_covid_19: storageCovid19Formatted.hospitalizado_por_covid_19,
+            tiempo_recuperacion_covid_19: storageCovid19Formatted.tiempo_recuperacion_covid_19,
+            sintomas_q_persisten_por_covid_19: separateArrayBySemicolon(storageCovid19Formatted.sintomas_q_persisten_por_covid_19),
+          }
+        ]
       }
 
       PatientService.saveSurveyInformation(payload)
@@ -248,6 +257,7 @@ const saveHealthSurvey = () => {
                 icon: 'success',
                 text: response.data.message
               })
+              clearSurveyLocalStorage()
             }
           })
 
@@ -262,11 +272,21 @@ const saveHealthSurvey = () => {
   }
 }
 
+const clearSurveyLocalStorage = () => {
+  if (storagePatientVal) window.localStorage.removeItem('patientForm')
+  if (storageSignatureVal) window.localStorage.removeItem('patientSignature')
+  if (storageDemographicVal) window.localStorage.removeItem('patientDemographicInformation')
+  if (storageHealthHabitsVal) window.localStorage.removeItem('HealthHabitsInformation')
+  if (storagePersonalHealthVal) window.localStorage.removeItem('PersonalHealthInformation')
+  if (storageCovid19Val) window.localStorage.removeItem('covid19Information')
+  window.localStorage.setItem('validateCurrentSaveStep', 0)
+  window.localStorage.setItem('currentFormStepIndex', 0)
+}
 
 async function onComplete() {
   await patientHealthSurveyRef.value.testEvent()
   //await saveUserInformation()
-  saveHealthSurvey()
+  await saveHealthSurvey()
 }
 
 
