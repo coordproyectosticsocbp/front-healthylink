@@ -6,6 +6,7 @@
     padding-left: 290px;
     transition: 0.3s ease;
 }
+
 .content-collapsed {
     padding-left: 0;
     transition: 0.3s ease;
@@ -23,6 +24,7 @@
     box-shadow: 0 2px 4px 0 rgba(136, 144, 195, 0.2),
     0 5px 15px 0 rgba(37, 44, 97, 0.15);
 }
+
 .card .card-header {
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -44,16 +46,21 @@
     color: #1c294e !important;
     border: none !important;
 }
+
 .btn-aqua-color:hover {
     border: 1px solid #1c294e !important;
     color: #1c294e !important;
     transition: 0.2s ease-in-out;
 }
 
-.dark-theme{
+.dark-theme {
     background: #1c294e !important;
 }
 
 .active, .exact-active {
     color: #1cc88a !important;
+}
+
+.transition-general {
+    transition: 0.2ms ease-in-out;
 }
