@@ -52,6 +52,16 @@ const handleSubmit = async () => {
   return true;
 }
 
+const resetValuesIfNoOption = (key, event) => {
+  const eventValue = event.target.value
+
+  if (key === 'diagnosticado_cancer_ultimos_cinco_anos') {
+    if (eventValue === 'No' || eventValue === 'No Sé') {
+      personalHealthVariables.value.cancer_diagnosticado = []
+    }
+  }
+}
+
 const storageCie10Diagnosis = () => {
   const storageVal = window.localStorage.getItem('cie10Diagnosis')
   if (!storageVal) toast.error('Error obteniendo Dx desde LocalStorage')
@@ -373,7 +383,9 @@ onMounted(storageCie10Diagnosis)
                     <input :id="`gridRadiosDxCancer-${index}`"
                            v-model="personalHealthVariables.diagnosticado_cancer_ultimos_cinco_anos"
                            :name="`gridRadiosDxCancer-${index}`"
-                           :value="mci.value" class="form-check-input" type="radio">
+                           :value="mci.value" class="form-check-input" type="radio"
+                           @change="resetValuesIfNoOption('diagnosticado_cancer_ultimos_cinco_anos', $event)"
+                    >
                     <label :for="`gridRadiosDxCancer-${index}`" class="form-check-label">
                       {{ mci.label }}
                     </label>

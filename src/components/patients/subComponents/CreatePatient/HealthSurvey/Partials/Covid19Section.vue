@@ -15,9 +15,9 @@ import {required} from "@vuelidate/validators";
 
 const covidVariables = useLocalStorage({
   prueba_positiva_covid_19: null,
-  vacunacion_covid_19: 'No',
+  vacunacion_covid_19: null,
   tipo_vacuna_recibida: [],
-  cantidad_dosis_vacunacion_recibida: null,
+  cantidad_dosis_vacunacion_recibida: 0,
   presento_sintomas_por_covid: null,
   sintomas_tenidos_por_covid: [],
   hospitalizado_por_covid_19: null,
@@ -36,6 +36,24 @@ const rules = computed(() => {
 })
 
 const v$ = useVuelidate(rules, covidVariables)
+
+const resetValuesIfNoOption = (key, event) => {
+  const eventValue = event.target.value
+  if (key === 'vacunacion_covid_19') {
+    if (eventValue === 'No' || eventValue !== 'No Sé') {
+      covidVariables.value.tipo_vacuna_recibida = []
+      covidVariables.value.cantidad_dosis_vacunacion_recibida = 0
+    }
+  } else if (key === 'tiempo_recuperacion_covid_19') {
+    if (eventValue !== 'Más de 12 semanas') {
+      covidVariables.value.sintomas_q_persisten_por_covid_19 = []
+    }
+  } else if (key === 'presento_sintomas_por_covid') {
+    if (eventValue !== 'No' || eventValue !== 'No Sé') {
+      covidVariables.value.sintomas_tenidos_por_covid = []
+    }
+  }
+}
 
 const handleSubmit = async () => {
   const result = await v$.value.$validate()
@@ -119,7 +137,9 @@ defineExpose({
                         <input :id="`gridRadiosVacunaCovid-${index}`"
                                v-model="covidVariables.vacunacion_covid_19"
                                :name="`gridRadiosVacunaCovid-${index}`"
-                               :value="mci.value" class="form-check-input" type="radio">
+                               :value="mci.value" class="form-check-input" type="radio"
+                               @change="resetValuesIfNoOption('vacunacion_covid_19', $event)"
+                        >
                         <label :for="`gridRadiosVacunaCovid-${index}`" class="form-check-label">
                           {{ mci.label }}
                         </label>
@@ -142,7 +162,8 @@ defineExpose({
           <div v-if="covidVariables.vacunacion_covid_19 === 'Si'" class="row mb-3">
             <div class="col-6">
               <label class="form-label" for="inputDosisVacunacion">Cuantas Dosis?</label>
-              <input id="inputDosisVacunacion" v-model="covidVariables.cantidad_dosis_vacunacion_recibida"
+              <input id="inputDosisVacunacion"
+                     v-model="covidVariables.cantidad_dosis_vacunacion_recibida"
                      class="form-control form-control-sm"
                      placeholder="Escriba # de dosis"
                      type="number"
@@ -197,7 +218,9 @@ defineExpose({
                         <input :id="`gridRadiosPresentoSintomas-${index}`"
                                v-model="covidVariables.presento_sintomas_por_covid"
                                :name="`gridRadiosPresentoSintomas-${index}`"
-                               :value="mci.value" class="form-check-input" type="radio">
+                               :value="mci.value" class="form-check-input" type="radio"
+                               @change="resetValuesIfNoOption('presento_sintomas_por_covid', $event)"
+                        >
                         <label :for="`gridRadiosPresentoSintomas-${index}`" class="form-check-label">
                           {{ mci.label }}
                         </label>
@@ -247,12 +270,13 @@ defineExpose({
               <div class="row">
                 <div class="col">
                   <fieldset class="row mb-3">
-                    <div class="col-8">
+                    <div class="col-12">
                       <div v-for="(mci, index) in hospitalizationByCovid" :key="mci.value" class="form-check">
                         <input :id="`gridRadiosHospCovid-${index}`"
                                v-model="covidVariables.hospitalizado_por_covid_19"
                                :name="`gridRadiosHospCovid-${index}`"
-                               :value="mci.value" class="form-check-input" type="radio">
+                               :value="mci.value" class="form-check-input" type="radio"
+                        >
                         <label :for="`gridRadiosHospCovid-${index}`" class="form-check-label">
                           {{ mci.label }}
                         </label>
@@ -286,7 +310,9 @@ defineExpose({
                         <input :id="`gridRadiosHospTime-${index}`"
                                v-model="covidVariables.tiempo_recuperacion_covid_19"
                                :name="`gridRadiosHospTime-${index}`"
-                               :value="mci.value" class="form-check-input" type="radio">
+                               :value="mci.value" class="form-check-input" type="radio"
+                               @change="resetValuesIfNoOption('tiempo_recuperacion_covid_19',$event)"
+                        >
                         <label :for="`gridRadiosHospTime-${index}`" class="form-check-label">
                           {{ mci.label }}
                         </label>
