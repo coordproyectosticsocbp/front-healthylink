@@ -2,7 +2,7 @@
 //import {onMounted, ref} from 'vue'
 //import PatientService from '@/services/patients/Patient.service.js'
 //import {getError} from "@/utils/helpers/getError.js";
-//
+////
 </script>
 
 <template>
