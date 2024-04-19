@@ -41,7 +41,7 @@ const getPatientsFullList = async () => {
 
 const showDetailStatus = (item) => {
 
-  console.log(item);
+  //getDetailsStudiesForStatus
 
 }
 
