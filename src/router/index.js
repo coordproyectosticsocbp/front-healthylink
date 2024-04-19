@@ -14,6 +14,10 @@ import PatientsMainComponent from '@/components/patients/PatientsMainComponent.v
 import CreatePatientComponent from "@/components/patients/subComponents/CreatePatient/CreatePatientForm/CreatePatientComponent.vue";
 import PatientList from "@/components/patients/subComponents/PatientsList/PatientList.vue";
 import followup from "@/components/patients/subComponents/FollowUp/FollowUp.vue";
+import createLote from "@/components/patients/subComponents/Lote/createLote.vue";
+import transport from "@/components/patients/subComponents/Transport/transport.vue";
+
+
 
 const routes = [
   {
@@ -76,6 +80,18 @@ const routes = [
         name: 'Follow-up',
         meta: { middleware: [auth] },
         component: followup
+      },
+      {
+        path: '/patient/createLote',
+        name: 'createLote',
+        meta: { middleware: [auth] },
+        component: createLote
+      },
+      {
+        path: '/patient/transport',
+        name: 'transport',
+        meta: { middleware: [auth] },
+        component: transport
       }
     ]
   }
