@@ -10,10 +10,10 @@
         <div class="col-12 align-self-center">
           <div class="card-body">
             <div class="row">
-              <div class="col-lg-4 mx-auto">
+              <div class="col-lg-6 mx-auto">
                 <div class="card">
 
-                  <div class="card-body p-0 auth-header-box">
+                  <div class="card-header p-0 auth-header-box">
                     <div class="text-center p-3">
                       <router-link :to="{name: 'login'}" class="logo logo-admin">
                         <img alt="logo" class="auth-logo" height="50" src="@/assets/images/logohle-1.gif">
@@ -47,5 +47,6 @@
 
 .auth-page .auth-header-box {
   background-image: var(--vt-c-button-global-color);
+  border-top-left-radius: ;
 }
 </style>

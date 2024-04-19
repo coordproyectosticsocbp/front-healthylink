@@ -17,11 +17,11 @@ export default defineConfig({
     hmr: {
       protocol: 'ws',
       host: 'localhost'
-    }
+    },
   },
   build: [
     {
-      outDir: 'dist',
+      outDir: '../dist',
       assetsDir: '',
       sourcemap: false,
       minify: false

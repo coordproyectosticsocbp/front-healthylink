@@ -11,6 +11,9 @@ import AuthenticationView from '@/views/Authentication/AuthenticationView.vue'
 import Login from '@/components/authentication/Login/Login.vue'
 import ResetPassword from '@/components/authentication/ResetPassword/ResetPassword.vue'
 import PatientsMainComponent from '@/components/patients/PatientsMainComponent.vue'
+import CreatePatientComponent from "@/components/patients/subComponents/CreatePatient/CreatePatientForm/CreatePatientComponent.vue";
+import PatientList from "@/components/patients/subComponents/PatientsList/PatientList.vue";
+import followup from "@/components/patients/subComponents/FollowUp/FollowUp.vue";
 
 const routes = [
   {
@@ -49,12 +52,30 @@ const routes = [
     name: 'dashboard',
     meta: { middleware: [auth] },
     component: DashboardView,
+  },
+  {
+    path: '/patient',
+    name: 'patient',
+    meta: { middleware: [auth] },
+    component: DashboardView,
     children: [
       {
-        path: '/dashboard/patient-list',
-        name: 'patient-list',
+        path: '/patient/create-patient',
+        name: 'create-patient',
         meta: { middleware: [auth] },
         component: PatientsMainComponent
+      },
+      {
+        path: '/patient/patient-list',
+        name: 'patient-list',
+        meta: { middleware: [auth] },
+        component: PatientList
+      },
+      {
+        path: '/patient/FollowUp',
+        name: 'Follow-up',
+        meta: { middleware: [auth] },
+        component: followup
       }
     ]
   }

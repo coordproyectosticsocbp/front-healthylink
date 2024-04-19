@@ -10548,7 +10548,7 @@ a:focus {
     cursor: pointer
 }
 
-/*.sidebar #sidebarToggle::after {
+/*.globals #sidebarToggle::after {
     font-weight: 900;
     content: '\f104';
     font-family: 'Font Awesome 5 Free';
@@ -10683,7 +10683,7 @@ a:focus {
         display: inline
     }
 
-   /* .sidebar .nav-item .nav-link[data-toggle=collapse]::after {
+   /* .globals .nav-item .nav-link[data-toggle=collapse]::after {
         width: 1rem;
         text-align: center;
         float: right;
@@ -10694,7 +10694,7 @@ a:focus {
         font-family: 'Font Awesome 5 Free'
     }
 
-    .sidebar .nav-item .nav-link[data-toggle=collapse].collapsed::after {
+    .globals .nav-item .nav-link[data-toggle=collapse].collapsed::after {
         content: 'fas fa-arrow-down';
     }*/
 
