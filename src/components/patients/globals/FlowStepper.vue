@@ -166,7 +166,7 @@ const saveInformedConsent = async (tipoDoc, numeroDocumento) => {
             })*/
             toast.success(response.data.message)
             window.localStorage.setItem('validateCurrentSaveStep', 3)
-            saveHealthSurvey(storagePatientFormatted.tipo_doc, storagePatientFormatted.numero_documento)
+            saveHealthSurvey()
           }
         })
         .catch((error) => {
@@ -285,8 +285,8 @@ const clearSurveyLocalStorage = () => {
 
 async function onComplete() {
   await patientHealthSurveyRef.value.testEvent()
-  //await saveUserInformation()
-  await saveHealthSurvey()
+  await saveUserInformation()
+  //await saveHealthSurvey()
 }
 
 
