@@ -291,7 +291,7 @@ defineExpose({
 
               <!-- País -->
               <div class="col-md-4">
-                <label class="form-label" for="input11">País:</label>
+                <label class="form-label" for="input11">País Nacimiento:</label>
                 <select id="input11" v-model="patient.pais_residencia"
                         class="form-select"
                         required
@@ -307,7 +307,7 @@ defineExpose({
 
               <!-- Departamento -->
               <div class="col-md-4">
-                <label class="form-label" for="input12">Departamento:</label>
+                <label class="form-label" for="input12">Departamento Nacimiento:</label>
                 <select id="input12" v-model="patient.departamento_residencia"
                         class="form-select"
                         required
@@ -323,7 +323,7 @@ defineExpose({
 
               <!-- Ciudad -->
               <div class="col-md-4">
-                <label class="form-label" for="input13">Ciudad:</label>
+                <label class="form-label" for="input13">Ciudad Nacimiento:</label>
                 <select id="input13" v-model="patient.ciudad_residencia" class="form-select" required>
                   <option value="null">Seleccione la Ciudad</option>
                   <option v-for="city in citiesObject"
