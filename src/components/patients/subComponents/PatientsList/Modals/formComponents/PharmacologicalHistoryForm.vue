@@ -88,6 +88,7 @@ const removeDrugFromArray = (index) => {
             </div>
             <div class="col-1">
               <button class="btn btn-sm rounded btn-outline-secondary"
+                      title="Agregar nuevo registro"
                       type="submit"
               >
                 <font-awesome-icon :icon="['fas', 'plus']"/>

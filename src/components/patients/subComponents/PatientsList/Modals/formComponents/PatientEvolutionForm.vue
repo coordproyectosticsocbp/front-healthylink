@@ -7,16 +7,16 @@ const props = defineProps({
 </script>
 
 <template>
-  <div :id="`v-pills-patologicos-${props.itemIndexVal}`"
-       :aria-labelledby="`v-pills-patologicos-tab-${props.itemIndexVal}`"
-       class="tab-pane fade show"
+  <div :id="`v-pills-evolucion-${props.itemIndexVal}`"
+       :aria-labelledby="`v-pills-evolucion-tab-${props.itemIndexVal}`"
+       class="tab-pane fade show active"
        role="tabpanel" tabindex="0"
   >
 
     <div class="row mb-3">
       <div class="col text-center">
         <h6 class="fw-bold text-uppercase">
-          Antecedentes Patológicos
+          Evolución
         </h6>
       </div>
     </div>
@@ -25,9 +25,9 @@ const props = defineProps({
 
     <div class="row">
       <div class="col">
-        <textarea id="pathologicalTextArea" class="form-control"
-                  placeholder="Antecedentes Patológicos"
-                  rows="5"/>
+                    <textarea id="EvolutionTextArea" class="form-control"
+                              placeholder="Evolución del Paciente"
+                              rows="5"/>
       </div>
     </div>
 

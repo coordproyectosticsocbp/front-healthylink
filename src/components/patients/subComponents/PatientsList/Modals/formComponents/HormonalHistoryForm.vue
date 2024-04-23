@@ -1,5 +1,5 @@
 <script setup>
-import {laboratoriesOptions} from "@/utils/const/patientComplementaryInfo.js";
+import {hormonalesOptions} from "@/utils/const/patientComplementaryInfo.js";
 import {ref} from "vue";
 
 const props = defineProps({
@@ -11,10 +11,10 @@ const initialValue = ref({
   labType: null
 })
 
-const laboratoryHistory = ref([])
+const hormonalHistory = ref([])
 
 const addItemToLabArray = () => {
-  laboratoryHistory.value.push({...initialValue.value})
+  hormonalHistory.value.push({...initialValue.value})
   initialValue.value = {
     labDate: null,
     labType: null
@@ -22,14 +22,14 @@ const addItemToLabArray = () => {
 }
 
 const removeLabFromArray = (index) => {
-  laboratoryHistory.value.splice(index, 1)
+  hormonalHistory.value.splice(index, 1)
 }
 
 </script>
 
 <template>
-  <div :id="`v-pills-hematologicos-${props.itemIndexVal}`"
-       :aria-labelledby="`v-pills-hematologicos-tab-${props.itemIndexVal}`"
+  <div :id="`v-pills-hormonales-${props.itemIndexVal}`"
+       :aria-labelledby="`v-pills-hormonales-tab-${props.itemIndexVal}`"
        class="tab-pane fade show"
        role="tabpanel" tabindex="0"
   >
@@ -37,7 +37,7 @@ const removeLabFromArray = (index) => {
     <div class="row mb-3">
       <div class="col text-center">
         <h6 class="fw-bold text-uppercase">
-          Antecedentes de Laboratorios Hematológicos
+          Antecedentes de Laboratorios Hormonales
         </h6>
       </div>
     </div>
@@ -50,9 +50,7 @@ const removeLabFromArray = (index) => {
 
           <div class="row">
 
-            <div class="col-3">
-              <!--              <div class="mb-3">-->
-              <!--                <label class="form-label" for="inputLabDate">Fecha:</label>-->
+            <div class="col-3 d-flex align-items-center">
               <input id="inputLabDate"
                      v-model="initialValue.labDate"
                      class="form-control"
@@ -61,9 +59,10 @@ const removeLabFromArray = (index) => {
               >
               <!--              </div>-->
             </div>
+
             <div class="col-8 d-flex align-items-center">
 
-              <div v-for="(item, index) in laboratoriesOptions" :key="index" class="form-check form-check-inline">
+              <div v-for="(item, index) in hormonalesOptions" :key="index" class="form-check form-check-inline">
                 <input :id="`inlineRadio1-${index}`" v-model="initialValue.labType"
                        :value="item.value"
                        class="form-check-input"
@@ -76,14 +75,6 @@ const removeLabFromArray = (index) => {
                 </label>
               </div>
 
-              <!--              <div v-for="(item, index) in laboratoriesOptions" :key="index" class="form-check form-check-inline">
-                              <input :id="`inlineCheckbox-${index}`"
-                                     v-model="initialValue[item.model]"
-                                     class="form-check-input"
-                                     type="checkbox"
-                              >
-                              <label :for="`inlineCheckbox-${index}`" class="form-check-label">{{ item.label }}</label>
-                            </div>-->
             </div>
             <div class="col-1 d-flex align-items-center">
               <button class="btn btn-sm rounded btn-outline-secondary"
@@ -99,13 +90,11 @@ const removeLabFromArray = (index) => {
       </div>
     </div>
 
-    <!-- Laboratories List -->
+    <!-- Hormonal List -->
     <div class="row">
       <div class="col">
-
-        <h6 class="fw-bold mb-4">Listado de Laboratorios: {{ laboratoryHistory.length }}</h6>
-
-        <ul v-for="(item, index) in laboratoryHistory" :key="index">
+        <h6 class="fw-bold mb-4">Listado de Laboratorios: {{ hormonalHistory.length }}</h6>
+        <ul v-for="(item, index) in hormonalHistory" :key="index">
 
           <li>
             <div class="row">
@@ -145,10 +134,8 @@ const removeLabFromArray = (index) => {
 
       </div>
     </div>
-
-    <!-- End Laboratories List -->
-
   </div>
+  <!-- End Hormonal List -->
 </template>
 
 <style scoped>
