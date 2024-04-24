@@ -3,6 +3,7 @@
 import useLocalStorage from "@/composables/useLocalStorage.js";
 import dayjs from "dayjs";
 import PatientService from "@/services/patients/Patient.service.js";
+import {ref} from "vue";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -13,17 +14,16 @@ const evolutionInfo = useLocalStorage(
       patientEvolution: ''
     }, `evolutionInfo-${props.itemIndexVal}`
 )
-
+const infoArray = ref([])
 const evolutionStorage = window.localStorage.getItem(`evolutionInfo-${props.itemIndexVal}`)
 
 const saveEvolutionInfo = async () => {
 
   let infoObject = null
-  const infoArray = []
 
   if (evolutionStorage) {
     infoObject = JSON.parse(evolutionStorage)
-    infoArray.push({
+    infoArray.value.push({
       fecha: dayjs().format('YYYY-MM-DD'),
       respuesta: infoObject.patientEvolution,
       pregunta_id: 7
@@ -34,7 +34,7 @@ const saveEvolutionInfo = async () => {
   const payload = {
     encuesta_id: props.itemIndexVal,
     user_id: 1,
-    datos: infoArray
+    datos: infoArray.value
   }
 
   console.log(payload)

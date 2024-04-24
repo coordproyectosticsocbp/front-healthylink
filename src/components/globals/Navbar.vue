@@ -1,14 +1,37 @@
 <script setup>
-
-import { useStore } from 'vuex'
-import { computed } from 'vue'
+import {useStore} from 'vuex'
+import {computed, ref} from 'vue'
+import {toast} from "vue3-toastify";
+import {getError} from "@/utils/helpers/getError.js";
+import {useLoading} from "vue-loading-overlay";
 
 const store = useStore()
 const authUser = computed(() => store.getters['auth/authUser'])
+const fullPage = ref(true)
+
+const $loading = useLoading({
+  loader: 'dots',
+  isFullPage: fullPage,
+  width: 64,
+  height: 64,
+  backgroundColor: '#ffffff',
+  opacity: 0.5,
+  zIndex: 999,
+})
 
 function logoutFunction() {
+
+  const loader = $loading.show()
   store.dispatch('auth/logout')
+      .then(() => {
+        loader.hide()
+      })
+      .catch((error) => {
+        loader.hide()
+        toast.error(getError(error))
+      })
 }
+
 function updateCollapsed() {
   store.dispatch('sidebar/updateCollapsed')
 }
@@ -23,7 +46,7 @@ function updateCollapsed() {
     <button id="sidebarToggleTop"
             class="btn btn-link rounded-circle mr-3"
             @click="updateCollapsed">
-      <font-awesome-icon :icon="['fas', 'bars']" />
+      <font-awesome-icon :icon="['fas', 'bars']"/>
     </button>
 
     <!-- Modal -->

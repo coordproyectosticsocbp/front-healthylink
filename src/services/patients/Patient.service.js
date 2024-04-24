@@ -3,7 +3,7 @@ import * as API from '@/services/API.js'
 export default {
 
     getPatientsFullList() {
-        return API.apiClient.get(`/api/v1/patient/get/patient`)
+        return API.apiClient.get(`/api/v1/encuesta/get/encuestassincrf`)
     },
     getfollowup() {
         return API.apiClient.get(`api/v1/encuesta/get/encuestasporestado`)

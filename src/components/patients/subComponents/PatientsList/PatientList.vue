@@ -5,25 +5,21 @@ import PatientService from '@/services/patients/Patient.service.js'
 import {getError} from "@/utils/helpers/getError.js";
 import {useLoading} from "vue-loading-overlay";
 import CRFModal from "@/components/patients/subComponents/PatientsList/Modals/CRFModal.vue";
+import dayjs from "dayjs";
 
 const headers = [
-  {text: 'Tipo Doc', value: 'tipo_doc'},
-  {text: 'Documento', value: 'numero_documento'},
-  {text: 'P. Nombre', value: 'primer_nombre'},
-  {text: 'S. Nombre', value: 'segundo_nombre"'},
-  {text: 'P. Apellido', value: 'primer_apellido'},
-  {text: 'S. Apellido', value: 'segundo_apellido'},
-  {text: 'Fech. Nacimiento', value: 'fecha_nacimiento'},
-  {text: 'País', value: 'pais_residencia'},
-  {text: 'Departamento', value: 'departamento_residencia'},
-  {text: 'Ciudad', value: 'ciudad_residencia'},
-  {text: 'Teléfono', value: 'telefono_celular'},
+  {text: 'Código Paciente', value: 'code_paciente'},
+  {text: 'Sede Toma Muestra', value: 'sede_toma_muestra'},
+  {text: 'Fecha Creación', value: 'created_at'},
+  {text: 'Estado Actual', value: 'ultimo_estado'},
   {text: 'Acciones', value: 'actions'},
 ]
 
 const patients = ref([])
 const fullPage = ref(true)
 const errors = ref(null)
+const searchField = ref(["code_paciente", "sede_toma_muestra", "ultimo_estado"])
+const searchValue = ref("")
 
 const $loading = useLoading({
   loader: 'dots',
@@ -64,11 +60,54 @@ onMounted(
         <div class="card">
           <div class="card-body">
 
-            <EasyDataTable :headers="headers" :items="patients">
-              <template #item-actions="item">
-                <CRFModal :itemInformation="item"/>
-              </template>
-            </EasyDataTable>
+            <div class="row mb-3">
+              <div class="col">
+                <div class="form-floating">
+                  <input id="floatingInput3" v-model="searchValue"
+                         autocomplete="off"
+                         class="form-control"
+                         placeholder="Escriba Aquí Para Buscar"
+                         type="text"
+                  >
+                  <label for="floatingInput3">
+                    Escriba Aquí Para Buscar (Código, Sede, Estado)
+                  </label>
+                </div>
+              </div>
+              <div class="col d-flex align-items-center justify-content-end">
+                <button
+                    class="btn btn-sm btn-warning rounded"
+                    @click.prevent="getPatientsFullList"
+                >
+                  <font-awesome-icon :icon="['fas', 'sync']"/>
+                  Recargar
+                </button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <EasyDataTable :headers="headers"
+                               :items="patients"
+                               :rows-items="[10, 20, 30]"
+                               :rows-per-page="10"
+                               :search-field="searchField"
+                               :search-value="searchValue"
+                               buttons-pagination
+                               show-index
+                >
+
+                  <template #item-created_at="item">
+                    {{ dayjs(item.created_at).format('DD-MM-YYYY') }}
+                  </template>
+
+                  <template #item-actions="item">
+                    <CRFModal :itemInformation="item"/>
+                  </template>
+                </EasyDataTable>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
