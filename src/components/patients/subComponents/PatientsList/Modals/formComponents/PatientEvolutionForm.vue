@@ -1,8 +1,52 @@
 <script setup>
 
+import useLocalStorage from "@/composables/useLocalStorage.js";
+import dayjs from "dayjs";
+import PatientService from "@/services/patients/Patient.service.js";
+
 const props = defineProps({
   itemIndexVal: Number
 })
+
+const evolutionInfo = useLocalStorage(
+    {
+      patientEvolution: ''
+    }, `evolutionInfo-${props.itemIndexVal}`
+)
+
+const evolutionStorage = window.localStorage.getItem(`evolutionInfo-${props.itemIndexVal}`)
+
+const saveEvolutionInfo = async () => {
+
+  let infoObject = null
+  const infoArray = []
+
+  if (evolutionStorage) {
+    infoObject = JSON.parse(evolutionStorage)
+    infoArray.push({
+      fecha: dayjs().format('YYYY-MM-DD'),
+      respuesta: infoObject.patientEvolution,
+      pregunta_id: 7
+    })
+  }
+  //console.log(infoArray)
+
+  const payload = {
+    encuesta_id: props.itemIndexVal,
+    user_id: 1,
+    datos: infoArray
+  }
+
+  console.log(payload)
+  PatientService.saveComplementaryInformation(payload)
+      .then((response) => {
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+}
 
 </script>
 
@@ -25,9 +69,29 @@ const props = defineProps({
 
     <div class="row">
       <div class="col">
-                    <textarea id="EvolutionTextArea" class="form-control"
-                              placeholder="Evolución del Paciente"
-                              rows="5"/>
+        <form autocomplete="off">
+
+          <div class="mb-3">
+            <label class="form-label" for="EvolutionTextArea">Evolución:</label>
+            <textarea id="EvolutionTextArea" v-model="evolutionInfo.patientEvolution"
+                      class="form-control"
+                      placeholder="Evolución del Paciente"
+                      required
+                      rows="5"
+            />
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-sm btn-outline-success"
+                    type="button"
+                    @click.prevent="saveEvolutionInfo(props.itemIndexVal)"
+            >
+              <font-awesome-icon :icon="['fas', 'floppy-disk']"/>
+              Guardar
+            </button>
+          </div>
+
+        </form>
       </div>
     </div>
 

@@ -1,6 +1,7 @@
 <script setup>
 
 import {ref} from "vue";
+import useLocalStorage from "@/composables/useLocalStorage.js";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -12,7 +13,7 @@ const initialValue = ref({
   drugPresentation: '',
   drugConcentration: '',
 })
-const pharmacologicalHistory = ref([])
+const pharmacologicalHistory = useLocalStorage([], `pharmacologicalHistory-${props.itemIndexVal}`)
 
 const addItemToPharmArray = () => {
   pharmacologicalHistory.value.push({...initialValue.value})

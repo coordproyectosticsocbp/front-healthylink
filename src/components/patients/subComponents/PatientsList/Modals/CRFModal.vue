@@ -1,6 +1,6 @@
 <script setup>
 
-import {defineProps} from "vue";
+import {patientComplementayTabOption} from "@/utils/const/patientComplementaryInfo.js";
 import PathologicalHistoryForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/PathologicalHistoryForm.vue";
 import PharmacologicalHistoryForm
@@ -9,7 +9,6 @@ import OthersHistoryForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/OthersHistoryForm.vue";
 import LaboratoryHistoryForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/LaboratoryHistoryForm.vue";
-import {patientComplementayTabOption} from "@/utils/const/patientComplementaryInfo.js";
 import HormonalHistoryForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/HormonalHistoryForm.vue";
 import BiochemicalBackgroundForm
@@ -19,22 +18,37 @@ import PatientEvolutionForm
 import DiagnosticImagingForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/DiagnosticImagingForm.vue";
 
-/*
-const crfModalRef = ref()
-const formIsDisplay = ref(false)
-*/
-
 const props = defineProps({
   itemInformation: Object
 })
 
-//console.log(props.itemInformation)
-/*const toggleModal = () => {
-  crfModalRef.value.show
+const evolutionInfo = window.localStorage.getItem('evolutionInfo')
+/*const pathologicalInfo = window.localStorage.getItem('pathologicalInfo')
+const othersInfo = window.localStorage.getItem('othersInfo')
+const pharmacologicalHistory = window.localStorage.getItem('pharmacologicalHistory')
+const laboratoryHistory = window.localStorage.getItem('laboratoryHistory')
+const biochemicalHistory = window.localStorage.getItem('biochemicalHistory')
+const hormonalHistory = window.localStorage.getItem('hormonalHistory')
+const imagesHistory = window.localStorage.getItem('imagesHistory')*/
+
+/*const dismissButtonEnabled = computed(() => {
+  return evolutionInfo;
+
+})*/
+
+/*const saveComplementaryInfoForm = (patientId) => {
+  alert('dd: ' + patientId)
 }
 
-const toggleForm = () => {
-  formIsDisplay.value = !formIsDisplay.value
+const cancelComplementaryInfo = (patientId) => {
+  window.localStorage.removeItem(`evolutionInfo-${patientId + 1}`)
+  window.localStorage.removeItem(`pathologicalInfo-${patientId + 1}`)
+  window.localStorage.removeItem(`othersInfo-${patientId + 1}`)
+  window.localStorage.removeItem(`pharmacologicalHistory-${patientId + 1}`)
+  window.localStorage.removeItem(`laboratoryHistory-${patientId + 1}`)
+  window.localStorage.removeItem(`biochemicalHistory-${patientId + 1}`)
+  window.localStorage.removeItem(`hormonalHistory-${patientId + 1}`)
+  window.localStorage.removeItem(`imagesHistory-${patientId + 1}`)
 }*/
 
 </script>
@@ -55,6 +69,8 @@ const toggleForm = () => {
        aria-hidden="true"
        aria-labelledby="exampleModalLabel"
        class="modal fade"
+       data-bs-backdrop="static"
+       data-bs-keyboard="false"
        tabindex="-1"
   >
     <div class="modal-dialog modal-xl">
@@ -63,8 +79,15 @@ const toggleForm = () => {
           <h1 id="exampleModalLabel" class="modal-title fs-5">
             2. Recolección de información por Historia clínica {{ props.itemInformation.id }}
           </h1>
-          <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"/>
+          <button
+              aria-label="Close"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              type="button"
+          />
         </div>
+
+        <!-- Modal Body -->
         <div class="modal-body">
           <!-- Form Fields -->
           <div class="d-flex align-items-start">
@@ -112,54 +135,34 @@ const toggleForm = () => {
 
           </div>
 
-          <!--          <div class="d-flex align-items-start">
-                      <div id="v-pills-tab" aria-orientation="vertical" class="nav flex-column nav-pills me-3" role="tablist">
-                        <button id="v-pills-home-tab" aria-controls="v-pills-home" aria-selected="true" class="nav-link active"
-                                data-bs-target="#v-pills-home" data-bs-toggle="pill" role="tab" type="button">Home
-                        </button>
-                        <button id="v-pills-profile-tab" aria-controls="v-pills-profile" aria-selected="false" class="nav-link"
-                                data-bs-target="#v-pills-profile" data-bs-toggle="pill" role="tab" type="button">Profile
-                        </button>
-                        <button id="v-pills-disabled-tab" aria-controls="v-pills-disabled" aria-selected="false"
-                                class="nav-link" data-bs-target="#v-pills-disabled" data-bs-toggle="pill" disabled
-                                role="tab" type="button">Disabled
-                        </button>
-                        <button id="v-pills-messages-tab" aria-controls="v-pills-messages" aria-selected="false"
-                                class="nav-link" data-bs-target="#v-pills-messages" data-bs-toggle="pill" role="tab"
-                                type="button">Messages
-                        </button>
-                        <button id="v-pills-settings-tab" aria-controls="v-pills-settings" aria-selected="false"
-                                class="nav-link" data-bs-target="#v-pills-settings" data-bs-toggle="pill" role="tab"
-                                type="button">Settings
-                        </button>
-                      </div>
-                      <div id="v-pills-tabContent" class="tab-content">
-                        <div id="v-pills-home" aria-labelledby="v-pills-home-tab" class="tab-pane fade show active"
-                             role="tabpanel" tabindex="0"
-                        >
-                          This is some placeholder content the Home tab's associated content. Clicking another tab will toggle the
-                          visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility
-                          and styling. You can use it with tabs, pills, and any other .nav-powered navigation.
-                        </div>
-                        <div id="v-pills-profile" aria-labelledby="v-pills-profile-tab" class="tab-pane fade" role="tabpanel"
-                             tabindex="0">...
-                        </div>
-                        <div id="v-pills-disabled" aria-labelledby="v-pills-disabled-tab" class="tab-pane fade" role="tabpanel"
-                             tabindex="0">...
-                        </div>
-                        <div id="v-pills-messages" aria-labelledby="v-pills-messages-tab" class="tab-pane fade" role="tabpanel"
-                             tabindex="0">...
-                        </div>
-                        <div id="v-pills-settings" aria-labelledby="v-pills-settings-tab" class="tab-pane fade" role="tabpanel"
-                             tabindex="0">...
-                        </div>
-                      </div>
-                    </div>-->
-
           <!-- End Form Fields -->
 
 
         </div>
+        <!-- End Modal Body -->
+
+        <!-- Modal Footer -->
+        <!--        <div class="modal-footer">
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button class="btn btn-sm btn-outline-danger me-md-2"
+                            data-bs-dismiss="modal"
+                            type="button"
+                            @click="cancelComplementaryInfo(props.itemInformation.id)"
+                    >
+                      <font-awesome-icon :icon="['fas', 'times']"/>
+                      Cancelar
+                    </button>
+                    <button class="btn btn-sm btn-outline-success"
+                            type="button"
+                            @click.prevent="saveComplementaryInfoForm(props.itemInformation.id)"
+                    >
+                      <font-awesome-icon :icon="['fas', 'floppy-disk']"/>
+                      Guardar
+                    </button>
+                  </div>
+                </div>-->
+        <!-- End Modal Footer -->
+
       </div>
     </div>
   </div>

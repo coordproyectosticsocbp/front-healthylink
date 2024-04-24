@@ -1,8 +1,16 @@
 <script setup>
 
+import useLocalStorage from "@/composables/useLocalStorage.js";
+
 const props = defineProps({
   itemIndexVal: Number
 })
+
+const pathologicalInfo = useLocalStorage(
+    {
+      patientPathologicalHistory: ''
+    }, `pathologicalInfo-${props.itemIndexVal}`
+)
 
 </script>
 
@@ -25,9 +33,11 @@ const props = defineProps({
 
     <div class="row">
       <div class="col">
-        <textarea id="pathologicalTextArea" class="form-control"
+        <textarea id="pathologicalTextArea" v-model="pathologicalInfo.patientPathologicalHistory"
+                  class="form-control"
                   placeholder="Antecedentes Patológicos"
-                  rows="5"/>
+                  rows="5"
+        />
       </div>
     </div>
 

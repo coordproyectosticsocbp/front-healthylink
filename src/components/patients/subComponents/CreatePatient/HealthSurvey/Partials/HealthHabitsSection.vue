@@ -31,7 +31,7 @@ const rules = computed(() => {
   return {
     es_fumador: {required},
     presion_arterial: {required},
-    medicamento_para_presion_arterial: {required},
+    /*medicamento_para_presion_arterial: {required},*/
     alto_nivel_colesterol: {required},
     frecuencia_bebidas_alcoholicas: {required},
     afeccion_o_enfermededad_cronica__madre: {required},
@@ -52,13 +52,21 @@ const handleSubmit = async () => {
   return true;
 }
 
+const resetValuesIfNoOption = (key, event) => {
+  const eventValue = event.target.value
+  if (key === 'presion_arterial') {
+    if (eventValue === 'No' || eventValue !== 'No Sé') {
+      healthHabitsVariables.value.medicamento_para_presion_arterial = []
+    }
+  }
+}
 
 const cualEnfermedad = ref(null)
 
-const patientHasHighBloodPressure = ref(false)
+/*const patientHasHighBloodPressure = ref(false)
 const onHighBloodPressureSelected = (event) => {
   patientHasHighBloodPressure.value = event.target.value === 'Si';
-}
+}*/
 
 const addIllnessToArray = (variableArray) => {
   if (variableArray === 1) healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__madre.push(cualEnfermedad.value)
@@ -148,7 +156,7 @@ defineExpose({
                       aria-label="One select"
                       class="form-select-sm form-select"
                       size="4"
-                      @change.prevent="onHighBloodPressureSelected"
+                      @change="resetValuesIfNoOption('presion_arterial', $event)"
               >
                 <option disabled value="null">Seleccione una opcion</option>
                 <option v-for="st in highBloodPressure" :key="st" :value="st.value" v-text="st.label.toUpperCase()"/>

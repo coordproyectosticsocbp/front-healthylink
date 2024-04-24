@@ -1,6 +1,7 @@
 <script setup>
 import {hormonalesOptions} from "@/utils/const/patientComplementaryInfo.js";
 import {ref} from "vue";
+import useLocalStorage from "@/composables/useLocalStorage.js";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -11,7 +12,7 @@ const initialValue = ref({
   labType: null
 })
 
-const hormonalHistory = ref([])
+const hormonalHistory = useLocalStorage([], `hormonalHistory-${props.itemIndexVal}`)
 
 const addItemToLabArray = () => {
   hormonalHistory.value.push({...initialValue.value})

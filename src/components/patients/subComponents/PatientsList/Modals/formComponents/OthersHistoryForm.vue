@@ -1,7 +1,16 @@
 <script setup>
+import useLocalStorage from "@/composables/useLocalStorage.js";
+
 const props = defineProps({
   itemIndexVal: Number
 })
+
+const othersInfo = useLocalStorage(
+    {
+      patientOtherInfo: ''
+    }, `othersInfo-${props.itemIndexVal}`
+)
+
 </script>
 
 <template>
@@ -22,9 +31,11 @@ const props = defineProps({
 
     <div class="row">
       <div class="col">
-                    <textarea id="othersTextArea" class="form-control"
+                    <textarea id="othersTextArea" v-model="othersInfo.patientOtherInfo"
+                              class="form-control"
                               placeholder="Otros Antecedentes"
-                              rows="5"/>
+                              rows="5"
+                    />
       </div>
     </div>
 

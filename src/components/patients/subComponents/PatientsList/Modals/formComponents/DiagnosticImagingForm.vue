@@ -1,6 +1,7 @@
 <script setup>
 
 import {ref} from "vue";
+import useLocalStorage from "@/composables/useLocalStorage.js";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -12,7 +13,7 @@ const initialValue = ref({
   imageResult: null
 })
 
-const imagesHistory = ref([])
+const imagesHistory = useLocalStorage([], `imagesHistory-${props.itemIndexVal}`)
 
 const addItemToLabArray = () => {
   imagesHistory.value.push({...initialValue.value})
