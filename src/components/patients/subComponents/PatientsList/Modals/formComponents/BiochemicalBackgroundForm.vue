@@ -26,6 +26,14 @@ const removeLabFromArray = (index) => {
   biochemicalHistory.value.splice(index, 1)
 }
 
+function clearFields() {
+  biochemicalHistory.value = []
+}
+
+defineExpose({
+  clearFields
+})
+
 </script>
 
 <template>

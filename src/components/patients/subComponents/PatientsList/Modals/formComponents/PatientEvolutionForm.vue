@@ -1,9 +1,6 @@
 <script setup>
 
 import useLocalStorage from "@/composables/useLocalStorage.js";
-import dayjs from "dayjs";
-import PatientService from "@/services/patients/Patient.service.js";
-import {ref} from "vue";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -14,22 +11,30 @@ const evolutionInfo = useLocalStorage(
       patientEvolution: ''
     }, `evolutionInfo-${props.itemIndexVal}`
 )
-const infoArray = ref([])
+
+function clearFields() {
+  evolutionInfo.value.patientEvolution = ''
+}
+
+defineExpose({
+  clearFields
+})
+
+/*const infoArray = ref([])
+const savingButtonStatus = ref(false)
 const evolutionStorage = window.localStorage.getItem(`evolutionInfo-${props.itemIndexVal}`)
 
 const saveEvolutionInfo = async () => {
 
-  let infoObject = null
+  savingButtonStatus.value = true
 
   if (evolutionStorage) {
-    infoObject = JSON.parse(evolutionStorage)
     infoArray.value.push({
       fecha: dayjs().format('YYYY-MM-DD'),
-      respuesta: infoObject.patientEvolution,
+      respuesta: JSON.parse(evolutionStorage).patientEvolution,
       pregunta_id: 7
     })
   }
-  //console.log(infoArray)
 
   const payload = {
     encuesta_id: props.itemIndexVal,
@@ -38,15 +43,32 @@ const saveEvolutionInfo = async () => {
   }
 
   console.log(payload)
+
   PatientService.saveComplementaryInformation(payload)
       .then((response) => {
-        console.log(response.data)
+        if (response.data.statusCode !== 201) {
+          savingButtonStatus.value = false
+          Swal.fire({
+            icon: 'error',
+            text: response.data.message
+          })
+        } else {
+          savingButtonStatus.value = false
+          Swal.fire({
+            icon: 'success',
+            text: response.data.message
+          })
+        }
       })
       .catch((error) => {
         console.log(error)
+        savingButtonStatus.value = false
+        Swal.fire({
+          icon: 'error',
+          text: getError(error)
+        })
       })
-
-}
+}*/
 
 </script>
 
@@ -81,15 +103,16 @@ const saveEvolutionInfo = async () => {
             />
           </div>
 
-          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button class="btn btn-sm btn-outline-success"
-                    type="button"
-                    @click.prevent="saveEvolutionInfo(props.itemIndexVal)"
-            >
-              <font-awesome-icon :icon="['fas', 'floppy-disk']"/>
-              Guardar
-            </button>
-          </div>
+          <!--          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                      <button :disabled="savingButtonStatus"
+                              class="btn btn-sm btn-outline-success"
+                              type="submit"
+                      >
+                        <span v-if="savingButtonStatus" aria-hidden="true" class="spinner-grow spinner-grow-sm"/>
+                        <font-awesome-icon v-else :icon="['fas', 'floppy-disk']"/>
+                        {{ savingButtonStatus ? 'Guardando...' : 'Guardar' }}
+                      </button>
+                    </div>-->
 
         </form>
       </div>

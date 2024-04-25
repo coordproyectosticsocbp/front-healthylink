@@ -29,6 +29,14 @@ const removeDrugFromArray = (index) => {
   pharmacologicalHistory.value.splice(index, 1)
 }
 
+function clearFields() {
+  pharmacologicalHistory.value = []
+}
+
+defineExpose({
+  clearFields
+})
+
 </script>
 
 <template>

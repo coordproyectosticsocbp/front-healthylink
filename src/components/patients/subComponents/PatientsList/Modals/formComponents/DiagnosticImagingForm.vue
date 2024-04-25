@@ -28,6 +28,14 @@ const removeLabFromArray = (index) => {
   imagesHistory.value.splice(index, 1)
 }
 
+function clearFields() {
+  imagesHistory.value = []
+}
+
+defineExpose({
+  clearFields
+})
+
 </script>
 
 <template>

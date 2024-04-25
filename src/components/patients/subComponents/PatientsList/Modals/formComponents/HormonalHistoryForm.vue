@@ -26,6 +26,14 @@ const removeLabFromArray = (index) => {
   hormonalHistory.value.splice(index, 1)
 }
 
+function clearFields() {
+  hormonalHistory.value = []
+}
+
+defineExpose({
+  clearFields
+})
+
 </script>
 
 <template>

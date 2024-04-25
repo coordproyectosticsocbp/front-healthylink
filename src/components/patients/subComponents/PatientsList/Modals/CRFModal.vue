@@ -17,39 +17,78 @@ import PatientEvolutionForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/PatientEvolutionForm.vue";
 import DiagnosticImagingForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/DiagnosticImagingForm.vue";
+import {computed, ref} from "vue";
+import clearAllLocalStorage from "@/composables/patients/clearAllComplementaryLocalStorage.js";
+import structurePayloadForComplementaryInfo from "@/composables/patients/structurePayloadForComplementaryInfo.js";
+import {useStore} from "vuex";
+import PatientService from "@/services/patients/Patient.service.js";
+import {getError} from "@/utils/helpers/getError.js";
 
 const props = defineProps({
   itemInformation: Object
 })
 
-const evolutionInfo = window.localStorage.getItem('evolutionInfo')
-/*const pathologicalInfo = window.localStorage.getItem('pathologicalInfo')
-const othersInfo = window.localStorage.getItem('othersInfo')
-const pharmacologicalHistory = window.localStorage.getItem('pharmacologicalHistory')
-const laboratoryHistory = window.localStorage.getItem('laboratoryHistory')
-const biochemicalHistory = window.localStorage.getItem('biochemicalHistory')
-const hormonalHistory = window.localStorage.getItem('hormonalHistory')
-const imagesHistory = window.localStorage.getItem('imagesHistory')*/
+const store = useStore()
+const authUser = computed(() => store.getters['auth/authUser'])
+const savingButtonStatus = ref(false)
 
-/*const dismissButtonEnabled = computed(() => {
-  return evolutionInfo;
+const PatientEvolutionFormRef = ref(null)
+const PathologicalHistoryFormRef = ref(null)
+const PharmacologicalHistoryFormRef = ref(null)
+const OthersHistoryFormRef = ref(null)
+const LaboratoryHistoryFormRef = ref(null)
+const BiochemicalBackgroundFormRef = ref(null)
+const HormonalHistoryFormRef = ref(null)
+const DiagnosticImagingFormRef = ref(null)
 
-})*/
-
-/*const saveComplementaryInfoForm = (patientId) => {
-  alert('dd: ' + patientId)
+function executeAllExposeClearFields() {
+  PatientEvolutionFormRef.value.clearFields()
+  PathologicalHistoryFormRef.value.clearFields()
+  PharmacologicalHistoryFormRef.value.clearFields()
+  OthersHistoryFormRef.value.clearFields()
+  LaboratoryHistoryFormRef.value.clearFields()
+  BiochemicalBackgroundFormRef.value.clearFields()
+  HormonalHistoryFormRef.value.clearFields()
+  DiagnosticImagingFormRef.value.clearFields()
 }
 
-const cancelComplementaryInfo = (patientId) => {
-  window.localStorage.removeItem(`evolutionInfo-${patientId + 1}`)
-  window.localStorage.removeItem(`pathologicalInfo-${patientId + 1}`)
-  window.localStorage.removeItem(`othersInfo-${patientId + 1}`)
-  window.localStorage.removeItem(`pharmacologicalHistory-${patientId + 1}`)
-  window.localStorage.removeItem(`laboratoryHistory-${patientId + 1}`)
-  window.localStorage.removeItem(`biochemicalHistory-${patientId + 1}`)
-  window.localStorage.removeItem(`hormonalHistory-${patientId + 1}`)
-  window.localStorage.removeItem(`imagesHistory-${patientId + 1}`)
-}*/
+const cancelComplementaryInfo = async (patientId) => {
+  await executeAllExposeClearFields()
+  await clearAllLocalStorage(patientId)
+}
+
+const saveComplementaryInfoForm = (patientID, userID) => {
+
+  savingButtonStatus.value = true
+  const payload = structurePayloadForComplementaryInfo(patientID, userID)
+
+
+  PatientService.saveComplementaryInformation(payload)
+      .then((response) => {
+        if (response.data.statusCode !== 201) {
+          savingButtonStatus.value = false
+          Swal.fire({
+            icon: 'error',
+            text: response.data.message
+          })
+        } else {
+          savingButtonStatus.value = false
+          cancelComplementaryInfo(patientID)
+          Swal.fire({
+            icon: 'success',
+            text: response.data.message
+          })
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        savingButtonStatus.value = false
+        Swal.fire({
+          icon: 'error',
+          text: getError(error)
+        })
+      })
+}
 
 </script>
 
@@ -66,6 +105,7 @@ const cancelComplementaryInfo = (patientId) => {
 
   <!-- Modal -->
   <div :id="`crfmodal-${props.itemInformation.id}`"
+       :ref="`crfmodal-${props.itemInformation.id}-Ref`"
        aria-hidden="true"
        aria-labelledby="exampleModalLabel"
        class="modal fade"
@@ -115,21 +155,21 @@ const cancelComplementaryInfo = (patientId) => {
 
             <div :id="`v-pills-tabContent-${props.itemInformation.id}`" class="tab-content w-100">
 
-              <PatientEvolutionForm :itemIndexVal="props.itemInformation.id"/>
+              <PatientEvolutionForm ref="PatientEvolutionFormRef" :itemIndexVal="props.itemInformation.id"/>
 
-              <PathologicalHistoryForm :itemIndexVal="props.itemInformation.id"/>
+              <PathologicalHistoryForm ref="PathologicalHistoryFormRef" :itemIndexVal="props.itemInformation.id"/>
 
-              <PharmacologicalHistoryForm :itemIndexVal="props.itemInformation.id"/>
+              <PharmacologicalHistoryForm ref="PharmacologicalHistoryFormRef" :itemIndexVal="props.itemInformation.id"/>
 
-              <OthersHistoryForm :itemIndexVal="props.itemInformation.id"/>
+              <OthersHistoryForm ref="OthersHistoryFormRef" :itemIndexVal="props.itemInformation.id"/>
 
-              <LaboratoryHistoryForm :itemIndexVal="props.itemInformation.id"/>
+              <LaboratoryHistoryForm ref="LaboratoryHistoryFormRef" :itemIndexVal="props.itemInformation.id"/>
 
-              <BiochemicalBackgroundForm :itemIndexVal="props.itemInformation.id"/>
+              <BiochemicalBackgroundForm ref="BiochemicalBackgroundFormRef" :itemIndexVal="props.itemInformation.id"/>
 
-              <HormonalHistoryForm :itemIndexVal="props.itemInformation.id"/>
+              <HormonalHistoryForm ref="HormonalHistoryFormRef" :itemIndexVal="props.itemInformation.id"/>
 
-              <DiagnosticImagingForm :itemIndexVal="props.itemInformation.id"/>
+              <DiagnosticImagingForm ref="DiagnosticImagingFormRef" :itemIndexVal="props.itemInformation.id"/>
 
             </div>
 
@@ -137,30 +177,32 @@ const cancelComplementaryInfo = (patientId) => {
 
           <!-- End Form Fields -->
 
-
         </div>
         <!-- End Modal Body -->
 
         <!-- Modal Footer -->
-        <!--        <div class="modal-footer">
-                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-sm btn-outline-danger me-md-2"
-                            data-bs-dismiss="modal"
-                            type="button"
-                            @click="cancelComplementaryInfo(props.itemInformation.id)"
-                    >
-                      <font-awesome-icon :icon="['fas', 'times']"/>
-                      Cancelar
-                    </button>
-                    <button class="btn btn-sm btn-outline-success"
-                            type="button"
-                            @click.prevent="saveComplementaryInfoForm(props.itemInformation.id)"
-                    >
-                      <font-awesome-icon :icon="['fas', 'floppy-disk']"/>
-                      Guardar
-                    </button>
-                  </div>
-                </div>-->
+        <div class="modal-footer">
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-sm btn-outline-danger me-md-2"
+                    data-bs-dismiss="modal"
+                    type="button"
+                    @click="cancelComplementaryInfo(props.itemInformation.id)"
+            >
+              <font-awesome-icon :icon="['fas', 'times']"/>
+              Cancelar
+            </button>
+            <button :disabled="savingButtonStatus"
+                    class="btn btn-sm btn-outline-success"
+                    type="button"
+                    @click.prevent="saveComplementaryInfoForm(props.itemInformation.id, authUser.id)"
+            >
+              <!--              @click.prevent="saveComplementaryInfoForm(props.itemInformation.id)"-->
+              <span v-if="savingButtonStatus" aria-hidden="true" class="spinner-grow spinner-grow-sm"/>
+              <font-awesome-icon v-else :icon="['fas', 'floppy-disk']"/>
+              {{ savingButtonStatus ? 'Guardando...' : 'Guardar' }}
+            </button>
+          </div>
+        </div>
         <!-- End Modal Footer -->
 
       </div>
