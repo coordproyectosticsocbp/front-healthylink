@@ -110,7 +110,7 @@ function updateCollapsed() {
            role="button"
         >
           <span class="mr-2 d-none d-lg-inline text-gray-600">
-            {{ authUser.firstName }} {{ authUser.lastName }}
+            {{ authUser.firstName ?? '' }} {{ authUser.lastName ?? '' }}
           </span>
           <img alt="mdo" class="img-profile rounded-circle" src="https://github.com/mdo.png">
         </a>

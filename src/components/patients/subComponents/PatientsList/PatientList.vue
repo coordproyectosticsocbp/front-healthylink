@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 
 const headers = [
   {text: 'Código Paciente', value: 'code_paciente'},
+  {text: 'Codigo muestra', value: 'id'},
   {text: 'Sede Toma Muestra', value: 'sede_toma_muestra'},
   {text: 'Fecha Creación', value: 'created_at'},
   {text: 'Estado Actual', value: 'ultimo_estado'},
@@ -102,7 +103,7 @@ onMounted(
                   </template>
 
                   <template #item-actions="item">
-                    <CRFModal :itemInformation="item"/>
+                    <CRFModal :itemInformation="item" @onSubmit="getPatientsFullList"/>
                   </template>
                 </EasyDataTable>
               </div>

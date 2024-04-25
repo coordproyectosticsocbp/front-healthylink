@@ -21,6 +21,7 @@ import {computed, ref} from "vue";
 import clearAllLocalStorage from "@/composables/patients/clearAllComplementaryLocalStorage.js";
 import structurePayloadForComplementaryInfo from "@/composables/patients/structurePayloadForComplementaryInfo.js";
 import {useStore} from "vuex";
+import {Modal} from "bootstrap";
 import PatientService from "@/services/patients/Patient.service.js";
 import {getError} from "@/utils/helpers/getError.js";
 
@@ -28,9 +29,14 @@ const props = defineProps({
   itemInformation: Object
 })
 
+/* Events */
+const emit = defineEmits(['onSubmit'])
+
+
 const store = useStore()
 const authUser = computed(() => store.getters['auth/authUser'])
 const savingButtonStatus = ref(false)
+const crfModalRef = ref()
 
 const PatientEvolutionFormRef = ref(null)
 const PathologicalHistoryFormRef = ref(null)
@@ -62,7 +68,6 @@ const saveComplementaryInfoForm = (patientID, userID) => {
   savingButtonStatus.value = true
   const payload = structurePayloadForComplementaryInfo(patientID, userID)
 
-
   PatientService.saveComplementaryInformation(payload)
       .then((response) => {
         if (response.data.statusCode !== 201) {
@@ -72,12 +77,14 @@ const saveComplementaryInfoForm = (patientID, userID) => {
             text: response.data.message
           })
         } else {
+          emit('onSubmit')
           savingButtonStatus.value = false
           cancelComplementaryInfo(patientID)
           Swal.fire({
             icon: 'success',
             text: response.data.message
           })
+          Modal.getInstance(crfModalRef.value)?.hide()
         }
       })
       .catch((error) => {
@@ -94,7 +101,7 @@ const saveComplementaryInfoForm = (patientID, userID) => {
 
 <template>
 
-  <button :data-bs-target="`#crfmodal-${props.itemInformation.id}`"
+  <button :data-bs-target="`#crfModal-${props.itemInformation.id}`"
           class="btn btn-global-color btn-sm rounded"
           data-bs-toggle="modal"
           title="Completar CRF"
@@ -104,8 +111,8 @@ const saveComplementaryInfoForm = (patientID, userID) => {
   </button>
 
   <!-- Modal -->
-  <div :id="`crfmodal-${props.itemInformation.id}`"
-       :ref="`crfmodal-${props.itemInformation.id}-Ref`"
+  <div :id="`crfModal-${props.itemInformation.id}`"
+       ref="crfModalRef"
        aria-hidden="true"
        aria-labelledby="exampleModalLabel"
        class="modal fade"

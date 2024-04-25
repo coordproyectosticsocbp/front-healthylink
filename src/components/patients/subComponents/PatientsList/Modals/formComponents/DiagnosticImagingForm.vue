@@ -69,6 +69,7 @@ defineExpose({
                   <input id="inputImageDate"
                          v-model="initialValue.imageDate"
                          class="form-control"
+                         required
                          type="date"
                   >
                 </div>
@@ -79,6 +80,7 @@ defineExpose({
                          aria-label="Tipo de Imagen"
                          class="form-control"
                          placeholder="Tipo de Imagen"
+                         required
                          type="text"
                   >
                 </div>
@@ -88,6 +90,7 @@ defineExpose({
                   <textarea id="diagnosticImagesTextArea" v-model="initialValue.imageResult"
                             class="form-control"
                             placeholder="Antecedentes Patológicos"
+                            required
                             rows="3"
                   />
                 </div>
