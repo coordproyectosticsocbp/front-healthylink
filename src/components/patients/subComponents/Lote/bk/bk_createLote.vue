@@ -1,6 +1,7 @@
 <template>
-  <div class="container mt-4">
-    <div class="row justify-content-center">
+  <div class="container">
+    <div class="row">
+
       <div class="col-md-6">
         <h6 class="text-center text-uppercase mb-0 fw-bold">
           Ingresar código de muestras para crear el lote
@@ -8,20 +9,23 @@
         <hr>
         <div v-if="mostrarFormulario">
           <div class="input-group mb-3">
-            <input v-model="nuevoElemento" type="text" class="form-control" placeholder="Código de la muestra">
+            <input v-model="nuevoElemento" class="form-control" placeholder="Código de la muestra" type="text">
             <div class="input-group-append">
-              <button @click="agregarElemento" class="btn btn-primary">Agregar</button>
+              <button class="btn btn-primary" @click="agregarElemento">Agregar</button>
             </div>
           </div>
           <hr>
           <div class="input-group mb-3">
-            <input v-model="filtro" type="text" class="form-control" placeholder="Buscar código...">
+            <input v-model="filtro" class="form-control" placeholder="Buscar código..." type="text">
           </div>
           <ul class="list-group">
-            <li v-if="filteredItems.length === 0" class="list-group-item">No hay elementos que coincidan con la búsqueda.</li>
-            <li v-else v-for="(elemento, index) in filteredItems" :key="index" class="list-group-item d-flex justify-content-between align-items-center">
+            <li v-if="filteredItems.length === 0" class="list-group-item">No hay elementos que coincidan con la
+              búsqueda.
+            </li>
+            <li v-for="(elemento, index) in filteredItems" v-else :key="index"
+                class="list-group-item d-flex justify-content-between align-items-center">
               # MU-{{ elemento }}
-              <button @click="eliminarElemento(index)" class="btn btn-danger btn-sm">
+              <button class="btn btn-danger btn-sm" @click="eliminarElemento(index)">
                 <font-awesome-icon :icon="['fas', 'trash-alt']"/>
                 Eliminar
               </button>
@@ -42,64 +46,72 @@
               </button>
 
 
-              <button v-if="!mostrarFormulario" @click="aperturarLote" class="btn mb-10" :class="mostrarFormulario ? 'btn-warning' : 'btn-primary'">
+              <button v-if="!mostrarFormulario" :class="mostrarFormulario ? 'btn-warning' : 'btn-primary'"
+                      class="btn mb-10"
+                      @click="aperturarLote">
                 {{ mostrarFormulario ? 'Cerrar apertura lote' : 'Aperturar lote muestra' }}
               </button>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <h6 class="text-center text-uppercase mb-0 fw-bold">
-          Ingresar código de CONTRAMUESTRAS para crear el lote
-        </h6>
-        <hr>
-        <div v-if="mostrarFormularioContra">
-          <div class="input-group mb-3">
-            <input v-model="nuevoElementoContraMuestra" type="text" class="form-control" placeholder="Código de la muestra">
-            <div class="input-group-append">
-              <button @click="agregarElementoContraMuestra" class="btn btn-primary">Agregar</button>
-            </div>
-          </div>
-          <hr>
-          <div class="input-group mb-3">
-            <input v-model="filtro" type="text" class="form-control" placeholder="Buscar código...">
-          </div>
-          <ul class="list-group">
-            <li v-if="filteredItemsContraMuestra.length === 0" class="list-group-item">No hay elementos que coincidan con la búsqueda.</li>
-            <li v-else v-for="(elemento, index) in filteredItemsContraMuestra" :key="index" class="list-group-item d-flex justify-content-between align-items-center">
-              # CM-{{ elemento }}
-              <button @click="eliminarElementoContraMuestra(index)" class="btn btn-danger btn-sm">
-                <font-awesome-icon :icon="['fas', 'trash-alt']"/>
-                Eliminar
-              </button>
-            </li>
-          </ul>
 
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-md-4">
-            <div class="input-group mb-4">
-              <button @click="aperturarLoteContraMuestra" class="btn mb-10" :class="mostrarFormularioContra ?'btn-warning' : 'btn-primary'">
-                {{ mostrarFormularioContra ? 'Cerrar apertura lote' : 'Aperturar lote muestra' }}
-              </button>
+      <!--      <div class="col-md-6">
+              <h6 class="text-center text-uppercase mb-0 fw-bold">
+                Ingresar código de CONTRAMUESTRAS para crear el lote
+              </h6>
+              <hr>
+              <div v-if="mostrarFormularioContra">
+                <div class="input-group mb-3">
+                  <input v-model="nuevoElementoContraMuestra" class="form-control" placeholder="Código de la muestra"
+                         type="text">
+                  <div class="input-group-append">
+                    <button class="btn btn-primary" @click="agregarElementoContraMuestra">Agregar</button>
+                  </div>
+                </div>
+                <hr>
+                <div class="input-group mb-3">
+                  <input v-model="filtro" class="form-control" placeholder="Buscar código..." type="text">
+                </div>
+                <ul class="list-group">
+                  <li v-if="filteredItemsContraMuestra.length === 0" class="list-group-item">No hay elementos que coincidan
+                    con la búsqueda.
+                  </li>
+                  <li v-for="(elemento, index) in filteredItemsContraMuestra" v-else :key="index"
+                      class="list-group-item d-flex justify-content-between align-items-center">
+                    # CM-{{ elemento }}
+                    <button class="btn btn-danger btn-sm" @click="eliminarElementoContraMuestra(index)">
+                      <font-awesome-icon :icon="['fas', 'trash-alt']"/>
+                      Eliminar
+                    </button>
+                  </li>
+                </ul>
+
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-md-4">
+                  <div class="input-group mb-4">
+                    <button :class="mostrarFormularioContra ?'btn-warning' : 'btn-primary'" class="btn mb-10"
+                            @click="aperturarLoteContraMuestra">
+                      {{ mostrarFormularioContra ? 'Cerrar apertura lote' : 'Aperturar lote muestra' }}
+                    </button>
 
 
-            </div>
-          </div>
-        </div>
-      </div>
+                  </div>
+                </div>
+              </div>
+            </div>-->
     </div>
 
   </div>
-    <ValidateLote/>
+  <ValidateLote/>
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from 'vue'
+import {computed, onMounted, ref} from 'vue'
 import PatientService from '@/services/patients/Patient.service.js'
-import { getError } from "@/utils/helpers/getError.js";
-import { useLoading } from "vue-loading-overlay";
+import {getError} from "@/utils/helpers/getError.js";
+import {useLoading} from "vue-loading-overlay";
 import {toast} from "vue3-toastify";
 import ValidateLote from "@/components/patients/subComponents/Lote/Modals/ValidateLote.vue";
 
@@ -127,7 +139,7 @@ const $loading = useLoading({
 })
 
 
-const saveTempLoteMuestra= async (id_encuesta,tipo_muestra) => {
+const saveTempLoteMuestra = async (id_encuesta, tipo_muestra) => {
 
   let payload = {}
 
@@ -138,31 +150,31 @@ const saveTempLoteMuestra= async (id_encuesta,tipo_muestra) => {
     tipo_muestra: tipo_muestra.toString()
   }
 
-    await PatientService.saveLoteTemp(payload)
-        .then((response) => {
-          if (response.data.statusCode !== 201) {
-            Swal.fire({
-              icon: 'error',
-              text: response.data.message
-            })
-          } else {
-            /*Swal.fire({
-              icon: 'success',
-              text: response.data.message
-            })*/
-            toast.success(response.data.message)
-          }
-        })
-        .catch((error) => {
+  await PatientService.saveLoteTemp(payload)
+      .then((response) => {
+        if (response.data.statusCode !== 201) {
           Swal.fire({
             icon: 'error',
-            text: getError(error)
+            text: response.data.message
           })
+        } else {
+          /*Swal.fire({
+            icon: 'success',
+            text: response.data.message
+          })*/
+          toast.success(response.data.message)
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          text: getError(error)
         })
+      })
 
 }
 
-const deleteTempLoteMuestra= async (id_encuesta,tipo_muestra) => {
+const deleteTempLoteMuestra = async (id_encuesta, tipo_muestra) => {
 
   let payloadDelte = {}
 
@@ -170,7 +182,7 @@ const deleteTempLoteMuestra= async (id_encuesta,tipo_muestra) => {
     minv_formulario_id: id_encuesta,
     tipo_muestra: tipo_muestra.toString()
   }
-console.log(payloadDelte);
+  console.log(payloadDelte);
   await PatientService.deleteLoteTemp(payloadDelte)
       .then((response) => {
         if (response.data.statusCode !== 200) {
@@ -202,12 +214,12 @@ const getPatientsFullList = async () => {
     tempMuestras.value = response.data.data.temp_Muestras
     tempContraMuestras.value = response.data.data.tempContraMuestras
 
-    tempMuestras.value.forEach(function(element) {
-      mostrarFormulario.value=true;
+    tempMuestras.value.forEach(function (element) {
+      mostrarFormulario.value = true;
       lista.value.push(element.minv_formulario_id.toString());
     });
-    tempContraMuestras.value.forEach(function(element) {
-      mostrarFormularioContra.value=true;
+    tempContraMuestras.value.forEach(function (element) {
+      mostrarFormularioContra.value = true;
       listaContraMuestra.value.push(element.minv_formulario_id.toString());
     });
 
@@ -223,14 +235,14 @@ onMounted(getPatientsFullList)
 
 const agregarElemento = () => {
   if (nuevoElemento.value.trim() !== '') {
-    saveTempLoteMuestra(nuevoElemento.value,'MUESTRA')
+    saveTempLoteMuestra(nuevoElemento.value, 'MUESTRA')
     lista.value.push(nuevoElemento.value);
     nuevoElemento.value = '';
   }
 }
 const agregarElementoContraMuestra = () => {
   if (nuevoElementoContraMuestra.value.trim() !== '') {
-    saveTempLoteMuestra(nuevoElementoContraMuestra.value,'CONTRAMUESTRA')
+    saveTempLoteMuestra(nuevoElementoContraMuestra.value, 'CONTRAMUESTRA')
     listaContraMuestra.value.push(nuevoElementoContraMuestra.value);
     nuevoElementoContraMuestra.value = '';
   }
@@ -238,11 +250,11 @@ const agregarElementoContraMuestra = () => {
 
 const eliminarElemento = (index) => {
   lista.value.splice(index, 1);
-  deleteTempLoteMuestra(index,'MUESTRA')
+  deleteTempLoteMuestra(index, 'MUESTRA')
 }
 const eliminarElementoContraMuestra = (index) => {
   console.log(listaContraMuestra.value[index])
-  deleteTempLoteMuestra(listaContraMuestra.value[index],'CONTRAMUESTRA')
+  deleteTempLoteMuestra(listaContraMuestra.value[index], 'CONTRAMUESTRA')
   listaContraMuestra.value.splice(index, 1);
 }
 /*
