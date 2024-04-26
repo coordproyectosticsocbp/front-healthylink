@@ -15,6 +15,7 @@
 /*Buttons*/
 .btn {
     border-radius: 20px !important;
+    font-size: inherit;
 }
 
 /*Card*/
@@ -57,9 +58,9 @@
     background: #1c294e !important;
 }
 
-.active, .exact-active {
+/*.active, .exact-active {
     color: #1cc88a !important;
-}
+}*/
 
 .transition-general {
     transition: 0.2ms ease-in-out;
