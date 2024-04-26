@@ -23,7 +23,7 @@ const menu = [
   },
   {
     href: '/patient',
-    name: 'Pacientes',
+    name: 'Muestras',
     icon: {text: 'Pacientes', class: 'fa fa-user'},
     children: [
       {
@@ -40,6 +40,16 @@ const menu = [
         href: '/patient/FollowUp',
         name: 'Seguimiento',
         icon: {text: 'Listado de Pacientes', class: 'fa fa-users'},
+      },
+      {
+        href: '/patient/createLote',
+        name: 'Crear lote',
+        icon: {text: 'Crear lote', class: 'fa fa-users'},
+      },
+      {
+        href: '/patient/transport',
+        name: 'Trasportar lote',
+        icon: {text: 'Crear lote', class: 'fa fa-users'},
       }
     ]
   },
