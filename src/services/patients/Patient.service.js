@@ -11,6 +11,18 @@ export default {
     getDetailsStudiesForStatus(id) {
         return API.apiClient.get(`api/v1/encuesta/get/encuestasporestado/${id}`)
     },
+
+    //Crear lote
+    getLoteWithAperturas() {
+        return API.apiClient.get(`api/v1/encuesta/get/tempmuestras/1/1`)
+    },
+    saveLoteTemp(payload) {
+        return API.apiClient.post(`/api/v1/encuesta/post/tempmuestras`, payload);
+    },
+    deleteLoteTemp(payload) {
+        return API.apiClient.post(`/api/v1/encuesta/delete/tempmuestras`, payload);
+    },
+
     createPatient(payload) {
         return API.apiClient.post(`/api/v1/patient/post/createpatient`, payload)
     },
