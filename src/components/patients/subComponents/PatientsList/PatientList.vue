@@ -9,6 +9,8 @@ import dayjs from "dayjs";
 
 const headers = [
   {text: 'Código Paciente', value: 'code_paciente'},
+  {text: 'Tipo Doc', value: 'tipo_doc'},
+  {text: 'Documento Paciente', value: 'numero_documento'},
   {text: 'Codigo muestra', value: 'id'},
   {text: 'Sede Toma Muestra', value: 'sede_toma_muestra'},
   {text: 'Fecha Creación', value: 'created_at'},

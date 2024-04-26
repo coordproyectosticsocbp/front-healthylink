@@ -12,7 +12,7 @@ const headers = [
   {text: 'Sede', value: 'sede_toma_muestra'},
   {text: 'Fecha Creación', value: 'created_at'},
   {text: 'Estado actual', value: 'ultimo_estado'},
-  {text: 'Acciones', value: 'actions', sortable: false},
+  {text: 'Acciones', value: 'actions'},
 ]
 
 const patients = ref([])
@@ -20,7 +20,7 @@ const fullPage = ref(true)
 const errors = ref(null)
 const searchField = ref(["code_paciente", "sede_toma_muestra", "ultimo_estado"])
 const searchValue = ref("")
-const offCanvasComponent = ref();
+//const offCanvasComponent = ref();
 
 const $loading = useLoading({
   loader: 'dots',
@@ -44,9 +44,9 @@ const getPatientsFullList = async () => {
   }
 }
 
-const showDetailStatus = async (patientId) => {
+/*const showDetailStatus = async (patientId) => {
   await offCanvasComponent.value.getTrackingDetail(patientId)
-}
+}*/
 
 onMounted(getPatientsFullList)
 
@@ -101,21 +101,8 @@ onMounted(getPatientsFullList)
 
                   <template #item-actions="item">
 
-                    <div>
-                      <button
-                          :data-bs-target="`#staticBackdrop-${item.id}`"
-                          aria-controls="staticBackdrop"
-                          class="btn btn-primary btn-sm"
-                          data-bs-toggle="offcanvas"
-                          type="button"
-                          @click="showDetailStatus(item.id)"
-                      >
-                        <font-awesome-icon :icon="['fas', 'eye']"/>
-                        Ver detalle
-                      </button>
-
-                      <TreeDetailView ref="offCanvasComponent" :itemId="item.id"/>
-                    </div>
+                    <!--                    <TreeDetailView ref="offCanvasComponent" :itemId="item.id"/>-->
+                    <TreeDetailView :itemId="item.id" :patientCode="item.code_paciente"/>
 
                   </template>
                 </EasyDataTable>

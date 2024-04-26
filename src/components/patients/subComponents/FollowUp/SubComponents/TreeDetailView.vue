@@ -6,7 +6,8 @@ import {onUnmounted, ref} from "vue";
 import dayjs from "dayjs";
 
 const props = defineProps({
-  itemId: Number
+  itemId: Number,
+  patientCode: String
 })
 const infoLoadingStatus = ref(false)
 const trackingDetailInfo = ref([])
@@ -35,15 +36,25 @@ function onDestroy() {
   infoLoadingStatus.value = false
 }
 
-defineExpose({getTrackingDetail})
+//defineExpose({getTrackingDetail})
 
-onUnmounted({
-  onDestroy
-})
+onUnmounted(onDestroy)
 
 </script>
 
 <template>
+
+  <button
+      :data-bs-target="`#staticBackdrop-${props.itemId}`"
+      aria-controls="staticBackdrop"
+      class="btn btn-primary btn-sm"
+      data-bs-toggle="offcanvas"
+      type="button"
+      @click="getTrackingDetail(props.itemId)"
+  >
+    <font-awesome-icon :icon="['fas', 'eye']"/>
+    Ver detalle
+  </button>
 
   <div :id="`staticBackdrop-${props.itemId}`"
        aria-labelledby="staticBackdropLabel"
@@ -56,7 +67,7 @@ onUnmounted({
       <h5 id="staticBackdropLabel"
           class="offcanvas-title"
       >
-        Detalle de la Encuesta: {{ props.itemId }}
+        Detalle de la Encuesta: {{ props.patientCode }}
       </h5>
       <button aria-label="Close" class="btn-close" data-bs-dismiss="offcanvas" type="button"></button>
     </div>
@@ -93,6 +104,14 @@ onUnmounted({
                   Fecha:
                   <span>
                     {{ dayjs(item.created_at).format('YYYY-MM-DD') ?? '' }}
+                  </span>
+                </p>
+              </li>
+              <li class="parent_li">
+                <p class="fw-bold mb-0">
+                  + Info:
+                  <span>
+                    {{ item.info ?? '' }}
                   </span>
                 </p>
               </li>
