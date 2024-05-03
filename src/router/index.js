@@ -85,6 +85,9 @@ const routes = [
                 name: 'createLote',
                 meta: {middleware: [auth]},
                 component: CreateLote,
+                redirect: () => {
+                    return {name: 'muestras'}
+                },
                 children: [
                     {
                         path: '/patient/createLote/clinical-samples',

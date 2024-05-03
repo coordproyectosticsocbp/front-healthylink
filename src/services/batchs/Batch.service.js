@@ -9,5 +9,8 @@ export default {
     },
     deleteBatchFromTemporal(payload) {
         return API.apiClient.post(`/api/v1/encuesta/post/tempmuestras`, payload)
+    },
+    saveRealBatch(payload) {
+        return API.apiClient.post(`/api/v1/encuesta/post/asignarmuestrasalote`, payload)
     }
 }

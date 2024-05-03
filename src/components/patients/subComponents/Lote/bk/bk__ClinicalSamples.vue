@@ -1,21 +1,21 @@
 <script setup>
+
 import {computed, onMounted, ref} from "vue";
 import BatchService from "@/services/batchs/Batch.service.js";
 import {useStore} from "vuex";
 import {toast} from "vue3-toastify";
 import {getError} from "@/utils/helpers/getError.js";
 import {useLoading} from "vue-loading-overlay";
-import ValidateBatchModal from "@/components/patients/subComponents/Lote/Modals/ValidateBatchModal.vue";
 
+//const regex = /^MU-[0-9]{1,9}$/ -- Original
 const fullPage = ref(true)
 const regex = /^MU[0-9]{1,9}-\w{1,11}-\d-\d$/
-const authUser = computed(() => store.getters["auth/authUser"])
-const clinicalSamples = computed(() => store.state.clinicalSamples.clinicalSamples)
+const clinicalSamples = ref([])
 const sampleCode = ref("")
 const filter = ref("")
-//const errors = computed(() => store.state.clinicalSamples.error)
+const errors = ref(null)
 const store = useStore()
-
+const authUser = computed(() => store.getters["auth/authUser"])
 
 const $loading = useLoading({
   loader: 'dots',
@@ -28,28 +28,27 @@ const $loading = useLoading({
 })
 
 const filteredItems = computed(() => {
-  const prefixText = "MU"
   return filter.value
       ? clinicalSamples.value.filter(
           item => {
-            return prefixText
-                .concat(item.minv_formulario_id, "-", item.code_paciente, "-", item.sede_id, "-", item.user_id)
-                .toLowerCase().includes(filter.value.toLowerCase());
+            return item.toLowerCase().includes(filter.value.toLowerCase());
           }) : clinicalSamples.value
 })
 
-const getTemporalBatches = () => {
+const getTemporalBatches = async () => {
+  const loader = $loading.show()
   try {
-    const payload = {
-      user_id: authUser.value.id,
-      sede_id: 1
+    const response = await BatchService.getTemporalBatches(authUser.value.id, 1)
+    if (response) {
+      clinicalSamples.value = response.data.data.temp_Muestras
+      loader.hide()
+    } else {
+      toast.error(response.data.message)
+      loader.hide()
     }
-    store.dispatch('clinicalSamples/getTemporalBatches', payload)
-  } catch (e) {
-    Swal.fire({
-      icon: 'error',
-      text: e
-    })
+  } catch (error) {
+    loader.hide()
+    errors.value = getError(error)
   }
 }
 const addItemToClinicalSamplesArray = () => {
@@ -62,8 +61,6 @@ const addItemToClinicalSamplesArray = () => {
     return false;
   }
 
-  const loader = $loading.show()
-
   const payload = {
     user_id: authUser.value.id,
     codigo_muestra: sampleCode.value,
@@ -73,26 +70,22 @@ const addItemToClinicalSamplesArray = () => {
   BatchService.saveBatchTemporal(payload)
       .then((response) => {
         if (response.data.statusCode !== 201) {
-          Swal.fire({
-            icon: 'error',
-            text: response.data.message
-          })
-          loader.hide()
+          toast.error(response.data.message)
         } else {
-          getTemporalBatches()
-          sampleCode.value = ""
           toast.success(response.data.message)
-          loader.hide()
+          clinicalSamples.value.push(sampleCode.value)
+          sampleCode.value = ""
         }
       })
       .catch((error) => {
         toast.error(getError(error))
-        loader.hide()
       })
 }
+
 const removeItemToClinicalSamplesArray = (index) => {
   console.log(index)
 }
+
 const saveRealBatch = async () => {
 
   if (!clinicalSamples.value.length) {
@@ -160,7 +153,7 @@ onMounted(getTemporalBatches)
       <div class="row">
         <div class="col-xl-4 border-end">
 
-          <form autocomplete="off" @submit.prevent="addItemToClinicalSamplesArray">
+          <form autocomplete="off">
 
             <div class="mb-3">
               <label class="form-label" for="sampleCode">Código de muestra:</label>
@@ -174,7 +167,8 @@ onMounted(getTemporalBatches)
 
             <div class="d-grid gap-2 d-lg-flex justify-content-md-end">
               <button class="btn btn-primary btn-sm"
-                      type="submit"
+                      type="button"
+                      @click="addItemToClinicalSamplesArray"
               >
                 <font-awesome-icon :icon="['fas', 'plus']"/>
                 Agregar
@@ -192,10 +186,16 @@ onMounted(getTemporalBatches)
                      class="form-control me-5"
                      placeholder="Buscar código..."
                      type="text"
+                     @keyup.prevent="filterValues"
               >
             </div>
             <div class="col-2 d-flex align-items-center">
-              <ValidateBatchModal/>
+              <button class="btn btn-outline-success rounded"
+                      @click="saveRealBatch"
+              >
+                <font-awesome-icon :icon="['fas', 'floppy-disk']"/>
+                Crear Lote
+              </button>
             </div>
           </div>
 
