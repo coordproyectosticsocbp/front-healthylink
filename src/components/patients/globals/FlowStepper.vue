@@ -247,11 +247,15 @@ const saveHealthSurvey = () => {
               icon: 'error',
               text: response.data.message
             })
+
           } else {
             Swal.fire({
               icon: 'success',
               text: response.data.message
             })
+
+            //AQUI SE CONSUME UN SERVICIO DE CREACION DE CODIGO DE BARRA
+
             clearSurveyLocalStorage()
           }
         })

@@ -33,12 +33,15 @@ const transportLote = () => {
             icon: 'error',
             text: response.data.message
           })
+          codeLote.value = ""
         } else {
           toast.success(response.data.message)
+          codeLote.value = ""
         }
       })
       .catch((error) => {
         toast.error(getError(error));
+        codeLote.value = ""
       })
       .finally(() => {
         loading.value = false;
