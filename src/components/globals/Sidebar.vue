@@ -39,17 +39,22 @@ const menu = [
       {
         href: '/patient/FollowUp',
         name: 'Seguimiento',
-        icon: {text: 'Listado de Pacientes', class: 'fa fa-users'},
+        icon: {text: 'Listado de Pacientes', class: 'fa fa-timeline'},
       },
       {
         href: '/patient/createLote',
         name: 'Crear lote',
-        icon: {text: 'Crear lote', class: 'fa fa-users'},
+        icon: {text: 'Crear lote', class: 'fa fa-boxes-stacked'},
       },
       {
         href: '/patient/transport',
         name: 'Trasportar lote',
-        icon: {text: 'Crear lote', class: 'fa fa-users'},
+        icon: {text: 'Crear lote', class: 'fa fa-dolly'},
+      },
+      {
+        href: '/patient/shelf-assignment',
+        name: 'Asignación de Estante',
+        icon: {text: 'Crear lote', class: 'fa fa-warehouse'},
       }
     ]
   },

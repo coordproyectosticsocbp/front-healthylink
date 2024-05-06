@@ -14,9 +14,14 @@ import PatientsMainComponent from '@/components/patients/PatientsMainComponent.v
 import PatientList from "@/components/patients/subComponents/PatientsList/PatientList.vue";
 import followup from "@/components/patients/subComponents/FollowUp/FollowUp.vue";
 import CreateLote from "@/components/patients/subComponents/Lote/CreateLote.vue";
-import transport from "@/components/patients/subComponents/Transport/transport.vue";
+import transport from "@/components/patients/subComponents/Transport/Transport.vue";
 import ClinicalSamples from "@/components/patients/subComponents/Lote/SubComponents/ClinicalSamples.vue";
 import CounterSamples from "@/components/patients/subComponents/Lote/SubComponents/CounterSamples.vue";
+import ShelfAssignment from "@/components/patients/subComponents/ShelfAssignment/ShelfAssignment.vue";
+import ShelfClinicalSamples
+    from "@/components/patients/subComponents/ShelfAssignment/SubComponents/ShelfClinicalSamples.vue";
+import ShelfClinicalCounterSamples
+    from "@/components/patients/subComponents/ShelfAssignment/SubComponents/ShelfClinicalCounterSamples.vue";
 
 
 const routes = [
@@ -109,6 +114,29 @@ const routes = [
                 name: 'transport',
                 meta: {middleware: [auth]},
                 component: transport
+            },
+            {
+                path: '/patient/shelf-assignment',
+                name: 'shelf-assignment',
+                meta: {middleware: [auth]},
+                component: ShelfAssignment,
+                redirect: () => {
+                    return {name: 'shelf-assignment-samples'}
+                },
+                children: [
+                    {
+                        path: '/patient/shelf-assignment/samples',
+                        name: 'shelf-assignment-samples',
+                        meta: {middleware: [auth]},
+                        component: ShelfClinicalSamples
+                    },
+                    {
+                        path: '/patient/shelf-assignment/counter-samples',
+                        name: 'shelf-assignment-counter-samples',
+                        meta: {middleware: [auth]},
+                        component: ShelfClinicalCounterSamples
+                    }
+                ]
             }
         ]
     }

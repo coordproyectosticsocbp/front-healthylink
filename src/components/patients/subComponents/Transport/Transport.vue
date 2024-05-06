@@ -1,11 +1,9 @@
 <script setup>
-
-import TransporLote from "@/services/Transport/TransportLote.service.js";
+import TransportLoteService from "@/services/Transport/TransportLote.service.js";
 import {toast} from "vue3-toastify";
 import {getError} from "@/utils/helpers/getError.js";
 import {computed, ref} from "vue";
 import {useStore} from "vuex";
-
 
 const store = useStore()
 const authUser = computed(() => store.getters["auth/authUser"])
@@ -26,7 +24,7 @@ const transportLote = () => {
     code_lote: codeLote.value,
   }
 
-  TransporLote.transporLote(payload)
+  TransportLoteService.transporLote(payload)
       .then((response) => {
         if (response.data.statusCode !== 201) {
           Swal.fire({
@@ -74,7 +72,7 @@ const transportLote = () => {
                     <form autocomplete="off" @submit.prevent="transportLote">
 
                       <div class="mb-3">
-                        <label class="form-label" for="sampleCode">Código de lote:</label>
+                        <label class="form-label" for="codeLote">Código de lote:</label>
                         <input id="codeLote"
                                v-model="codeLote"
                                autofocus
@@ -84,12 +82,12 @@ const transportLote = () => {
                       </div>
 
                       <div class="d-grid gap-2 d-lg-flex justify-content-md-end">
-                        <button class="btn btn-primary btn-sm"
+                        <button :disabled="loading"
+                                class="btn btn-primary btn-sm"
                                 type="submit"
-                                :disabled="loading"
                                 @click.prevent="transportLote">
-                          <font-awesome-icon :icon="['fas', 'cart-flatbed']"
-                                             :class="{ 'rotate': loading }" />
+                          <font-awesome-icon :class="{ 'rotate': loading }"
+                                             :icon="['fas', 'cart-flatbed']"/>
                           <span v-if="loading"> Cargando...</span>
                           <span v-else> Transportar</span>
                         </button>
@@ -114,7 +112,6 @@ const transportLote = () => {
 
   </div>
 </template>
-
 
 
 <style scoped>
