@@ -1,74 +1,130 @@
 <script setup>
-//import {onMounted, ref} from 'vue'
-//import PatientService from '@/services/patients/Patient.service.js'
-//import {getError} from "@/utils/helpers/getError.js";
-////
+
+import TransporLote from "@/services/Transport/TransportLote.service.js";
+import {toast} from "vue3-toastify";
+import {getError} from "@/utils/helpers/getError.js";
+import {computed, ref} from "vue";
+import {useStore} from "vuex";
+
+
+const store = useStore()
+const authUser = computed(() => store.getters["auth/authUser"])
+const codeLote = ref("")
+const loading = ref(false);
+
+const transportLote = () => {
+
+  if (!codeLote.value.length) {
+    alert('Código del lote vacío')
+    return false;
+  }
+
+  loading.value = true;
+
+  const payload = {
+    user_id_executed: authUser.value.id,
+    code_lote: codeLote.value,
+  }
+
+  TransporLote.transporLote(payload)
+      .then((response) => {
+        if (response.data.statusCode !== 201) {
+          Swal.fire({
+            icon: 'error',
+            text: response.data.message
+          })
+        } else {
+          toast.success(response.data.message)
+        }
+      })
+      .catch((error) => {
+        toast.error(getError(error));
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+}
 </script>
 
 <template>
-  <div class="container mt-4">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <h6 class="text-center text-uppercase mb-0 fw-bold">
-          Ingresar codigo del lote para transportar
-        </h6>
-        <hr>
-        <div class="input-group mb-3">
-          <input v-model="nuevoElemento" type="text" class="form-control" placeholder="Código del lote">
-          <div class="input-group-append">
-            <button @click="agregarElemento" class="btn btn-primary">Agregar</button>
+  <div class="container">
+
+    <div class="row">
+      <div class="col">
+
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+
+                <div class="row mb-5">
+                  <div class="col">
+                    <h5 class="text-center text-uppercase fw-bold">
+                      Registro de muestras para creación de lote
+                    </h5>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xl-12 border-end">
+
+                    <form autocomplete="off" @submit.prevent="transportLote">
+
+                      <div class="mb-3">
+                        <label class="form-label" for="sampleCode">Código de lote:</label>
+                        <input id="codeLote"
+                               v-model="codeLote"
+                               autofocus
+                               class="form-control"
+                               placeholder="Código Lote, MU-LOT-XX o CM-LOT-XX"
+                        />
+                      </div>
+
+                      <div class="d-grid gap-2 d-lg-flex justify-content-md-end">
+                        <button class="btn btn-primary btn-sm"
+                                type="submit"
+                                :disabled="loading"
+                                @click.prevent="transportLote">
+                          <font-awesome-icon :icon="['fas', 'cart-flatbed']"
+                                             :class="{ 'rotate': loading }" />
+                          <span v-if="loading"> Cargando...</span>
+                          <span v-else> Transportar</span>
+                        </button>
+                      </div>
+
+                    </form>
+
+                  </div>
+
+                </div>
+
+
+              </div>
+
+
+            </div>
           </div>
         </div>
-        <div class="input-group mb-3">
-          <input v-model="filtro" type="text" class="form-control" placeholder="Buscar código...">
-        </div>
-        <ul class="list-group">
-          <li v-if="filteredLista.length === 0" class="list-group-item">No hay elementos que coincidan con la búsqueda.</li>
-          <li v-else class="list-group-item d-flex justify-content-between align-items-center" v-for="(elemento, index) in filteredLista" :key="index">
-            {{ elemento }}
-            <button @click="eliminarElemento(index)" class="btn btn-danger btn-sm"><font-awesome-icon :icon="['fas', 'trash-alt']" />Eliminar</button>
-          </li>
-        </ul>
-        <button @click="guardarLista" class="btn btn-success mt-3"><font-awesome-icon :icon="['fas', 'save']" />Guardar</button>
+
       </div>
     </div>
+
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      nuevoElemento: '',
-      lista: [],
-      filtro: ''
-    };
-  },
-  computed: {
-    filteredLista() {
-      return this.lista.filter(elemento => {
-        return elemento.toLowerCase().includes(this.filtro.toLowerCase());
-      });
-    }
-  },
-  methods: {
-    agregarElemento() {
-      if (this.nuevoElemento.trim() !== '') {
-        this.lista.push(this.nuevoElemento);
-        this.nuevoElemento = ''; 
-      }
-    },
-    eliminarElemento(index) {
-      this.lista.splice(index, 1);
-    },
-    guardarLista() {
-      console.log("Lista guardada:", this.lista);
-    }
-  }
-};
-</script>
 
 
 <style scoped>
+.rotate {
+  animation: rotateAnimation 1s linear infinite;
+}
 
+@keyframes rotateAnimation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>
