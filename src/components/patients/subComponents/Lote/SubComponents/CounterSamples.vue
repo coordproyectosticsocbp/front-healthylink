@@ -7,10 +7,10 @@ import {getError} from "@/utils/helpers/getError.js";
 import {useLoading} from "vue-loading-overlay";
 
 const fullPage = ref(true)
-const regex = /^MU[0-9]{1,9}-\w{1,11}-\d-\d$/
+const regex = /^CM[0-9]{1,9}-\w{1,11}-\d-\d$/
 const authUser = computed(() => store.getters["auth/authUser"])
-const clinicalSamples = computed(() => store.state.clinicalSamples.clinicalSamples)
-const sampleCode = ref("")
+const clinicalCounterSamples = computed(() => store.state.clinicalCounterSamples.clinicalCounterSamples)
+const counterSampleCode = ref("")
 const filter = ref("")
 //const errors = computed(() => store.state.clinicalSamples.error)
 const store = useStore()
@@ -27,14 +27,14 @@ const $loading = useLoading({
 })
 
 const filteredItems = computed(() => {
-  const prefixText = "MU"
+  const prefixText = "CM"
   return filter.value
-      ? clinicalSamples.value.filter(
+      ? clinicalCounterSamples.value.filter(
           item => {
             return prefixText
                 .concat(item.minv_formulario_id, "-", item.code_paciente, "-", item.sede_id, "-", item.user_id)
                 .toLowerCase().includes(filter.value.toLowerCase());
-          }) : clinicalSamples.value
+          }) : clinicalCounterSamples.value
 })
 
 const getTemporalBatches = () => {
@@ -43,7 +43,7 @@ const getTemporalBatches = () => {
       user_id: authUser.value.id,
       sede_id: 1
     }
-    store.dispatch('clinicalSamples/getTemporalBatches', payload)
+    store.dispatch('clinicalCounterSamples/getTemporalCounterSamplesBatches', payload)
   } catch (e) {
     Swal.fire({
       icon: 'error',
@@ -51,13 +51,13 @@ const getTemporalBatches = () => {
     })
   }
 }
-const addItemToClinicalSamplesArray = () => {
-  if (!sampleCode.value.length) {
-    alert('Código de la muestra vacía')
+const addItemToClinicalCounterSamplesArray = () => {
+  if (!counterSampleCode.value.length) {
+    alert('Código de la ContraMuestra vacía')
     return false;
   }
-  if (!regex.test(sampleCode.value)) {
-    alert('El código no cumple el patrón requerido para Muestra')
+  if (!regex.test(counterSampleCode.value)) {
+    alert('El código no cumple el patrón requerido para ContraMuestra')
     return false;
   }
 
@@ -65,8 +65,8 @@ const addItemToClinicalSamplesArray = () => {
 
   const payload = {
     user_id: authUser.value.id,
-    codigo_muestra: sampleCode.value,
-    tipo_muestra: 'MUESTRA'
+    codigo_muestra: counterSampleCode.value,
+    tipo_muestra: 'CONTRAMUESTRA'
   }
 
   BatchService.saveBatchTemporal(payload)
@@ -79,8 +79,8 @@ const addItemToClinicalSamplesArray = () => {
           loader.hide()
         } else {
           getTemporalBatches()
-          sampleCode.value = ""
-          document.getElementById('sampleCode').focus()
+          counterSampleCode.value = ""
+          document.getElementById('counterSampleCode').focus()
           toast.success(response.data.message)
           loader.hide()
         }
@@ -90,7 +90,7 @@ const addItemToClinicalSamplesArray = () => {
         loader.hide()
       })
 }
-const removeItemToClinicalSamplesArray = (index) => {
+const removeItemToClinicalCounterSamplesArray = (index) => {
   console.log(index)
 }
 
@@ -106,7 +106,7 @@ onMounted(getTemporalBatches)
       <div class="row mb-5">
         <div class="col">
           <h5 class="text-center text-uppercase fw-bold">
-            Registro de muestras para creación de lote
+            Registro de ContraMuestras para creación de lote
           </h5>
         </div>
       </div>
@@ -114,15 +114,15 @@ onMounted(getTemporalBatches)
       <div class="row">
         <div class="col-xl-4 border-end">
 
-          <form autocomplete="off" @submit.prevent="addItemToClinicalSamplesArray">
+          <form autocomplete="off" @submit.prevent="addItemToClinicalCounterSamplesArray">
 
             <div class="mb-3">
-              <label class="form-label" for="sampleCode">Código de muestra:</label>
-              <input id="sampleCode"
-                     v-model="sampleCode"
+              <label class="form-label" for="counterSampleCode">Código de la ContraMuestra:</label>
+              <input id="counterSampleCode"
+                     v-model="counterSampleCode"
                      autofocus
                      class="form-control"
-                     placeholder="Código Muestra, MU-XX"
+                     placeholder="Código ContraMuestra, CM-XX"
               />
             </div>
 
@@ -144,12 +144,12 @@ onMounted(getTemporalBatches)
             <div class="col-12 d-flex align-items-center">
               <input v-model="filter"
                      class="form-control"
-                     placeholder="Buscar Muestra por código..."
+                     placeholder="Buscar ContraMuestra por código..."
                      type="text"
               >
             </div>
             <!--            <div class="col-2 d-flex align-items-center">
-                          <ValidateBatchModal/>
+                                        <ValidateBatchModal/>
                         </div>-->
           </div>
 
@@ -160,9 +160,9 @@ onMounted(getTemporalBatches)
               <button v-for="(item, index) in filteredItems"
                       :key="item"
                       class="btn btn-outline-primary me-2 mb-2"
-                      @click.prevent="removeItemToClinicalSamplesArray(index)"
+                      @click.prevent="removeItemToClinicalCounterSamplesArray(index)"
               >
-                MU{{ item.minv_formulario_id }}-{{ item.code_paciente }}-1-{{ authUser.id }}
+                CM{{ item.minv_formulario_id }}-{{ item.code_paciente }}-1-{{ authUser.id }}
 
                 <font-awesome-icon :icon="['fas', 'times']" class="ms-2 text-danger"/>
 

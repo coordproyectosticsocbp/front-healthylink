@@ -11,7 +11,10 @@ import PatientService from "@/services/patients/Patient.service.js";
 import {getError} from "@/utils/helpers/getError.js";
 import {toast} from "vue3-toastify";
 import {separateArrayBySemicolon} from "@/utils/helpers/separateBySemiColon.js";
+import {useStore} from "vuex";
 
+const store = useStore()
+const authUser = computed(() => store.getters["auth/authUser"])
 const wizard = ref(null)
 const createPatientComponentRef = ref(null)
 const patientHealthSurveyRef = ref(null)
@@ -187,7 +190,7 @@ const saveHealthSurvey = () => {
     let payload = {
       tipo_doc: storagePatientFormatted.tipo_doc,
       numero_documento: storagePatientFormatted.numero_documento,
-      user_created_id: 1,
+      user_created_id: authUser.value.id,
       tipo_estudio_id: 1,
       sedes_toma_muestras_id: 1,
       detalle: [

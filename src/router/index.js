@@ -16,6 +16,7 @@ import followup from "@/components/patients/subComponents/FollowUp/FollowUp.vue"
 import CreateLote from "@/components/patients/subComponents/Lote/CreateLote.vue";
 import transport from "@/components/patients/subComponents/Transport/transport.vue";
 import ClinicalSamples from "@/components/patients/subComponents/Lote/SubComponents/ClinicalSamples.vue";
+import CounterSamples from "@/components/patients/subComponents/Lote/SubComponents/CounterSamples.vue";
 
 
 const routes = [
@@ -99,7 +100,7 @@ const routes = [
                         path: '/patient/createLote/clinical-countersamples',
                         name: 'contramuestras',
                         meta: {middleware: [auth]},
-                        component: transport
+                        component: CounterSamples
                     },
                 ]
             },
