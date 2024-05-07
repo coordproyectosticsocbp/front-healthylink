@@ -47,6 +47,11 @@ const menu = [
         icon: {text: 'Crear lote', class: 'fa fa-boxes-stacked'},
       },
       {
+        href: '/patient/receivealot',
+        name: 'Recibir lote muestras',
+        icon: {text: 'Recibir lote', class: 'fa fa-warehouse'},
+      },
+      {
         href: '/patient/transport',
         name: 'Trasportar lote',
         icon: {text: 'Crear lote', class: 'fa fa-dolly'},
@@ -56,6 +61,7 @@ const menu = [
         name: 'Asignación de Estante',
         icon: {text: 'Crear lote', class: 'fa fa-warehouse'},
       }
+
     ]
   },
 ]

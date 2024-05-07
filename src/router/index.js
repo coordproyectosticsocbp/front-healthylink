@@ -22,6 +22,7 @@ import ShelfClinicalSamples
     from "@/components/patients/subComponents/ShelfAssignment/SubComponents/ShelfClinicalSamples.vue";
 import ShelfClinicalCounterSamples
     from "@/components/patients/subComponents/ShelfAssignment/SubComponents/ShelfClinicalCounterSamples.vue";
+import Receivealot from "@/components/patients/subComponents/Receivealot/Receivealot.vue";
 
 
 const routes = [
@@ -114,6 +115,12 @@ const routes = [
                 name: 'transport',
                 meta: {middleware: [auth]},
                 component: transport
+            },
+            {
+                path: '/patient/receivealot',
+                name: 'receivealot',
+                meta: {middleware: [auth]},
+                component: Receivealot
             },
             {
                 path: '/patient/shelf-assignment',
