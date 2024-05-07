@@ -13,7 +13,7 @@ const fullPage = ref(true)
 /**
  * Expresiones regulares de validaciones
  * */
-const regexSamples = /^MU[0-9]{1,9}-\w{1,11}-\d-\d$/
+const regexSamples = /^MU[0-9]{1,9}-\w{1,20}-\d-\d$/
 
 const $loading = useLoading({
   loader: 'dots',
@@ -54,36 +54,40 @@ const shelfSampleAssignment = () => {
         text: 'El Código de Muestra NO cumple con el coincide con el patron'
       })
       return false;
+    } else {
+
+      shelfAssignmentService.saveShelfSamplesAssignment(payload)
+          .then((response) => {
+            if (response.data.statusCode !== 201) {
+              loader.hide()
+              Swal.fire({
+                icon: 'error',
+                title: 'Oooops!',
+                text: response.data.message
+              })
+            } else {
+              loader.hide()
+              sampleCode.value = ""
+              Swal.fire({
+                icon: 'success',
+                title: 'Perfectooo!',
+                text: response.data.message
+              })
+            }
+          })
+          .catch((error) => {
+            loader.hide()
+            Swal.fire({
+              icon: 'error',
+              title: 'Oooops!',
+              text: getError(error)
+            })
+          })
+
     }
   }
 
-  shelfAssignmentService.saveShelfSamplesAssignment(payload)
-      .then((response) => {
-        if (response.data.statusCode !== 201) {
-          loader.hide()
-          Swal.fire({
-            icon: 'error',
-            title: 'Oooops!',
-            text: response.data.message
-          })
-        } else {
-          loader.hide()
-          sampleCode.value = ""
-          Swal.fire({
-            icon: 'success',
-            title: 'Perfectooo!',
-            text: response.data.message
-          })
-        }
-      })
-      .catch((error) => {
-        loader.hide()
-        Swal.fire({
-          icon: 'error',
-          title: 'Oooops!',
-          text: getError(error)
-        })
-      })
+
 }
 
 </script>
