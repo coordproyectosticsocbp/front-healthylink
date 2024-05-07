@@ -3,7 +3,7 @@ import * as API from '@/services/API.js'
 export default {
 
     getPatientsFullList() {
-        return API.apiClient.get(`/api/v1/patient/get/patient`)
+        return API.apiClient.get(`/api/v1/encuesta/get/encuestassincrf`)
     },
     getfollowup() {
         return API.apiClient.get(`api/v1/encuesta/get/encuestasporestado`)
@@ -11,7 +11,7 @@ export default {
     getDetailsStudiesForStatus(id) {
         return API.apiClient.get(`api/v1/encuesta/get/encuestasporestado/${id}`)
     },
-    //#########################
+
     //Crear lote
     getLoteWithAperturas() {
         return API.apiClient.get(`api/v1/encuesta/get/tempmuestras/1/1`)
@@ -22,12 +22,7 @@ export default {
     deleteLoteTemp(payload) {
         return API.apiClient.post(`/api/v1/encuesta/delete/tempmuestras`, payload);
     },
-    //#########################
 
-    //getPatientById(patientId) {
-    /*getPatientById(patientId) {
-        return API.apiClient.get(`/api/v1/patient/get/patient/${patientId}`)
-    },*/
     createPatient(payload) {
         return API.apiClient.post(`/api/v1/patient/post/createpatient`, payload)
     },
@@ -36,6 +31,9 @@ export default {
     },
     saveSurveyInformation(payload) {
         return API.apiClient.post(`/api/v1/encuesta/post/registrarencuesta`, payload);
+    },
+    saveComplementaryInformation(payload) {
+        return API.apiClient.post(`/api/v1/encuesta/post/registrarinformacionhistoriaclinica`, payload)
     }
 
 }
