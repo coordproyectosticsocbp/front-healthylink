@@ -256,7 +256,7 @@ const saveHealthSurvey = () => {
               icon: 'success',
               text: response.data.message
             })
-
+            window.open('https://mibcode.000webhostapp.com/codigo/codigomuestra.php?code=' + response.data.data.code, '_blank');
             //AQUI SE CONSUME UN SERVICIO DE CREACION DE CODIGO DE BARRA
 
             clearSurveyLocalStorage()

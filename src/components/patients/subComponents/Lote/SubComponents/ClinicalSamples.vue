@@ -90,8 +90,36 @@ const addItemToClinicalSamplesArray = () => {
         loader.hide()
       })
 }
-const removeItemToClinicalSamplesArray = (index) => {
-  console.log(index)
+const removeItemToClinicalSamplesArray = (id_encuesta, tipo_muestra) => {
+  console.log(id_encuesta)
+  const payload = {
+    minv_formulario_id: id_encuesta,
+    tipo_muestra: tipo_muestra.toString()
+  }
+
+  console.log(payload)
+
+  /*BatchService.deleteBatchFromTemporal(payload)
+      .then((response) => {
+        if (response.data.statusCode !== 200) {
+          Swal.fire({
+            icon: 'error',
+            text: response.data.message
+          })
+        } else {
+          Swal.fire({
+            icon: 'success',
+            text: response.data.message
+          })
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          text: getError(error)
+        })
+      })*/
+
 }
 
 onMounted(getTemporalBatches)
@@ -157,10 +185,10 @@ onMounted(getTemporalBatches)
 
           <div class="row">
             <div class="col">
-              <button v-for="(item, index) in filteredItems"
-                      :key="item"
+              <button v-for="item in filteredItems"
+                      :key="item.minv_formulario_id"
                       class="btn btn-outline-primary me-2 mb-2"
-                      @click.prevent="removeItemToClinicalSamplesArray(index)"
+                      @click.prevent="removeItemToClinicalSamplesArray(item.minv_formulario_id, 'MUESTRA')"
               >
                 MU{{ item.minv_formulario_id }}-{{ item.code_paciente }}-1-{{ authUser.id }}
 
