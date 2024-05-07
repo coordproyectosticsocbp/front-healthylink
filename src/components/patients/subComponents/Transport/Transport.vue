@@ -43,7 +43,7 @@ const transportLote = () => {
       })
       .finally(() => {
         loading.value = false;
-      });
+      });//
 }
 </script>
 
