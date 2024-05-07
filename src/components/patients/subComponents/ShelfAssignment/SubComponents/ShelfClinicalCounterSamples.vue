@@ -51,7 +51,7 @@ const shelfCounterSampleAssignment = () => {
     return false;
   }
 
-  if (regexCounterSamples.test(counterSampleCode.value)) {
+  if (!regexCounterSamples.test(counterSampleCode.value)) {
     Swal.fire({
       icon: 'error',
       title: 'Ooops!',

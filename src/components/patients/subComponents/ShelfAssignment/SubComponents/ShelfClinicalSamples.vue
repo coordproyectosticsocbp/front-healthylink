@@ -47,7 +47,7 @@ const shelfSampleAssignment = () => {
     return false;
   } else {
 
-    if (regexSamples.test(sampleCode.value)) {
+    if (!regexSamples.test(sampleCode.value)) {
       Swal.fire({
         icon: 'error',
         title: 'Ooops!',
