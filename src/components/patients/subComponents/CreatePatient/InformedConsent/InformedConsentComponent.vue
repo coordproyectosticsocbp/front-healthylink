@@ -38,20 +38,21 @@ function undo() {
   signature1.value.undo();
 }
 
-onMounted(() => {
+function getPatientInformation() {
   const storageVal = window.localStorage.getItem('patientForm')
   const storagePatientSignatureVal = window.localStorage.getItem('patientSignature')
-  if (storageVal) getPatientData.value = JSON.parse(storageVal)
+  if (storageVal) {
+    getPatientData.value = JSON.parse(storageVal)
+    //console.log(JSON.parse(storageVal))
+  }
   if (storagePatientSignatureVal) {
     storageSignature.value = JSON.parse(storagePatientSignatureVal)
     patientSignatureExists.value = true
   }
-  //const storageSignature = window.localStorage.getItem('patientSignature')
+}
 
-  /* if (storageSignature) {
-     console.log(JSON.parse(storageSignature).signature)
-     signature1.value = JSON.parse(storageSignature).signature
-   }*/
+onMounted(() => {
+  getPatientInformation()
 })
 
 </script>

@@ -1,9 +1,22 @@
-export const ageCalculate = (dia, mes, anio) => {
-    const today = new Date();
-    //Restamos los años
-    let anios = today.getFullYear() - anio;
-    // Si no ha llegado su cumpleaños le restamos el año por cumplir (Los meses en Date empiezan en 0, por eso tenemos que sumar 1)
-    if (mes > (today.getMonth() + 1) || dia > today.getDay())
-        anios--;
-    return anios;
+export const calculateAgeTwo = (birthDate) => {
+    const currentDate = new Date()
+    //console.log(new Date(birthDate))
+    // Convertir las fechas a milisegundos
+    const birthMiliSeconds = birthDate.getTime();
+    const currentMiliSeconds = currentDate.getTime();
+
+    // Calcular la diferencia en milisegundos
+    const diffMiliSeconds = currentMiliSeconds - birthMiliSeconds;
+
+    // Convertir la diferencia a segundos
+    const diffSeconds = diffMiliSeconds / 1000;
+
+    // Convertir la diferencia a días
+    const diffDays = diffSeconds / 86400;
+
+    // Calcular la edad en años
+    const age = Math.floor(diffDays / 365);
+
+    // Devolver la edad en años
+    return age;
 }

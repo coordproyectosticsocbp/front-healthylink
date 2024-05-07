@@ -37,26 +37,6 @@ const currentFormStepIndexVal = computed(() => {
   return JSON.parse(index)
 })
 
-/*const isLastStep = () => {
-  if (wizard.value) {
-    return wizard.value.isLastStep
-  }
-  return false
-}*/
-
-/*const validateCurrentSaveStep = async () => {
-  const stepValue = JSON.parse(currentStep)
-
-  if (stepValue === 1) {
-    await saveUserInformation()
-  } else if (stepValue === 2) {
-    await saveInformedConsent(JSON.parse(storagePatientVal.tipo_doc), JSON.parse(storagePatientVal.numero_documento))
-  } else if (stepValue === 3) {
-    await saveHealthSurvey(JSON.parse(storagePatientVal.tipo_doc), JSON.parse(storagePatientVal.numero_documento))
-  }
-}*/
-
-
 async function validateStep(props) {
   if (!currentFormStepIndex) window.localStorage.setItem('currentFormStepIndex', JSON.stringify(0))
 

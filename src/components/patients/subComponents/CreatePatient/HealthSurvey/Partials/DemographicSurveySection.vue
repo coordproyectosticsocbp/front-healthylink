@@ -3,10 +3,9 @@
 import {etnias} from "@/utils/const/patientHealthSurvey.js";
 import {computed, onMounted, ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
-import dayjs from "dayjs";
-import {ageCalculate} from "@/utils/helpers/ageCalculate.js";
 import {minLength, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import {calculateAgeTwo} from "@/utils/helpers/ageCalculate.js";
 
 const demographicVariables = useLocalStorage({
   edad: '',
@@ -47,6 +46,9 @@ const rules = computed(() => {
     ciudad_residencia_paciente: {required},
   }
 })
+const storageCountryVal = window.localStorage.getItem('countries')
+const storageCitiesVal = window.localStorage.getItem('cities')
+const patientStorage = window.localStorage.getItem('patientForm')
 
 const v$ = useVuelidate(rules, demographicVariables)
 
@@ -61,9 +63,6 @@ const handleSubmit = async () => {
 }
 
 const patientIsIndigenous = ref(false)
-
-const storageCountryVal = window.localStorage.getItem('countries')
-const storageCitiesVal = window.localStorage.getItem('cities')
 
 /** Logic */
 const countriesObject = computed(() => {
@@ -80,22 +79,10 @@ const citiesObject = computed(() => {
 })
 
 const patientAge = () => {
-
-  const patientStorage = window.localStorage.getItem('patientForm')
-  let dateFixed = null
-  let year = null
-  let month = null
-  let day = null
-
   if (patientStorage) {
-    dateFixed = JSON.parse(patientStorage)
-    year = dayjs(dateFixed.fecha_nacimiento).format('YYYY')
-    month = dayjs(dateFixed.fecha_nacimiento).format('MM')
-    day = dayjs(dateFixed.fecha_nacimiento).format('DD')
+    const birthDate = JSON.parse(patientStorage).fecha_nacimiento
+    demographicVariables.value.edad = calculateAgeTwo(new Date(birthDate))
   }
-
-  demographicVariables.value.edad = ageCalculate(day, month, year)
-  //console.log(ageCalculate(day, month, year))
 }
 const getCityOfBirth = (event) => {
   console.log(event.target.value)
