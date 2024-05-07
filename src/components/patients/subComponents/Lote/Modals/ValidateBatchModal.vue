@@ -141,6 +141,8 @@ const saveBatchesToDB = () => {
                   icon: 'success',
                   text: response.data.message
                 })
+                console.log(response.data.data)
+                window.open('https://mibcode.000webhostapp.com/codigo/lote.php?mu='+response.data.data.LoteMuestra.code_lote+'&cm='+response.data.data.LoteContra.code_lote, '_blank');
                 store.commit('clinicalSamples/SET_CLINICAL_SAMPLES', [])
                 window.localStorage.removeItem('validateSamplesObject')
                 window.localStorage.removeItem('validateCounterSamplesObject')
