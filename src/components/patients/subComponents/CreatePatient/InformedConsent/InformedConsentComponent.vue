@@ -1,3 +1,4 @@
+1-1-2-A
 <script setup>
 import {useStore} from "vuex";
 import {computed, onMounted, ref} from "vue";
