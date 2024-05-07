@@ -61,7 +61,7 @@ const transportLote = () => {
                 <div class="row mb-5">
                   <div class="col">
                     <h5 class="text-center text-uppercase fw-bold">
-                      Registro de muestras para creación de lote
+                      Transportar lote de muestras y contramuestras
                     </h5>
                   </div>
                 </div>

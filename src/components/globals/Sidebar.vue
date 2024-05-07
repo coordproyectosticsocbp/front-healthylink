@@ -47,19 +47,19 @@ const menu = [
         icon: {text: 'Crear lote', class: 'fa fa-boxes-stacked'},
       },
       {
+        href: '/patient/transport',
+        name: 'Transportar lote',
+        icon: {text: 'Crear lote', class: 'fa fa-dolly'},
+      },
+      {
         href: '/patient/receivealot',
         name: 'Recibir lote muestras',
         icon: {text: 'Recibir lote', class: 'fa fa-warehouse'},
       },
       {
-        href: '/patient/transport',
-        name: 'Trasportar lote',
-        icon: {text: 'Crear lote', class: 'fa fa-dolly'},
-      },
-      {
         href: '/patient/shelf-assignment',
         name: 'Asignación de Estante',
-        icon: {text: 'Crear lote', class: 'fa fa-warehouse'},
+        icon: {text: 'Crear lote', class: 'fas fa-temperature-empty'}
       }
 
     ]
