@@ -91,7 +91,8 @@ const addItemToClinicalSamplesArray = () => {
       })
 }
 const removeItemToClinicalSamplesArray = (id_encuesta, tipo_muestra) => {
-  console.log(id_encuesta)
+
+  const loader = $loading.show()
   const payload = {
     minv_formulario_id: id_encuesta,
     tipo_muestra: tipo_muestra.toString()
@@ -99,18 +100,21 @@ const removeItemToClinicalSamplesArray = (id_encuesta, tipo_muestra) => {
 
   console.log(payload)
 
-  /*BatchService.deleteBatchFromTemporal(payload)
+  BatchService.deleteBatchFromTemporal(payload)
       .then((response) => {
         if (response.data.statusCode !== 200) {
           Swal.fire({
             icon: 'error',
             text: response.data.message
           })
+          loader.hide()
         } else {
+          getTemporalBatches()
           Swal.fire({
             icon: 'success',
             text: response.data.message
           })
+          loader.hide()
         }
       })
       .catch((error) => {
@@ -118,7 +122,8 @@ const removeItemToClinicalSamplesArray = (id_encuesta, tipo_muestra) => {
           icon: 'error',
           text: getError(error)
         })
-      })*/
+        loader.hide()
+      })
 
 }
 

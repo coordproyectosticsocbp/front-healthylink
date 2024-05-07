@@ -26,6 +26,9 @@ const mainClinicalSamples = computed(() => store.state.clinicalSamples.clinicalS
 const mainClinicalCounterSamples = computed(() => store.state.clinicalCounterSamples.clinicalCounterSamples)
 const validateBatchModalRef = ref(null)
 const fullPage = ref(true)
+const regexSamples = /^MU[0-9]{1,9}-\w{1,11}-\d-\d$/
+const regexCounterSamples = /^CM[0-9]{1,9}-\w{1,11}-\d-\d$/
+
 
 const $loading = useLoading({
   loader: 'dots',
@@ -38,40 +41,57 @@ const $loading = useLoading({
 })
 
 const addSampleItemToArray = () => {
-  if (clinicalSamples.value.includes(codeSampleInput.value)) {
-    toast.error('Ya existe un elemento con este código')
-    //codeSampleInput.value = ""
-    return false;
+
+  if (!regexSamples.test(codeSampleInput.value)) {
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Oooops!',
+      text: 'El código ingresado no corresponde al patrón de la muestra'
+    })
+
+  } else {
+
+    if (clinicalSamples.value.includes(codeSampleInput.value)) {
+      toast.error('Ya existe un elemento con este código')
+      //codeSampleInput.value = ""
+      return false;
+    }
+    clinicalSamples.value.push(codeSampleInput.value)
+    codeSampleInput.value = ""
+    document.getElementById('inputSampleValidate').focus()
+    toast.success('Ítem agregado correctamente')
+
   }
-  clinicalSamples.value.push(codeSampleInput.value)
-  codeSampleInput.value = ""
-  document.getElementById('inputSampleValidate').focus()
-  toast.success('Ítem agregado correctamente')
+
+
 }
 
 const addCounterSampleItemToArray = () => {
-  if (clinicalCounterSamples.value.includes(codeCounterSampleInput.value)) {
-    toast.error('Ya existe un elemento con este código')
-    //codeSampleInput.value = ""
-    return false;
-  }
-  clinicalCounterSamples.value.push(codeCounterSampleInput.value)
-  codeCounterSampleInput.value = ""
-  document.getElementById('inputCounterSampleValidate').focus()
-  toast.success('Ítem agregado correctamente')
-}
 
-/*const addBatchItemToArray = () => {
-  if (clinicalSamples.value.includes(codeSampleInput.value)) {
-    toast.error('Ya existe un elemento con este código')
-    //codeSampleInput.value = ""
-    return false;
+  if (!regexCounterSamples.test(codeCounterSampleInput.value)) {
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Oooops!',
+      text: 'El código ingresado no corresponde al patrón de la Contramuestra'
+    })
+
+  } else {
+
+    if (clinicalCounterSamples.value.includes(codeCounterSampleInput.value)) {
+      toast.error('Ya existe un elemento con este código')
+      //codeSampleInput.value = ""
+      return false;
+    }
+    clinicalCounterSamples.value.push(codeCounterSampleInput.value)
+    codeCounterSampleInput.value = ""
+    document.getElementById('inputCounterSampleValidate').focus()
+    toast.success('Ítem agregado correctamente')
+
   }
-  clinicalSamples.value.push(codeSampleInput.value)
-  codeSampleInput.value = ""
-  document.getElementById('inputBatchValidate').focus()
-  toast.success('Ítem agregado correctamente')
-}*/
+
+}
 
 const saveBatchesToDB = () => {
   const validateSamplesStorageIn = window.localStorage.getItem('validateSamplesObject')
@@ -187,6 +207,18 @@ const compareObjects = (array1, array2) => {
       .concat(obj2.minv_formulario_id, "-", obj2.code_paciente, "-", obj2.sede_id, "-", obj2.user_id))*/
 }
 
+const removeSampleFromArray = (id_muestra) => {
+  const itemIndex = clinicalSamples.value.indexOf(id_muestra)
+  clinicalSamples.value.splice(itemIndex, 1)
+  toast.warning('Ítem removido correctamente')
+}
+
+const removeCounterSampleFromArray = (id_muestra) => {
+  const itemIndex = clinicalCounterSamples.value.indexOf(id_muestra)
+  clinicalCounterSamples.value.splice(itemIndex, 1)
+  toast.warning('Ítem removido correctamente')
+}
+
 const closeModal = () => Modal.getInstance(validateBatchModalRef.value)?.hide()
 
 </script>
@@ -251,6 +283,7 @@ const closeModal = () => Modal.getInstance(validateBatchModalRef.value)?.hide()
                     <button v-for="(item) in clinicalSamples"
                             :key="item"
                             class="btn btn-outline-primary me-2 mb-2"
+                            @click="removeSampleFromArray(item)"
                     >
                       {{ item }}<!---{{ item.code_paciente }}-1-{{ authUser.id }}-->
 
@@ -283,6 +316,7 @@ const closeModal = () => Modal.getInstance(validateBatchModalRef.value)?.hide()
                     <button v-for="(item) in clinicalCounterSamples"
                             :key="item"
                             class="btn btn-outline-primary me-2 mb-2"
+                            @click="removeCounterSampleFromArray(item)"
                     >
                       {{ item }}<!---{{ item.code_paciente }}-1-{{ authUser.id }}-->
 
