@@ -211,8 +211,8 @@ onMounted(patientAge)
                      class="form-control form-control-sm"
                      list="datalistOptions"
                      placeholder="Escribe el País"
-                     @change="getCityOfBirth($event)"
               >
+              <!--              @change="getCityOfBirth($event)"-->
               <datalist id="datalistOptions">
                 <option v-for="country in countriesObject" :key="country.id" :value="country.name"
                         v-text="country.name"/>
@@ -432,8 +432,8 @@ onMounted(patientAge)
                      class="form-control form-control-sm"
                      list="datalistOptions"
                      placeholder="Escribe el País"
-                     @change="getCityOfBirth($event)"
               >
+              <!--              @change="getCityOfBirth($event)"-->
               <datalist id="datalistOptions">
                 <option v-for="country in countriesObject" :key="country.id" :value="country.name"
                         v-text="country.name"/>
