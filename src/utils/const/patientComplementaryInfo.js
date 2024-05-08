@@ -86,20 +86,20 @@ export const laboratoriesOptions = [
 
 export const biochemicalOptions = [
     {
-        label: 'Creatinina',
-        value: 'Creatinina',
+        label: 'Creatinina - mg/dl',
+        value: 'Creatinina - mg/dl',
     },
     {
-        label: 'Urea',
-        value: 'Urea',
+        label: 'Urea - mg/dl',
+        value: 'Urea - mg/dl',
     },
     {
-        label: 'TGO',
-        value: 'TGO',
+        label: 'TGO - U/l',
+        value: 'TGO - U/l',
     },
     {
-        label: 'TGP',
-        value: 'TGP',
+        label: 'TGP - U/l ',
+        value: 'TGP - U/l ',
     },
     {
         label: 'Bilirrubina total',
