@@ -16,6 +16,12 @@ const signature1 = ref(null)
 const storageSignature = ref(null)
 const patientSignatureExists = ref(false)
 
+/**
+ *  Getting local Storage
+ * */
+const storageVal = window.localStorage.getItem('patientForm')
+const storagePatientSignatureVal = window.localStorage.getItem('patientSignature')
+
 function save(t) {
   consentComponentSignature.value = signature1.value.save(t)
   const storageVal = window.localStorage.getItem('patientSignature')
@@ -38,22 +44,15 @@ function undo() {
   signature1.value.undo();
 }
 
-function getPatientInformation() {
-  const storageVal = window.localStorage.getItem('patientForm')
-  const storagePatientSignatureVal = window.localStorage.getItem('patientSignature')
-  if (storageVal) {
-    getPatientData.value = JSON.parse(storageVal)
-    //console.log(JSON.parse(storageVal))
-  }
+const getPatientInformation = () => {
+  if (storageVal) getPatientData.value = JSON.parse(storageVal)
   if (storagePatientSignatureVal) {
     storageSignature.value = JSON.parse(storagePatientSignatureVal)
     patientSignatureExists.value = true
   }
 }
 
-onBeforeMount(() => {
-  getPatientInformation()
-})
+onBeforeMount(getPatientInformation)
 
 </script>
 
