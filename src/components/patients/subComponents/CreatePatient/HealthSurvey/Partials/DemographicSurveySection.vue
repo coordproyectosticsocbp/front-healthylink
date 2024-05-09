@@ -6,6 +6,7 @@ import useLocalStorage from "@/composables/useLocalStorage.js";
 import {minLength, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {calculateAgeTwo} from "@/utils/helpers/ageCalculate.js";
+import {toast} from "vue3-toastify";
 
 const demographicVariables = useLocalStorage({
   edad: '',
@@ -55,10 +56,12 @@ const v$ = useVuelidate(rules, demographicVariables)
 const handleSubmit = async () => {
   const result = await v$.value.$validate()
   if (!result) {
-    alert('error in form')
+    window.localStorage.setItem('demographicHasError', true)
+    toast.error('Información demográfica INCOMPLETA')
     return false
   }
   // If the form is valid, perform some action with the form data
+  window.localStorage.setItem('demographicHasError', false)
   return true;
 }
 
@@ -84,9 +87,11 @@ const patientAge = () => {
     demographicVariables.value.edad = calculateAgeTwo(new Date(birthDate))
   }
 }
+/*
 const getCityOfBirth = (event) => {
   console.log(event.target.value)
 }
+*/
 
 const onIndigenousSelected = (event) => {
   if (event.target.value === 'Pueblos Indígenas') {
@@ -96,12 +101,11 @@ const onIndigenousSelected = (event) => {
   }
 }
 
-const alertEvent = (message) => {
+/*const alertEvent = (message) => {
   console.log(message)
-}
+}*/
 
 defineExpose({
-  alertEvent,
   handleSubmit
 })
 

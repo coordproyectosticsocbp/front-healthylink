@@ -33,13 +33,13 @@ defineExpose({
 
     <SurveyHeader/>
 
-    <DemographicSurveySection ref="demographicSurveySectionRef" />
+    <DemographicSurveySection ref="demographicSurveySectionRef"/>
 
-    <HealthHabitsSection ref="healthHabitsSectionRef" />
+    <HealthHabitsSection ref="healthHabitsSectionRef"/>
 
-    <PersonalHealthInformation ref="personalHealthInformationRef" />
+    <PersonalHealthInformation ref="personalHealthInformationRef"/>
 
-    <Covid19Section ref="covid19SectionRef" />
+    <Covid19Section ref="covid19SectionRef"/>
 
   </div>
 </template>

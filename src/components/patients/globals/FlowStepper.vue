@@ -19,7 +19,7 @@ const authUser = computed(() => store.getters["auth/authUser"])
 const wizard = ref(null)
 const createPatientComponentRef = ref(null)
 const patientHealthSurveyRef = ref(null)
-const currentSaveStep = ref(0)
+//const currentSaveStep = ref(0)
 const currentFormStepIndex = window.localStorage.getItem('currentFormStepIndex')
 const storagePatientVal = window.localStorage.getItem('patientForm')
 const storageSignatureVal = window.localStorage.getItem('patientSignature')
@@ -371,8 +371,6 @@ const saveHealthSurvey = async () => {
 
 const saveAllComponents = async () => {
   try {
-
-
     await saveUserInformation()
     await saveInformedConsent()
     await saveHealthSurvey()
@@ -389,22 +387,61 @@ const saveAllComponents = async () => {
   }
 }
 
-const clearSurveyLocalStorage = () => {
-  if (storagePatientVal) window.localStorage.removeItem('patientForm')
-  if (storageSignatureVal) window.localStorage.removeItem('patientSignature')
-  if (storageDemographicVal) window.localStorage.removeItem('patientDemographicInformation')
-  if (storageHealthHabitsVal) window.localStorage.removeItem('HealthHabitsInformation')
-  if (storagePersonalHealthVal) window.localStorage.removeItem('PersonalHealthInformation')
-  if (storageCovid19Val) window.localStorage.removeItem('covid19Information')
-  window.localStorage.setItem('validateCurrentSaveStep', 0)
-  window.localStorage.setItem('currentFormStepIndex', 0)
+const clearSurveyLocalStorage = async () => {
+  if (storagePatientVal) await window.localStorage.removeItem('patientForm')
+  if (storageSignatureVal) await window.localStorage.removeItem('patientSignature')
+  if (storageDemographicVal) await window.localStorage.removeItem('patientDemographicInformation')
+  if (storageHealthHabitsVal) await window.localStorage.removeItem('HealthHabitsInformation')
+  if (storagePersonalHealthVal) await window.localStorage.removeItem('PersonalHealthInformation')
+  if (storageCovid19Val) await window.localStorage.removeItem('covid19Information')
+  await window.localStorage.setItem('validateCurrentSaveStep', 0)
+  await window.localStorage.setItem('currentFormStepIndex', 0)
+  await wizard.value.changeTab(2, 0)
 }
 
 async function onComplete() {
   await patientHealthSurveyRef.value.testEvent()
-  await saveAllComponents()
-  //await saveUserInformation()
-  //await saveHealthSurvey()
+
+  let step1 = {}
+  let step2 = {}
+  let step3 = {}
+  let step4 = {}
+
+  const demographicHasErrorStorage = window.localStorage.getItem('demographicHasError')
+  const healthHabitsHasErrorStorage = window.localStorage.getItem('healthHabitsHasError')
+  const personalHealthInfoHasErrorStorage = window.localStorage.getItem('personalHealthInfoHasError')
+  const covid19InfoHasErrorStorage = window.localStorage.getItem('covid19InfoHasError')
+
+  if (demographicHasErrorStorage) step1 = JSON.parse(demographicHasErrorStorage)
+  if (healthHabitsHasErrorStorage) step2 = JSON.parse(healthHabitsHasErrorStorage)
+  if (personalHealthInfoHasErrorStorage) step3 = JSON.parse(personalHealthInfoHasErrorStorage)
+  if (covid19InfoHasErrorStorage) step4 = JSON.parse(covid19InfoHasErrorStorage)
+
+  //console.log(step1, step2, step3, step4)
+  if (!step1 && !step2 && !step3 && !step4) {
+    await saveAllComponents()
+    await clearSurveyLocalStorage()
+    //console.log('Esta limpio de errores')
+  } else {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oooops!',
+      text: 'Formulario incompleto, Verifique!'
+    })
+  }
+
+
+  /*console.log(validatePromise)
+  if (validatePromise) {
+    console.log('Entro aquí')
+  } else {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oooops!',
+      text: 'Formulario icompleto, Verifique!'
+    })
+  }*/
+  //await saveAllComponents()
 }
 
 
@@ -435,12 +472,6 @@ async function onComplete() {
     </tab-content>
     <!-- End Third Step -->
 
-    <!-- Fourth Step -->
-    <!--    <tab-content title="Historía Clínica">
-          <p>Ups!</p>
-        </tab-content>-->
-    <!-- End Fourth Step -->
-
     <template v-slot:footer="props">
       <div class="wizard-footer-left">
         <wizard-button v-if="props.activeTabIndex > 0" :style="props.fillButtonStyle" class="btn btn-global-color"
@@ -459,22 +490,6 @@ async function onComplete() {
         </wizard-button>
       </div>
     </template>
-
-    <!--    <template #custom-buttons-left>
-          <button class="btn btn-global-color">Atrás</button>
-        </template>
-
-        <template #custom-buttons-right>
-          <button class="btn btn-global-color">Seguir</button>
-        </template>-->
-
-    <!--    <template #prev>
-          <button class="btn btn-global-color">Atrás</button>
-        </template>
-
-        <template #next>
-          <button class="btn btn-global-color">Seguir</button>
-        </template>-->
 
     <template #finish>
       <button class="btn btn-aqua-color">Finalizar</button>

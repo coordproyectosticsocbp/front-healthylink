@@ -7,6 +7,7 @@ import useLocalStorage from "@/composables/useLocalStorage.js";
 import {email, minLength, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {toast} from "vue3-toastify";
+import dayjs from "dayjs";
 
 const storageCountryVal = window.localStorage.getItem('countries')
 const storageStateVal = window.localStorage.getItem('states')
@@ -218,10 +219,10 @@ defineExpose({
               <div class="col-md-6">
                 <label class="form-label" for="input7">Fecha de Nacimiento:</label>
                 <input id="input7" v-model="patient.fecha_nacimiento"
+                       :max="dayjs().format('YYYY-MM-DD')"
                        class="form-control"
                        required
                        type="date"
-
                 >
                 <span v-if="v$.fecha_nacimiento.$error"
                       class="text-danger"

@@ -146,3 +146,30 @@ export const hormonalesOptions = [
         model: 'tsh',
     },
 ]
+
+export const diagnosticImaging = [
+    {
+        label: 'Tomografía computarizada',
+        value: 'Tomografía computarizada',
+    },
+    {
+        label: 'Resonancia Magnética',
+        value: 'Resonancia Magnética',
+    },
+    {
+        label: 'Radiografía',
+        value: 'Radiografía',
+    },
+    {
+        label: 'Mamografía',
+        value: 'Mamografía',
+    },
+    {
+        label: 'Estudios de Medicina Nuclear',
+        value: 'Estudios de Medicina Nuclear',
+    },
+    {
+        label: 'Ecografía',
+        value: 'Ecografía'
+    }
+]

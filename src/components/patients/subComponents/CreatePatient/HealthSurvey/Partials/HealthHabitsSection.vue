@@ -19,11 +19,11 @@ const healthHabitsVariables = useLocalStorage({
   medicamento_para_presion_arterial: null,
   alto_nivel_colesterol: null,
   frecuencia_bebidas_alcoholicas: null,
-  afeccion_o_enfermededad_cronica__madre: false,
+  afeccion_o_enfermededad_cronica__madre: null,
   cual_afeccion_o_enfermededad_cronica__madre: [],
-  afeccion_o_enfermededad_cronica__padre: false,
+  afeccion_o_enfermededad_cronica__padre: null,
   cual_afeccion_o_enfermededad_cronica__padre: [],
-  afeccion_o_enfermededad_cronica__hermanos: false,
+  afeccion_o_enfermededad_cronica__hermanos: null,
   cual_afeccion_o_enfermededad_cronica__hermanos: [],
 }, 'HealthHabitsInformation')
 
@@ -45,10 +45,12 @@ const v$ = useVuelidate(rules, healthHabitsVariables)
 const handleSubmit = async () => {
   const result = await v$.value.$validate()
   if (!result) {
+    window.localStorage.setItem('healthHabitsHasError', true)
     toast.error('Habitos de salud INCOMPLETOS')
     return false
   }
   // If the form is valid, perform some action with the form data
+  window.localStorage.setItem('healthHabitsHasError', false)
   return true;
 }
 
@@ -267,6 +269,7 @@ defineExpose({
                     </li>
                   </ul>
                 </div>
+
                 <div v-if="healthHabitsVariables.afeccion_o_enfermededad_cronica__madre === 'Si'"
                      class="col-xl-4 col-md-4 col-sm-12"
                 >

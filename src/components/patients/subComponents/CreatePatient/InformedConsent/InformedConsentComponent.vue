@@ -1,7 +1,7 @@
 1-1-2-A
 <script setup>
 import {useStore} from "vuex";
-import {computed, onMounted, ref} from "vue";
+import {computed, onBeforeMount, ref} from "vue";
 
 const store = useStore()
 const authUser = computed(() => store.getters["auth/authUser"])
@@ -51,7 +51,7 @@ function getPatientInformation() {
   }
 }
 
-onMounted(() => {
+onBeforeMount(() => {
   getPatientInformation()
 })
 

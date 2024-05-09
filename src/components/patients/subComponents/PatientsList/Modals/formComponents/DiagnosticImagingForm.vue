@@ -2,6 +2,8 @@
 
 import {ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
+import {diagnosticImaging} from "@/utils/const/patientComplementaryInfo.js";
+import dayjs from "dayjs";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -65,24 +67,24 @@ defineExpose({
             <div class="col-11">
               <div class="row mb-2">
                 <div class="col">
-                  <label for="inputImageDate">Fecha:</label>
+                  <label class="form-label" for="inputImageDate">Fecha:</label>
                   <input id="inputImageDate"
                          v-model="initialValue.imageDate"
+                         :max="dayjs().format('YYYY-MM-DD')"
                          class="form-control"
                          required
                          type="date"
                   >
                 </div>
                 <div class="col">
-                  <label for="inputImageType">Tipo:</label>
-                  <input id="inputImageType"
-                         v-model="initialValue.imageType"
-                         aria-label="Tipo de Imagen"
-                         class="form-control"
-                         placeholder="Tipo de Imagen"
-                         required
-                         type="text"
-                  >
+                  <label class="form-label" for="inputImageType">Tipo:</label>
+                  <!--                  diagnosticImaging-->
+                  <select id="inputImageType" v-model="initialValue.imageType" class="form-select" required>
+                    <option value="null">Seleccione una Opción</option>
+                    <option v-for="item in diagnosticImaging" :key="item.value">
+                      {{ item.label }}
+                    </option>
+                  </select>
                 </div>
               </div>
               <div class="row">
