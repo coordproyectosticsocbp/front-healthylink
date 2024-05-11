@@ -337,7 +337,7 @@ onBeforeMount(() => {
             <div class="row">
               <div class="col">
                 <h5 class="fw-bold text-center">FORMULARIO DE CONSENTIMIENTO INFORMADO</h5>
-
+                <p>{{ texto }}</p>
                 <p class="fw-bold fs-6"><span>YO,</span>
                   {{
                     getPatientData.primer_nombre + ' ' + getPatientData.segundo_nombre

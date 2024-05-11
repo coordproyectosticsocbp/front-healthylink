@@ -33,7 +33,7 @@ const menu = [
       },
       {
         href: '/patient/patient-list',
-        name: 'Autocompletar CRF',
+        name: 'eCRF',
         icon: {text: 'Listado de Pacientes', class: 'fa fa-users'},
       },
       {
