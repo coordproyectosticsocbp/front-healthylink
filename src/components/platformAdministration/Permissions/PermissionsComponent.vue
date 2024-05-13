@@ -55,7 +55,55 @@ const getPermissionsFullList = async () => {
 }
 
 const deletePermission = async (permissionId) => {
-  console.log(permissionId)
+
+  if (!permissionId) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Ooops!',
+      text: 'Parametro del permiso vacío'
+    })
+    return false;
+  }
+
+  const loader = $loading.show()
+
+  Swal.fire({
+    title: "Estas seguro?",
+    text: "No podrás revertir esta acción!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, Eliminarlo!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+
+      PermissionService.deletePermission(permissionId)
+          .then(response => {
+            if (response.data.statusCode !== 200) {
+
+              Swal.fire({
+                icon: 'error',
+                title: 'Ooops!',
+                text: response.data.message
+              })
+              loader.hide()
+
+            } else {
+
+              const permissionIndex = permissions.value.indexOf(item => item.id === permissionId)
+              permissions.value.splice(permissionIndex, 1)
+
+              Swal.fire({
+                title: 'Permiso Eliminado Correctamente',
+                icon: "success"
+              });
+              loader.hide()
+
+            }
+          })
+    }
+  })
 }
 
 onMounted(getPermissionsFullList)
@@ -119,19 +167,20 @@ onMounted(getPermissionsFullList)
                   <template #item-actions="item">
 
                     <button :id="`user-button-${item.id}`"
-                            class="btn btn-outline-danger btn-sm me-1"
+                            :title="`Eliminar permiso: ${item.name}`"
+                            class="btn btn-outline-danger btn-sm"
                             type="button"
                             @click.prevent="deletePermission(item.id)"
                     >
                       <font-awesome-icon :icon="['fas', 'trash']"/>
                     </button>
 
-                    <button :id="`user-button-${item.id}`"
-                            class="btn btn-outline-warning btn-sm"
-                            type="button"
-                    >
-                      <font-awesome-icon :icon="['fas', 'pen']"/>
-                    </button>
+                    <!--                    <button :id="`user-button-${item.id}`"
+                                                class="btn btn-outline-warning btn-sm"
+                                                type="button"
+                                        >
+                                          <font-awesome-icon :icon="['fas', 'pen']"/>
+                                        </button>-->
 
                   </template>
                 </EasyDataTable>
