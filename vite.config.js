@@ -16,7 +16,7 @@ export default defineConfig({
     server: {
         hmr: {
             protocol: 'ws',
-            host: 'mibcode.com'
+            host: 'localhost',
         },
     },
     build: [
