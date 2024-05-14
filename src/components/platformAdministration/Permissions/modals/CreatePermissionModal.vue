@@ -110,7 +110,7 @@ const createPermission = async () => {
             >
               <span v-if="savingPermissionButtonStatus" aria-hidden="true" class="spinner-grow spinner-grow-sm"></span>
               <font-awesome-icon v-else :icon="['fas', 'floppy-disk']"/>
-              {{ savingPermissionButtonStatus ? 'Guardando Permiso' : 'crear Permiso' }}
+              {{ savingPermissionButtonStatus ? 'Guardando Permiso' : 'Crear Permiso' }}
             </button>
           </div>
         </div>

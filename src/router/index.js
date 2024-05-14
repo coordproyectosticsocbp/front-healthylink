@@ -25,6 +25,7 @@ import ShelfClinicalCounterSamples
 import Receivealot from "@/components/patients/subComponents/Receivealot/Receivealot.vue";
 import UserComponent from "@/components/platformAdministration/Users/UserComponent.vue";
 import PermissionsComponent from "@/components/platformAdministration/Permissions/PermissionsComponent.vue";
+import RolesComponent from "@/components/platformAdministration/Roles/RolesComponent.vue";
 
 
 const routes = [
@@ -168,7 +169,7 @@ const routes = [
                 path: '/administration/roles',
                 name: 'roles',
                 meta: {middleware: [auth]},
-                component: UserComponent
+                component: RolesComponent
             },
             {
                 path: '/administration/permissions',
