@@ -1,6 +1,6 @@
 <script setup>
 import {useStore} from "vuex";
-import {computed, ref} from "vue";
+import {computed,ref} from "vue";
 import {useLoading} from "vue-loading-overlay";
 import {getError} from "@/utils/helpers/getError.js";
 import shelfAssignmentService from "@/services/shelfAssignment/shelfAssignment.service.js";
@@ -11,6 +11,7 @@ const counterSampleCode = ref("")
 const shelfCode = ref("")
 const fullPage = ref(true)
 
+const errors = ref(null);
 /**
  * Expresiones regulares de validaciones
  * */
