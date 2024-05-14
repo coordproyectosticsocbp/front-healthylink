@@ -64,6 +64,37 @@ const menu = [
 
     ]
   },
+  {
+    header: 'Administración',
+    hiddenOnCollapse: false,
+  },
+  {
+    href: '/administration',
+    name: 'Administración',
+    icon: {text: 'Pacientes', class: 'fa fa-gear'},
+    children: [
+      {
+        href: '/administration/users',
+        name: 'Administrar Usuarios',
+        icon: {text: 'Crear Usuarios', class: 'fa fa-users-gear'},
+      },
+      {
+        href: '/administration/roles',
+        name: 'Administrar Roles',
+        icon: {text: 'Crear Roles', class: 'fa fa-user-shield'},
+      },
+      {
+        href: '/administration/permissions',
+        name: 'Administrar Permisos',
+        icon: {text: 'Crear Permisos', class: 'fa fa-user-check'},
+      },
+      {
+        href: '/administration/locations',
+        name: 'Crear Sedes',
+        icon: {text: 'Crear Sedes', class: 'fa fa-house-chimney-medical'},
+      },
+    ]
+  }
 ]
 
 </script>

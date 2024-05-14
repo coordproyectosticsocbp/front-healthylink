@@ -15,7 +15,7 @@
           <div class="card-body text-center">
             <h5 class="card-title">Total muestras tomadas</h5>
             <br>
-            <font-awesome-icon :icon="['fas', 'syringe']"  style="font-size: 3em;" />
+            <font-awesome-icon :icon="['fas', 'syringe']" style="font-size: 3em;"/>
             <p class="h1">{{ totalMuestras }}</p>
             <p class="text-muted">Muestras</p>
             <small class="text-secondary">Ultimos 30 dias </small>
@@ -26,9 +26,9 @@
           <div class="card-body text-center">
             <h5 class="card-title">Muestras enviadas al sponsor</h5>
             <br>
-            <font-awesome-icon :icon="['fas', 'flask-vial']" style="font-size: 3em;" />
+            <font-awesome-icon :icon="['fas', 'flask-vial']" style="font-size: 3em;"/>
 
-            <p class="h1">{{muestrasEnviadasAlSponsor}}</p>
+            <p class="h1">{{ muestrasEnviadasAlSponsor }}</p>
 
             <small class="text-secondary">* Ultimos 60 dias</small>
           </div>
@@ -93,7 +93,7 @@
 import Highcharts from 'highcharts';
 import {HighchartsVue} from 'highcharts-vue';
 
-import {watch,ref} from 'vue';
+import {ref, watch} from 'vue';
 
 // Definimos las props
 const props = {
@@ -104,7 +104,7 @@ const props = {
 };
 
 
-function renderSamplesbyState(data) {
+function renderSamplesByState(data) {
 
   const nombresEstados = data.map(item => item.nombre);
   const valores = data.map(item => item.cantidad_muestras);
@@ -232,7 +232,7 @@ function renderSamplesForDay(data) {
   });
 }
 
-function renderBarGeneroPatienst (data){
+function renderBarGeneroPatienst(data) {
   Highcharts.chart('barYearsPatienst', {
     chart: {
       type: 'pie'
@@ -281,7 +281,7 @@ function renderBarGeneroPatienst (data){
   });
 }
 
-function renderBarEdadPatients (data){
+function renderBarEdadPatients(data) {
 
   Highcharts.setOptions({
     colors: Highcharts.map(Highcharts.getOptions().colors, function (color) {
@@ -352,7 +352,7 @@ export default {
     const muestrasEnviadasAlSponsor = ref(0);
 
     watch(() => props.dataDashboard, (dataDashboardStart) => {
-      renderSamplesbyState(dataDashboardStart.muestrasPorEstados);
+      renderSamplesByState(dataDashboardStart.muestrasPorEstados);
       renderSamplesForDay(dataDashboardStart.muestrasTomadasPorDia);
       renderBarEdadPatients(dataDashboardStart.edadPacientes);
       renderBarGeneroPatienst(dataDashboardStart.generoDePacientes);
@@ -361,14 +361,14 @@ export default {
       muestrasEnviadasAlSponsor.value = 0;
     });
 
-    return { totalMuestras,muestrasEnviadasAlSponsor };
+    return {totalMuestras, muestrasEnviadasAlSponsor};
   },
   name: 'ChartComponent',
   components: {
     HighchartsVue,
   },
   methods: {
-    renderSamplesbyState
+    renderSamplesByState
   }
 }
 

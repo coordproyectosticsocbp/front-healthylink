@@ -64,9 +64,7 @@ const deletePermission = async (permissionId) => {
     })
     return false;
   }
-
-  const loader = $loading.show()
-
+  
   Swal.fire({
     title: "Estas seguro?",
     text: "No podrás revertir esta acción!",
@@ -77,6 +75,8 @@ const deletePermission = async (permissionId) => {
     confirmButtonText: "Si, Eliminarlo!"
   }).then((result) => {
     if (result.isConfirmed) {
+
+      const loader = $loading.show()
 
       PermissionService.deletePermission(permissionId)
           .then(response => {

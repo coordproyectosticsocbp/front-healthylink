@@ -71,8 +71,6 @@ const inactivateUser = async (userId) => {
     return false;
   }
 
-  const loader = $loading.show()
-
   Swal.fire({
     title: "Estas seguro?",
     text: "No podrás revertir esta acción!",
@@ -81,34 +79,38 @@ const inactivateUser = async (userId) => {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Si, Eliminarlo!"
-  }).then((result) => {
-    if (result.isConfirmed) {
-
-      UserService.inactivateUser(userId)
-          .then(response => {
-            if (response.data.statusCode !== 200) {
-
-              Swal.fire({
-                icon: 'error',
-                title: 'Ooops!',
-                text: response.data.message
-              })
-              loader.hide()
-
-            } else {
-
-              const userIndex = users.value.findIndex(item => item.id === userId)
-              users.value.splice(userIndex, 1)
-
-              Swal.fire({
-                title: 'Usuario Eliminado Correctamente',
-                icon: "success"
-              });
-              loader.hide()
-            }
-          })
-    }
   })
+      .then((result) => {
+        if (result.isConfirmed) {
+
+          const loader = $loading.show()
+
+          UserService.inactivateUser(userId)
+              .then(response => {
+                if (response.data.statusCode !== 200) {
+
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops!',
+                    text: response.data.message
+                  })
+                  loader.hide()
+
+                } else {
+
+                  const userIndex = users.value.findIndex(item => item.id === userId)
+                  users.value.splice(userIndex, 1)
+
+                  Swal.fire({
+                    title: 'Usuario Eliminado Correctamente',
+                    icon: "success"
+                  });
+                  loader.hide()
+                }
+              })
+        }
+      })
+      .catch(() => loader.hide())
 }
 
 onMounted(getFullUserList)
