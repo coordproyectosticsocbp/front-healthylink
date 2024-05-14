@@ -48,7 +48,6 @@ const getPatientsFullList = async () => {
       })
 }
 
-
 onMounted(
     getPatientsFullList
 )
