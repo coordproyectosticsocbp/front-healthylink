@@ -54,10 +54,9 @@ const fetchData = dataDashboard;
 
       <div class="container-fluid">
 
-        <DashboardGraphicsAdmin :patients="dataDash" :fetchPatients="fetchData"/>
-
         <router-view />
 
+        <!--<DashboardGraphicsAdmin :dataDashboard="dataDash" :fetchData="fetchData"/>-->
       </div>
 
     </div>
