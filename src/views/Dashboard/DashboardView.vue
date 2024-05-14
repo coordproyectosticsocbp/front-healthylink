@@ -7,8 +7,6 @@ import {onMounted, ref} from "vue";
 import {useLoading} from "vue-loading-overlay";
 import diagnosisService from "@/services/diagnosis/diagnosis.service.js";
 
-
-
 const store = useStore()
 const fullPage = ref(true)
 const $loading = useLoading({
