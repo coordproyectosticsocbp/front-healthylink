@@ -26,6 +26,7 @@ import Receivealot from "@/components/patients/subComponents/Receivealot/Receive
 import UserComponent from "@/components/platformAdministration/Users/UserComponent.vue";
 import PermissionsComponent from "@/components/platformAdministration/Permissions/PermissionsComponent.vue";
 import RolesComponent from "@/components/platformAdministration/Roles/RolesComponent.vue";
+import DashboardGraphicsAdmin from "@/components/Dashboard/DashboardGraphicsAdmin.vue";
 
 
 const routes = [
@@ -65,6 +66,16 @@ const routes = [
         name: 'dashboard',
         meta: {middleware: [auth]},
         component: DashboardView,
+        redirect: () => {
+            return {name: 'statistics'}
+        },
+        children: [
+            {
+                path: '/dashboard/statistics',
+                name: 'statistics',
+                component: DashboardGraphicsAdmin
+            }
+        ]
     },
     {
         path: '/patient',
