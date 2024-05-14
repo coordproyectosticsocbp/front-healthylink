@@ -23,6 +23,8 @@ import ShelfClinicalSamples
 import ShelfClinicalCounterSamples
     from "@/components/patients/subComponents/ShelfAssignment/SubComponents/ShelfClinicalCounterSamples.vue";
 import Receivealot from "@/components/patients/subComponents/Receivealot/Receivealot.vue";
+import UserComponent from "@/components/platformAdministration/Users/UserComponent.vue";
+import PermissionsComponent from "@/components/platformAdministration/Permissions/PermissionsComponent.vue";
 
 
 const routes = [
@@ -145,6 +147,41 @@ const routes = [
                     }
                 ]
             }
+        ]
+    },
+    {
+        path: '/administration',
+        name: 'administration',
+        meta: {middleware: [auth]},
+        component: DashboardView,
+        redirect: () => {
+            return {name: 'users'}
+        },
+        children: [
+            {
+                path: '/administration/users',
+                name: 'users',
+                meta: {middleware: [auth]},
+                component: UserComponent
+            },
+            {
+                path: '/administration/roles',
+                name: 'roles',
+                meta: {middleware: [auth]},
+                component: UserComponent
+            },
+            {
+                path: '/administration/permissions',
+                name: 'permissions',
+                meta: {middleware: [auth]},
+                component: PermissionsComponent
+            },
+            {
+                path: '/administration/locations',
+                name: 'locations',
+                meta: {middleware: [auth]},
+                component: UserComponent
+            },
         ]
     }
 ]
