@@ -1,6 +1,7 @@
+1-1-2-A
 <script setup>
 import {useStore} from "vuex";
-import {computed, onMounted, ref} from "vue";
+import {computed, onBeforeMount, ref} from "vue";
 
 const store = useStore()
 const authUser = computed(() => store.getters["auth/authUser"])
@@ -14,6 +15,12 @@ const consentComponentSignature = ref(null)
 const signature1 = ref(null)
 const storageSignature = ref(null)
 const patientSignatureExists = ref(false)
+
+/**
+ *  Getting local Storage
+ * */
+const storageVal = window.localStorage.getItem('patientForm')
+const storagePatientSignatureVal = window.localStorage.getItem('patientSignature')
 
 function save(t) {
   consentComponentSignature.value = signature1.value.save(t)
@@ -37,21 +44,15 @@ function undo() {
   signature1.value.undo();
 }
 
-onMounted(() => {
-  const storageVal = window.localStorage.getItem('patientForm')
-  const storagePatientSignatureVal = window.localStorage.getItem('patientSignature')
+const getPatientInformation = () => {
   if (storageVal) getPatientData.value = JSON.parse(storageVal)
   if (storagePatientSignatureVal) {
     storageSignature.value = JSON.parse(storagePatientSignatureVal)
     patientSignatureExists.value = true
   }
-  //const storageSignature = window.localStorage.getItem('patientSignature')
+}
 
-  /* if (storageSignature) {
-     console.log(JSON.parse(storageSignature).signature)
-     signature1.value = JSON.parse(storageSignature).signature
-   }*/
-})
+onBeforeMount(getPatientInformation)
 
 </script>
 

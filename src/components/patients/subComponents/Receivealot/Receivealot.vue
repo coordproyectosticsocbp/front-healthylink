@@ -24,7 +24,7 @@ const transportLote = () => {
     code_lote: codeLote.value,
   }
 
-  TransportLoteService.transporLote(payload)
+  TransportLoteService.receivealot(payload)
       .then((response) => {
         if (response.data.statusCode !== 201) {
           Swal.fire({
@@ -43,7 +43,7 @@ const transportLote = () => {
       })
       .finally(() => {
         loading.value = false;
-      });//
+      });
 }
 </script>
 
@@ -61,7 +61,7 @@ const transportLote = () => {
                 <div class="row mb-5">
                   <div class="col">
                     <h5 class="text-center text-uppercase fw-bold">
-                      Transportar lote de muestras y contramuestras
+                      Recibir lote en centro de custodio
                     </h5>
                   </div>
                 </div>

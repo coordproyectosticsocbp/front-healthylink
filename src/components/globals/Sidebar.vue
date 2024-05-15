@@ -33,7 +33,7 @@ const menu = [
       },
       {
         href: '/patient/patient-list',
-        name: 'Autocompletar CRF',
+        name: 'eCRF',
         icon: {text: 'Listado de Pacientes', class: 'fa fa-users'},
       },
       {
@@ -48,16 +48,53 @@ const menu = [
       },
       {
         href: '/patient/transport',
-        name: 'Trasportar lote',
+        name: 'Transportar lote',
         icon: {text: 'Crear lote', class: 'fa fa-dolly'},
+      },
+      {
+        href: '/patient/receivealot',
+        name: 'Recibir lote muestras',
+        icon: {text: 'Recibir lote', class: 'fa fa-warehouse'},
       },
       {
         href: '/patient/shelf-assignment',
         name: 'Asignación de Estante',
-        icon: {text: 'Crear lote', class: 'fa fa-warehouse'},
+        icon: {text: 'Crear lote', class: 'fas fa-temperature-empty'}
       }
+
     ]
   },
+  {
+    header: 'Administración',
+    hiddenOnCollapse: false,
+  },
+  {
+    href: '/administration',
+    name: 'Administración',
+    icon: {text: 'Pacientes', class: 'fa fa-gear'},
+    children: [
+      {
+        href: '/administration/users',
+        name: 'Administrar Usuarios',
+        icon: {text: 'Crear Usuarios', class: 'fa fa-users-gear'},
+      },
+      {
+        href: '/administration/roles',
+        name: 'Administrar Roles',
+        icon: {text: 'Crear Roles', class: 'fa fa-user-shield'},
+      },
+      {
+        href: '/administration/permissions',
+        name: 'Administrar Permisos',
+        icon: {text: 'Crear Permisos', class: 'fa fa-user-check'},
+      },
+      {
+        href: '/administration/locations',
+        name: 'Crear Sedes',
+        icon: {text: 'Crear Sedes', class: 'fa fa-house-chimney-medical'},
+      },
+    ]
+  }
 ]
 
 </script>

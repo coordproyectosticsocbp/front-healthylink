@@ -2,6 +2,7 @@
 
 import {ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
+import {drugsList} from "@/utils/const/drugsList.js";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -16,7 +17,13 @@ const initialValue = ref({
 const pharmacologicalHistory = useLocalStorage([], `pharmacologicalHistory-${props.itemIndexVal}`)
 
 const addItemToPharmArray = () => {
-  pharmacologicalHistory.value.push({...initialValue.value})
+  //pharmacologicalHistory.value.push({...initialValue.value})
+  pharmacologicalHistory.value.push({
+    drugName: initialValue.value.drugName[0].DescripcionComercial,
+    drugDosage: initialValue.value.drugDosage,
+    drugPresentation: '',
+    drugConcentration: '',
+  })
   initialValue.value = {
     drugName: '',
     drugDosage: 0,
@@ -60,17 +67,21 @@ defineExpose({
       <div class="col">
         <form autocomplete="off" @submit.prevent="addItemToPharmArray">
           <div class="row">
-            <div class="col-5">
-
-              <input id="input-drugName" v-model="initialValue.drugName"
-                     aria-label="First name"
-                     class="form-control"
-                     placeholder="Nombre Medicamento"
-                     required
-                     type="text"
-              >
+            <div class="col-8">
+              <label class="form-label" for="input-drug">Medicamento:</label>
+              <VueMultiselect
+                  id="input-drug"
+                  v-model="initialValue.drugName"
+                  :close-on-select="true"
+                  :multiple="true"
+                  :options="drugsList"
+                  label="DescripcionComercial"
+                  placeholder="Pick some"
+                  track-by="DescripcionComercial"
+              />
             </div>
             <div class="col-2">
+              <label class="form-label" for="input-dosage">Dosis:</label>
               <input id="input-dosage" v-model="initialValue.drugDosage"
                      aria-label="Last name"
                      class="form-control"
@@ -79,23 +90,23 @@ defineExpose({
                      type="number"
               >
             </div>
-            <div class="col-2">
-              <input id="input-presentation" v-model="initialValue.drugPresentation"
-                     aria-label="Last name"
-                     class="form-control"
-                     placeholder="Presentación"
-                     required
-                     type="text">
-            </div>
-            <div class="col-2">
-              <input id="input-concentration" v-model="initialValue.drugConcentration"
-                     aria-label="Last name"
-                     class="form-control"
-                     placeholder="Concentración"
-                     required
-                     type="text">
-            </div>
-            <div class="col-1">
+            <!--            <div class="col-2">
+                          <input id="input-presentation" v-model="initialValue.drugPresentation"
+                                 aria-label="Last name"
+                                 class="form-control"
+                                 placeholder="Presentación"
+                                 required
+                                 type="text">
+                        </div>
+                        <div class="col-2">
+                          <input id="input-concentration" v-model="initialValue.drugConcentration"
+                                 aria-label="Last name"
+                                 class="form-control"
+                                 placeholder="Concentración"
+                                 required
+                                 type="text">
+                        </div>-->
+            <div class="col-2 d-flex align-items-center justify-content-end">
               <button class="btn btn-sm rounded btn-outline-secondary"
                       title="Agregar nuevo registro"
                       type="submit"
@@ -117,17 +128,39 @@ defineExpose({
         <ul>
           <li v-for="(item, index) in pharmacologicalHistory" :key="index" class="mb-1">
 
-            <div class="d-flex drug-item-flex justify-content-between align-items-center">
-              <p class="mb-0">{{ item.drugName.toUpperCase() }}</p>
-              <p class="mb-0">{{ item.drugDosage }}</p>
-              <p class="mb-0">{{ item.drugPresentation.toUpperCase() }}</p>
-              <p class="mb-0">{{ item.drugConcentration.toUpperCase() }}</p>
-              <button class="btn btn-sm rounded btn-outline-danger"
-                      @click="removeDrugFromArray(index)"
-              >
-                <font-awesome-icon :icon="['fas', 'trash']"/>
-              </button>
+            <div class="row">
+              <div class="col-5 fw-bolder">MEDICAMENTO</div>
+              <div class="col-5 text-center fw-bolder">DOSIS</div>
+              <div class="col-2 text-center fw-bolder">OPCIONES</div>
             </div>
+
+            <div class="row mb-3">
+              <div class="col-5">
+                <p class="mb-0">{{ item.drugName }}</p>
+              </div>
+              <div class="col-5 text-center">
+                <p class="mb-0">{{ item.drugDosage }}</p>
+              </div>
+              <div class="col-2 text-center">
+                <button class="btn btn-sm rounded btn-outline-danger"
+                        @click="removeDrugFromArray(index)"
+                >
+                  <font-awesome-icon :icon="['fas', 'trash']"/>
+                </button>
+              </div>
+            </div>
+
+            <!--            <div class="d-flex drug-item-flex justify-content-between align-items-center">
+                          <p class="mb-0">{{ item.drugName }}</p>
+                          <p class="mb-0">{{ item.drugDosage }}</p>
+                          &lt;!&ndash;              <p class="mb-0">{{ item.drugPresentation.toUpperCase() }}</p>
+                                        <p class="mb-0">{{ item.drugConcentration.toUpperCase() }}</p>&ndash;&gt;
+                          <button class="btn btn-sm rounded btn-outline-danger"
+                                  @click="removeDrugFromArray(index)"
+                          >
+                            <font-awesome-icon :icon="['fas', 'trash']"/>
+                          </button>
+                        </div>-->
 
           </li>
         </ul>

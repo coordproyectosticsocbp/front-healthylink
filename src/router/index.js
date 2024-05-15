@@ -22,6 +22,11 @@ import ShelfClinicalSamples
     from "@/components/patients/subComponents/ShelfAssignment/SubComponents/ShelfClinicalSamples.vue";
 import ShelfClinicalCounterSamples
     from "@/components/patients/subComponents/ShelfAssignment/SubComponents/ShelfClinicalCounterSamples.vue";
+import Receivealot from "@/components/patients/subComponents/Receivealot/Receivealot.vue";
+import UserComponent from "@/components/platformAdministration/Users/UserComponent.vue";
+import PermissionsComponent from "@/components/platformAdministration/Permissions/PermissionsComponent.vue";
+import RolesComponent from "@/components/platformAdministration/Roles/RolesComponent.vue";
+import DashboardGraphicsAdmin from "@/components/Dashboard/DashboardGraphicsAdmin.vue";
 
 
 const routes = [
@@ -61,6 +66,16 @@ const routes = [
         name: 'dashboard',
         meta: {middleware: [auth]},
         component: DashboardView,
+        redirect: () => {
+            return {name: 'statistics'}
+        },
+        children: [
+            {
+                path: '/dashboard/statistics',
+                name: 'statistics',
+                component: DashboardGraphicsAdmin
+            }
+        ]
     },
     {
         path: '/patient',
@@ -116,6 +131,12 @@ const routes = [
                 component: transport
             },
             {
+                path: '/patient/receivealot',
+                name: 'receivealot',
+                meta: {middleware: [auth]},
+                component: Receivealot
+            },
+            {
                 path: '/patient/shelf-assignment',
                 name: 'shelf-assignment',
                 meta: {middleware: [auth]},
@@ -138,6 +159,41 @@ const routes = [
                     }
                 ]
             }
+        ]
+    },
+    {
+        path: '/administration',
+        name: 'administration',
+        meta: {middleware: [auth]},
+        component: DashboardView,
+        redirect: () => {
+            return {name: 'users'}
+        },
+        children: [
+            {
+                path: '/administration/users',
+                name: 'users',
+                meta: {middleware: [auth]},
+                component: UserComponent
+            },
+            {
+                path: '/administration/roles',
+                name: 'roles',
+                meta: {middleware: [auth]},
+                component: RolesComponent
+            },
+            {
+                path: '/administration/permissions',
+                name: 'permissions',
+                meta: {middleware: [auth]},
+                component: PermissionsComponent
+            },
+            {
+                path: '/administration/locations',
+                name: 'locations',
+                meta: {middleware: [auth]},
+                component: UserComponent
+            },
         ]
     }
 ]

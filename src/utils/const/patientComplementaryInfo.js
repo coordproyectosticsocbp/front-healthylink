@@ -86,20 +86,20 @@ export const laboratoriesOptions = [
 
 export const biochemicalOptions = [
     {
-        label: 'Creatinina',
-        value: 'Creatinina',
+        label: 'Creatinina - mg/dl',
+        value: 'Creatinina - mg/dl',
     },
     {
-        label: 'Urea',
-        value: 'Urea',
+        label: 'Urea - mg/dl',
+        value: 'Urea - mg/dl',
     },
     {
-        label: 'TGO',
-        value: 'TGO',
+        label: 'TGO - U/l',
+        value: 'TGO - U/l',
     },
     {
-        label: 'TGP',
-        value: 'TGP',
+        label: 'TGP - U/l ',
+        value: 'TGP - U/l ',
     },
     {
         label: 'Bilirrubina total',
@@ -145,4 +145,31 @@ export const hormonalesOptions = [
         value: 'TSH (hormona estimulante del tiroides)',
         model: 'tsh',
     },
+]
+
+export const diagnosticImaging = [
+    {
+        label: 'Tomografía computarizada',
+        value: 'Tomografía computarizada',
+    },
+    {
+        label: 'Resonancia Magnética',
+        value: 'Resonancia Magnética',
+    },
+    {
+        label: 'Radiografía',
+        value: 'Radiografía',
+    },
+    {
+        label: 'Mamografía',
+        value: 'Mamografía',
+    },
+    {
+        label: 'Estudios de Medicina Nuclear',
+        value: 'Estudios de Medicina Nuclear',
+    },
+    {
+        label: 'Ecografía',
+        value: 'Ecografía'
+    }
 ]

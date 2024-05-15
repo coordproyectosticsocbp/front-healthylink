@@ -7,6 +7,7 @@ import useLocalStorage from "@/composables/useLocalStorage.js";
 import {email, minLength, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {toast} from "vue3-toastify";
+import dayjs from "dayjs";
 
 const storageCountryVal = window.localStorage.getItem('countries')
 const storageStateVal = window.localStorage.getItem('states')
@@ -22,13 +23,21 @@ const countriesObject = computed(() => {
 const statesObject = computed(() => {
   let arrayStates = []
   if (storageStateVal) arrayStates = JSON.parse(storageStateVal)
-  return arrayStates.filter((state) => state.pais_id === parseInt(patient.value.pais_residencia))
+  const paisIndex = countriesObject.value.find(item => item.name.toLowerCase() === patient.value.pais_residencia.toLowerCase())
+  if (!paisIndex) {
+    arrayStates = []
+  }
+  return arrayStates.filter((state) => state.pais_id === paisIndex.id)
 })
 
 const citiesObject = computed(() => {
-  let arrayCountries = [];
-  if (storageCitiesVal) arrayCountries = JSON.parse(storageCitiesVal)
-  return arrayCountries.filter((city) => city.departamentos_regiones_id === parseInt(patient.value.departamento_residencia))
+  let arrayCities = [];
+  if (storageCitiesVal) arrayCities = JSON.parse(storageCitiesVal)
+  const stateIndex = statesObject.value.find(item => item.name.toLowerCase() === patient.value.departamento_residencia.toLowerCase())
+  if (!stateIndex) {
+    arrayCities = []
+  }
+  return arrayCities.filter((city) => city.departamentos_regiones_id === stateIndex.id)
 })
 
 const patient = useLocalStorage({
@@ -88,8 +97,6 @@ defineExpose({
   alertEvent,
   handleSubmit
 })
-
-//onMounted(getGeoCountries)
 
 </script>
 
@@ -212,10 +219,10 @@ defineExpose({
               <div class="col-md-6">
                 <label class="form-label" for="input7">Fecha de Nacimiento:</label>
                 <input id="input7" v-model="patient.fecha_nacimiento"
+                       :max="dayjs().format('YYYY-MM-DD')"
                        class="form-control"
                        required
                        type="date"
-
                 >
                 <span v-if="v$.fecha_nacimiento.$error"
                       class="text-danger"
@@ -299,7 +306,7 @@ defineExpose({
                   <option value="null">Seleccione el país</option>
                   <option v-for="country in countriesObject"
                           :key="country.id"
-                          :value="country.id"
+                          :value="country.name.toUpperCase()"
                           v-text="country.name.toUpperCase()"
                   />
                 </select>
@@ -315,7 +322,7 @@ defineExpose({
                   <option value="null">Seleccione el Departamento</option>
                   <option v-for="state in statesObject"
                           :key="state.id"
-                          :value="state.id"
+                          :value="state.name.toUpperCase()"
                           v-text="state.name.toUpperCase()"
                   />
                 </select>
@@ -328,7 +335,7 @@ defineExpose({
                   <option value="null">Seleccione la Ciudad</option>
                   <option v-for="city in citiesObject"
                           :key="city.id"
-                          :value="city.id"
+                          :value="city.name.toUpperCase()"
                           v-text="city.name.toUpperCase()"
                   />
                 </select>

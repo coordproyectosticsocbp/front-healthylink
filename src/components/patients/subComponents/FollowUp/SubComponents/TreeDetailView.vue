@@ -1,7 +1,6 @@
 <script setup>
 
 import PatientTrackingDetailService from "@/services/patients/PatientTrackingDetail.service.js";
-import {getError} from "@/utils/helpers/getError.js";
 import {onUnmounted, ref} from "vue";
 import dayjs from "dayjs";
 
@@ -22,12 +21,12 @@ const getTrackingDetail = async (patientId) => {
         } else {
           trackingDetailInfo.value = response.data.data
           infoLoadingStatus.value = false
-          console.log(response.data.data)
+          //console.log(response.data.data)
         }
       })
       .catch((error) => {
         infoLoadingStatus.value = false
-        console.log(getError(error))
+        //console.log(getError(error))
       })
 }
 

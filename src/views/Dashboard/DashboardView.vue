@@ -104,6 +104,7 @@ const citiesObject = computed(() => store.getters["geocoding/cities"])*/
 <template>
   <div id="wrapper">
     <Sidebar/>
+
     <ContentWrappers/>
 
   </div>

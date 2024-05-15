@@ -6,17 +6,18 @@
   <!-- Reset Password Component -->
   <div class="card-body pt-0">
     <form action="index.html" class="my-4">
-      <div class="form-group mb-3">
+
+      <div class="form-group mb-5">
         <label class="form-label" for="userEmail">Email:</label>
-        <input id="userEmail" class="form-control form-control-sm" name="Email" placeholder="Ingrese su Email"
+        <input id="userEmail" class="form-control" name="Email" placeholder="Ingrese su Email"
                type="text">
       </div><!--end form-group-->
 
       <div class="form-group mb-0 row">
         <div class="col-12">
-          <button class="btn btn-global-color btn-sm w-100" type="button">
+          <button class="btn btn-global-color w-100" type="button">
             Recuperar mi Contraseña
-            <font-awesome-icon :icon="['fas', 'unlock']" />
+            <font-awesome-icon :icon="['fas', 'unlock']"/>
           </button>
         </div><!--end col-->
       </div> <!--end form-group-->

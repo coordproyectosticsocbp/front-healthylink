@@ -1,9 +1,9 @@
 <script setup>
-import { computed, reactive, ref } from 'vue'
+import {computed, reactive, ref} from 'vue'
 import router from '@/router/index.js'
-import { getError } from '@/utils/helpers/getError.js'
+import {getError} from '@/utils/helpers/getError.js'
 import AuthService from '@/services/authentication/Auth.service.js'
-import { useStore } from 'vuex'
+import {useStore} from 'vuex'
 
 const form = reactive({
   email: '',
@@ -27,11 +27,11 @@ async function loginFunction() {
 
     if (authUser) {
       store.commit('auth/SET_LOADING_USER', false)
-      await store.dispatch('auth/setGuest', { value: 'isNotGuest' })
-      router.push({ path: '/dashboard' })
+      await store.dispatch('auth/setGuest', {value: 'isNotGuest'})
+      router.push({path: '/dashboard'})
     } else {
       const error = Error(
-        'Unable to fetch user after login, check your API settings.'
+          'Unable to fetch user after login, check your API settings.'
       )
       error.name = 'Fetch User'
       throw error
@@ -57,7 +57,7 @@ async function loginFunction() {
         <input id="username"
                v-model="form.email"
                autofocus
-               class="form-control form-control-sm"
+               class="form-control"
                name="username"
                placeholder="Email o Usuario"
                required
@@ -69,17 +69,17 @@ async function loginFunction() {
 
       <div class="mb-3">
         <label class="form-label" for="userpassword">Contraseña:</label>
-        <input id="userpassword" v-model="form.password" class="form-control form-control-sm"
+        <input id="userpassword" v-model="form.password" class="form-control"
                name="password"
                placeholder="Contraseña"
                required
                type="password">
       </div>
 
-      <div class="mb-3">
+      <div class="mb-4">
         <div class="d-flex justify-content-end">
           <router-link :to="{name: 'reset-password'}" class="text-muted text-decoration-none">
-            <font-awesome-icon :icon="['fas', 'key']" />
+            <font-awesome-icon :icon="['fas', 'key']"/>
             Olvidé mi Contraseña?
           </router-link>
         </div>
@@ -87,7 +87,7 @@ async function loginFunction() {
 
       <div v-if="errors" class="mb-3 text-danger fw-bold">
         <p class="text-danger">
-          <font-awesome-icon :icon="['fas', 'triangle-exclamation']" />
+          <font-awesome-icon :icon="['fas', 'triangle-exclamation']"/>
           Credendiales invalidas, Verifique...
         </p>
       </div>
@@ -97,16 +97,16 @@ async function loginFunction() {
           <div class="d-grid mt-3">
 
             <button :disabled="isLoading"
-                    class="btn btn-global-color btn-sm"
+                    class="btn btn-global-color"
                     type="submit"
             >
               <span
-                v-if="isLoading"
-                aria-hidden="true"
-                class="spinner-border spinner-border-sm"
-                role="status"
+                  v-if="isLoading"
+                  aria-hidden="true"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
               ></span>
-              <font-awesome-icon v-else :icon="['fas', 'right-to-bracket']" />
+              <font-awesome-icon v-else :icon="['fas', 'right-to-bracket']"/>
 
               {{ isLoading ? 'Ingresando...' : 'Ingresar' }}
             </button>

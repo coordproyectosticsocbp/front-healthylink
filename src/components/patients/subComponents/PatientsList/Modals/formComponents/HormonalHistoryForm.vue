@@ -2,6 +2,7 @@
 import {hormonalesOptions} from "@/utils/const/patientComplementaryInfo.js";
 import {ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
+import dayjs from "dayjs";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -62,6 +63,7 @@ defineExpose({
             <div class="col-3 d-flex align-items-center">
               <input id="inputLabDate"
                      v-model="initialValue.labDate"
+                     :max="dayjs().format('YYYY-MM-DD')"
                      class="form-control"
                      required
                      type="date"

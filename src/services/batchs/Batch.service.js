@@ -8,7 +8,7 @@ export default {
         return API.apiClient.post(`/api/v1/encuesta/post/tempmuestras`, payload)
     },
     deleteBatchFromTemporal(payload) {
-        return API.apiClient.post(`/api/v1/encuesta/post/tempmuestras`, payload)
+        return API.apiClient.post(`/api/v1/encuesta/delete/tempmuestras`, payload)
     },
     saveRealBatch(payload) {
         return API.apiClient.post(`/api/v1/encuesta/post/asignarmuestrasalote`, payload)
