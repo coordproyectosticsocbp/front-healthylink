@@ -54,6 +54,16 @@ export const patientComplementayTabOption = [
         value: 'imagen',
         status: false
     },
+    {
+        name: 'Anexos',
+        value: 'anexoss',
+        status: true
+    },
+    {
+        name: 'Anexos',
+        value: 'attachment',
+        status: false
+    },
 ]
 
 export const laboratoriesOptions = [
