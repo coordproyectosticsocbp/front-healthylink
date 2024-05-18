@@ -8,9 +8,7 @@ onMounted(() => {
 
   const storage = window.localStorage.getItem('currentFormStepIndex')
   if (storage) storageInfo.value = JSON.parse(storage)
-
-  console.log(storageInfo.value)
-
+  
 })
 
 </script>

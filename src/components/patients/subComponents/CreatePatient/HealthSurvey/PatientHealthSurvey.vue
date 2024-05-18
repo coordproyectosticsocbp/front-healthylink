@@ -14,9 +14,9 @@ import {useLoading} from "vue-loading-overlay";
 import {getError} from "@/utils/helpers/getError.js";
 import PatientService from "@/services/patients/Patient.service.js";
 import {toast} from "vue3-toastify";
-import {separateArrayBySemicolon} from "@/utils/helpers/separateBySemiColon.js";
 import {useStore} from "vuex";
 import {useRouter} from "vue-router";
+import {separateArrayBySemicolon} from "@/utils/helpers/separateBySemiColon.js";
 
 /*
  * USING ROUTER
@@ -45,8 +45,8 @@ const storageCovid19Val = window.localStorage.getItem('covid19Information')
  *  Component Save Position
  * */
 const component1Saved = ref(false);
-const component2Saved = ref(false);
-const component3Saved = ref(false);
+//const component2Saved = ref(false);
+//const component3Saved = ref(false);
 
 /**
  *  Loader Variables
@@ -137,22 +137,40 @@ const saveUserInformation = async () => {
 }
 const saveInformedConsent = async () => {
 
-  if (!component1Saved.value) {
+  /*if (!component1Saved.value) {
     throw new Error('Componente 1 no guardado')
-  }
+  }*/
 
   const loader = $loading.show()
   try {
 
     let storageFormatted = []
     let storagePatientInfo = []
+    //let storagePatientFormatted = []
+    let storageDemographicFormatted = []
+    let storageHealthHabitsFormatted = []
+    let storagePersonalHealthFormatted = []
+    let storageCovid19Formatted = []
+
+    //if (storagePatientVal) storagePatientFormatted = JSON.parse(storagePatientVal)
+    if (storageDemographicVal) storageDemographicFormatted = JSON.parse(storageDemographicVal)
+    if (storageHealthHabitsVal) storageHealthHabitsFormatted = JSON.parse(storageHealthHabitsVal)
+    if (storagePersonalHealthVal) storagePersonalHealthFormatted = JSON.parse(storagePersonalHealthVal)
+    if (storageCovid19Val) storageCovid19Formatted = JSON.parse(storageCovid19Val)
     if (storageSignatureVal) storageFormatted = JSON.parse(storageSignatureVal)
     if (storagePatientVal) storagePatientInfo = JSON.parse(storagePatientVal)
-    //console.log('Signature Storage: ---> ' + storageFormatted)
-    //console.log('Patient Storage: ---> ' + storagePatientInfo)
-    console.log(storageFormatted)
 
-    if (storageFormatted === null && storagePatientInfo === null) {
+    /*console.log(storageDemographicFormatted)
+    console.log(storageHealthHabitsFormatted)
+    console.log(storagePersonalHealthFormatted)
+    console.log(storageCovid19Formatted)
+    console.log(storageFormatted)
+    console.log(storagePatientInfo)*/
+
+    if (storageFormatted === null || storagePatientInfo === null
+        || storageDemographicFormatted === null || storageHealthHabitsFormatted === null
+        || storagePersonalHealthFormatted === null || storageCovid19Formatted === null
+    ) {
       Swal.fire({
         icon: 'error',
         title: 'Oooops!',
@@ -161,14 +179,73 @@ const saveInformedConsent = async () => {
       loader.hide()
     } else {
 
+      console.log('bn aqui antes payload---->')
       const payload = {
         tipo_consentimiento_id: 1,
         tipo_estudio_id: 1,
         tipo_doc: storagePatientInfo.tipo_doc,
         numero_documento: storagePatientInfo.numero_documento,
-        firma: storageFormatted
+        firma: storageFormatted,
+        sedes_toma_muestras_id: 1,
+        user_created_id: authUser.value.id,
+        detalle: [
+          {
+            altura: storageDemographicFormatted.altura,
+            peso: storageDemographicFormatted.peso,
+            etnia: storageDemographicFormatted.etnia,
+            pais_nacimiento: storageDemographicFormatted.pais_nacimiento,
+            ciudad_nacimiento: storageDemographicFormatted.ciudad_nacimiento,
+            nacionalidad_pais_abuelo_materno: storageDemographicFormatted.pais_abuelo_materno,
+            nacionalidad_ciudad_abuelo_materno: storageDemographicFormatted.ciudad_abuelo_materno,
+            nacionalidad_pais_abuela_materno: storageDemographicFormatted.pais_abuela_materna,
+            nacionalidad_ciudad_abuela_materno: storageDemographicFormatted.ciudad_abuela_materna,
+            nacionalidad_pais_abuelo_paterno: storageDemographicFormatted.pais_abuelo_paterno,
+            nacionalidad_ciudad_abuelo_paterno: storageDemographicFormatted.ciudad_abuelo_paterno,
+            nacionalidad_pais_abuela_paterno: storageDemographicFormatted.pais_abuela_paterna,
+            nacionalidad_ciudad_abuela_paterno: storageDemographicFormatted.ciudad_abuela_paterna,
+            es_fumador: storageHealthHabitsFormatted.es_fumador,
+            presion_arterial: storageHealthHabitsFormatted.presion_arterial,
+            medicamento_para_presion_arterial: storageHealthHabitsFormatted.medicamento_para_presion_arterial,
+            altos_niveles_colesterol: storageHealthHabitsFormatted.alto_nivel_colesterol,
+            frecuencia_consumo_bebidas_alcoholicas: storageHealthHabitsFormatted.frecuencia_bebidas_alcoholicas,
+            afeccion_o_enfermededad_cronica__madre: storageHealthHabitsFormatted.afeccion_o_enfermededad_cronica__madre,
+            cual_afeccion_o_enfermededad_cronica__madre: separateArrayBySemicolon(storageHealthHabitsFormatted.cual_afeccion_o_enfermededad_cronica__madre),
+            //cual_afeccion_o_enfermededad_cronica__madre: null,
+            afeccion_o_enfermededad_cronica__padre: storageHealthHabitsFormatted.afeccion_o_enfermededad_cronica__padre,
+            cual_afeccion_o_enfermededad_cronica__padre: separateArrayBySemicolon(storageHealthHabitsFormatted.cual_afeccion_o_enfermededad_cronica__padre),
+            //cual_afeccion_o_enfermededad_cronica__padre: null,
+            afeccion_o_enfermededad_cronica__hermanos: storageHealthHabitsFormatted.afeccion_o_enfermededad_cronica__hermanos,
+            cual_afeccion_o_enfermededad_cronica__hermanos: separateArrayBySemicolon(storageHealthHabitsFormatted.cual_afeccion_o_enfermededad_cronica__hermanos),
+            //cual_afeccion_o_enfermededad_cronica__hermanos: null,
+            enfermedades_cronicas: storagePersonalHealthFormatted.enfermedades_cronicas,
+            enfermedades_pulmonares: storagePersonalHealthFormatted.enfermedades_pulmonares,
+            enfermedades_endocrinas_metabolicas: storagePersonalHealthFormatted.enfermedades_endocrinas_metabolicas,
+            enfermedades_digestivas: storagePersonalHealthFormatted.enfermedades_digestivas,
+            enfermedades_renales: storagePersonalHealthFormatted.enfermedades_renales,
+            enfermedades_neurologicas: storagePersonalHealthFormatted.enfermedades_neurologicas,
+            enfermedades_dermatologicas: storagePersonalHealthFormatted.enfermedades_dermatologicas,
+            enfermedades_reumaticas: storagePersonalHealthFormatted.enfermedades_reumaticas,
+            diagnosticado_cancer_ultimos_cinco_anos: storagePersonalHealthFormatted.diagnosticado_cancer_ultimos_cinco_anos,
+            //cancer_diagnosticado: separateArrayBySemicolon(storagePersonalHealthFormatted.cancer_diagnosticado),
+            cancer_diagnosticado: null,
+            afecciones_diagnosticadas: separateArrayBySemicolon(storagePersonalHealthFormatted.afecciones_diagnosticadas),
+            //afecciones_diagnosticadas: "Fiebre amarilla",
+            analisis_sangre_ultimos_seis_meses: storagePersonalHealthFormatted.analisis_sangre_ultimos_seis_meses,
+            prueba_positiva_covid_19: storageCovid19Formatted.prueba_positiva_covid_19,
+            vacunacion_covid_19: storageCovid19Formatted.vacunacion_covid_19,
+            //tipo_vacuna_recibida: null,
+            tipo_vacuna_recibida: separateArrayBySemicolon(storageCovid19Formatted.tipo_vacuna_recibida),
+            cantidad_dosis_vacunacion_recibida: storageCovid19Formatted.cantidad_dosis_vacunacion_recibida,
+            //sintomas_tenidos_por_covid: null,
+            sintomas_tenidos_por_covid: separateArrayBySemicolon(storageCovid19Formatted.sintomas_tenidos_por_covid),
+            hospitalizado_por_covid_19: storageCovid19Formatted.hospitalizado_por_covid_19,
+            tiempo_recuperacion_covid_19: storageCovid19Formatted.tiempo_recuperacion_covid_19,
+            //sintomas_q_persisten_por_covid_19: null,
+            sintomas_q_persisten_por_covid_19: separateArrayBySemicolon(storageCovid19Formatted.sintomas_q_persisten_por_covid_19),
+          }
+        ]
       }
-
+      //console.log('bn aqui payload---->', payload)
       await PatientService.saveInformedConsent(payload)
           .then((response) => {
             if (response.data.statusCode !== 201) {
@@ -178,8 +255,13 @@ const saveInformedConsent = async () => {
               })
               loader.hide()
             } else {
-              component2Saved.value = true;
-              toast.success(response.data.message)
+              component1Saved.value = false;
+              window.open('https://mibcode.com/codigomuestra.php?code=' + response.data.data.code, '_blank');
+              Swal.fire({
+                icon: 'success',
+                title: 'Excelente!',
+                text: 'Todos los Componentes Registrados'
+              })
               loader.hide()
             }
           })
@@ -190,7 +272,6 @@ const saveInformedConsent = async () => {
             })
             loader.hide()
           })
-
     }
 
   } catch (error) {
@@ -202,11 +283,10 @@ const saveInformedConsent = async () => {
 
   }
 
-
   /*component2Saved.value = true;
   console.log('Payload Signature Information: ---> ' + payload)*/
 }
-const saveHealthSurvey = async () => {
+/*const saveHealthSurvey = async () => {
   if (!component2Saved.value) {
     throw new Error('Componente 2 no guardado')
   }
@@ -301,10 +381,10 @@ const saveHealthSurvey = async () => {
               loader.hide()
             } else {
 
-              /*Swal.fire({
+              /!*Swal.fire({
                 icon: 'success',
                 text: response.data.message
-              })*/
+              })*!/
               window.open('https://mibcode.com/codigomuestra.php?code=' + response.data.data.code, '_blank');
               //AQUI SE CONSUME UN SERVICIO DE CREACION DE CODIGO DE BARRA
 
@@ -326,8 +406,8 @@ const saveHealthSurvey = async () => {
             loader.hide()
           })
 
-      /*component3Saved.value = true;
-      console.log('Payload Survey Information: ---> ' + payload)*/
+      /!*component3Saved.value = true;
+      console.log('Payload Survey Information: ---> ' + payload)*!/
     }
 
   } catch (error) {
@@ -339,18 +419,18 @@ const saveHealthSurvey = async () => {
     loader.hide()
   }
 
-}
+}*/
 
 const saveAllComponents = async () => {
   try {
     await saveUserInformation()
     await saveInformedConsent()
-    await saveHealthSurvey()
-
-    router.push({
+    await clearSurveyLocalStorage()
+    await router.push({
       name: 'create-patient-form'
     })
-    console.log('Todos los Componentes Registrados')
+    //await saveHealthSurvey()
+    //console.log('Todos los Componentes Registrados')
 
   } catch (error) {
     Swal.fire({
@@ -368,6 +448,10 @@ const clearSurveyLocalStorage = async () => {
   await window.localStorage.removeItem('HealthHabitsInformation')
   await window.localStorage.removeItem('PersonalHealthInformation')
   await window.localStorage.removeItem('covid19Information')
+  await window.localStorage.removeItem('personalHealthInfoHasError')
+  await window.localStorage.removeItem('healthHabitsHasError')
+  await window.localStorage.removeItem('demographicHasError')
+  await window.localStorage.removeItem('covid19InfoHasError')
   await window.localStorage.setItem('currentFormStepIndex', 0)
 }
 const saveForm = async () => {
@@ -391,7 +475,8 @@ const saveForm = async () => {
   //console.log(step1, step2, step3, step4)
   if (!step1 && !step2 && !step3 && !step4) {
     await saveAllComponents()
-    await clearSurveyLocalStorage()
+    //await clearSurveyLocalStorage()
+    //await clearSurveyLocalStorage()
     //console.log('Esta limpio de errores')
   } else {
     Swal.fire({
