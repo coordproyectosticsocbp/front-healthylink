@@ -1,17 +1,25 @@
 <script setup>
 
-//import PatientList from '@/formComponents/patients/subComponents/PatientList.vue'
-import FlowStepper from "@/components/patients/globals/FlowStepper.vue";
+import CustomFlowStepper from "@/components/patients/globals/CustomFlowStepper.vue";
 </script>
 
 <template>
-  <div class="container-fluid">
+  <div class="container">
     <div class="row">
-      <div class="col-xl-8 m-xl-auto col-sm-12">
-        <FlowStepper/>
-        <!--        <PatientList />-->
+      <div class="col">
+        <!--        <FlowStepper/>-->
+        <CustomFlowStepper/>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col">
+        <router-view/>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
   </div>
 </template>
 
