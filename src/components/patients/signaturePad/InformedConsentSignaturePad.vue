@@ -63,22 +63,24 @@ function undoAction() {
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 id="exampleModalLabel" class="modal-title fs-5">Modal title</h1>
+          <h1 id="exampleModalLabel" class="modal-title fs-5">Registro de firma.</h1>
           <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
         </div>
         <div class="modal-body">
 
-          <div class="row">
-            <div class="col">
-              <Vue3Signature v-if="!patientSignatureExists" id="signaturePad"
-                             ref="signature1" :h="'400px'"
-                             :w="'1052.8px'"
-                             class="signature-pad mb-4"
-              />
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col w-100">
+                <Vue3Signature v-if="!patientSignatureExists" id="signaturePad"
+                               ref="signature1" :h="'400px'" :w="'1100px'" class="signature-pad mb-1 position-relative"
+                />
+              </div>
+              <!-- /.col -->
             </div>
-            <!-- /.col -->
+            <!-- /.row -->
           </div>
-          <!-- /.row -->
+          <!-- /.container-fluid -->
+
 
         </div>
         <div class="modal-footer">
@@ -101,5 +103,7 @@ function undoAction() {
 </template>
 
 <style scoped>
-
+.signature-pad {
+  margin: 0 auto;
+}
 </style>
