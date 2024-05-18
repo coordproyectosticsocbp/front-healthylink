@@ -1,18 +1,17 @@
 1-1-2-A
 <script setup>
 import {useStore} from "vuex";
-import {computed, onBeforeMount, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
+import InformedConsentSignaturePad from "@/components/patients/signaturePad/InformedConsentSignaturePad.vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
 
 const store = useStore()
 const authUser = computed(() => store.getters["auth/authUser"])
 const loggedUser = authUser.value.firstName + ' ' + authUser.value.lastName
 
 const getPatientData = ref([])
-/*const consentComponentSignature = useLocalStorage({
-  signature: ''
-}, 'patientSignature')*/
-const consentComponentSignature = ref(null)
-const signature1 = ref(null)
 const storageSignature = ref(null)
 const patientSignatureExists = ref(false)
 
@@ -20,31 +19,9 @@ const patientSignatureExists = ref(false)
  *  Getting local Storage
  * */
 const storageVal = window.localStorage.getItem('patientForm')
-const storagePatientSignatureVal = window.localStorage.getItem('patientSignature')
-
-function save(t) {
-  consentComponentSignature.value = signature1.value.save(t)
-  const storageVal = window.localStorage.getItem('patientSignature')
-  if (!storageVal) {
-    //console.log(consentComponentSignature.value.toString())
-    window.localStorage.setItem('patientSignature', JSON.stringify(consentComponentSignature.value.toString()))
-    storageSignature.value = consentComponentSignature.value.toString()
-    patientSignatureExists.value = true
-  }
-  //storageSignature.value = JSON.parse(storageVal).signature
-}
-
-function clear() {
-  const storageVal = window.localStorage.getItem('patientSignature')
-  if (storageVal) window.localStorage.removeItem('patientSignature')
-  signature1.value.clear()
-}
-
-function undo() {
-  signature1.value.undo();
-}
 
 const getPatientInformation = () => {
+  const storagePatientSignatureVal = window.localStorage.getItem('patientSignature')
   if (storageVal) getPatientData.value = JSON.parse(storageVal)
   if (storagePatientSignatureVal) {
     storageSignature.value = JSON.parse(storagePatientSignatureVal)
@@ -52,7 +29,16 @@ const getPatientInformation = () => {
   }
 }
 
-onBeforeMount(getPatientInformation)
+const goToNextStep = () => {
+  router.push({
+    name: 'create-patient-survey'
+  })
+}
+
+onMounted(() => {
+  getPatientInformation()
+  window.localStorage.setItem('currentFormStepIndex', 1)
+})
 
 </script>
 
@@ -333,7 +319,7 @@ onBeforeMount(getPatientInformation)
 
             <hr/>
 
-            <div class="row">
+            <div class="row mb-5">
               <div class="col">
                 <h5 class="fw-bold text-center">FORMULARIO DE CONSENTIMIENTO INFORMADO</h5>
 
@@ -430,54 +416,40 @@ onBeforeMount(getPatientInformation)
                 </ul>
               </div>
             </div>
+
+            <!-- Patient Signature Image -->
+            <div v-if="patientSignatureExists" class="row mb-3">
+              <div class="col border">
+                <img :src="storageSignature">
+              </div>
+            </div>
+            <!-- End Patient Signature Image -->
+
           </div>
 
-          <div class="card-footer">
+          <div class="card-footer bg-white">
 
-            <div class="row mb-3">
-              <div class="col">
+            <div class="d-flex justify-content-between align-items-center">
 
-                <div class="signature-box">
-                  <Vue3Signature v-if="!patientSignatureExists" id="signaturePad"
-                                 ref="signature1" :h="'400px'"
-                                 :w="'1052.8px'"
-                                 class="signature-pad mb-4"
-                  />
-                  <img v-else :src="storageSignature" class="img-in-signature-box" height="100%" width="100%">
-                </div>
+              <router-link :to="{name: 'create-patient-form'}"
+                           class="btn btn-sm btn-outline-primary"
+              >
+                <font-awesome-icon :icon="['fas', 'user']"/>
+                Ir a Información Paciente
+              </router-link>
 
-              </div>
+              <InformedConsentSignaturePad v-if="!patientSignatureExists" @onSignatureSubmit="getPatientInformation"/>
+
+
+              <button :disabled="!patientSignatureExists"
+                      class="btn btn-sm btn-outline-success"
+                      @click.prevent="goToNextStep"
+              >
+                <font-awesome-icon :icon="['fas', 'square-poll-horizontal']"/>
+                Ir a Encuesta
+              </button>
+
             </div>
-
-            <div v-if="!storageSignature" class="row">
-              <div class="col">
-                <div class="text-center">
-                  <button class="btn btn-sm btn-warning me-1" @click="clear">
-                    <font-awesome-icon :icon="['fas', 'brush']"/>
-                    Limpiar
-                  </button>
-                  <button class="btn btn-sm btn-primary me-1" @click="undo">
-                    <font-awesome-icon :icon="['fas', 'rotate-left']"/>
-                    Regresar
-                  </button>
-                  <button class="btn btn-sm btn-success" @click="save('image/jpeg')">
-                    <font-awesome-icon :icon="['fas', 'floppy-disk']"/>
-                    Guardar
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!--            <div class="row" v-else>
-                          <div class="col">
-                            <div class="text-center">
-                              <button class="btn btn-sm btn-danger me-1" @click="cancel">
-                                <font-awesome-icon :icon="['fas', 'x']" />
-                                Cancelar
-                              </button>
-                            </div>
-                          </div>
-                        </div>-->
 
           </div>
 
@@ -489,35 +461,5 @@ onBeforeMount(getPatientInformation)
 </template>
 
 <style scoped>
-.signature-box {
-  height: 400px !important;
-  width: 100% !important;
-}
-
-.signature-pad {
-  position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  font-size: 10px;
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 460px;
-  border: 1px solid #e8e8e8;
-  background-color: #fff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.08) inset;
-  border-radius: 4px;
-  padding: 16px;
-}
-
-#signaturePad canvas {
-  max-width: 100%;
-  width: 100% !important;
-}
 
 </style>

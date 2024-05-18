@@ -162,7 +162,7 @@ const saveBatchesToDB = () => {
                   text: response.data.message
                 })
                 console.log(response.data.data)
-                window.open('https://mibcode.000webhostapp.com/codigo/lote.php?mu=' + response.data.data.LoteMuestra.code_lote + '&cm=' + response.data.data.LoteContra.code_lote, '_blank');
+                window.open('https://mibcode.com/lote.php?mu=' + response.data.data.LoteMuestra.code_lote + '&cm=' + response.data.data.LoteContra.code_lote, '_blank');
                 store.commit('clinicalSamples/SET_CLINICAL_SAMPLES', [])
                 store.commit('clinicalCounterSamples/SET_CLINICAL_COUNTER_SAMPLES', [])
                 window.localStorage.removeItem('validateSamplesObject')

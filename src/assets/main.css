@@ -58,9 +58,11 @@
     background: #1c294e !important;
 }
 
-/*.active, .exact-active {
-    color: #1cc88a !important;
-}*/
+
+.exact-active {
+    background-color: #008def;
+    color: #fff;
+}
 
 .transition-general {
     transition: 0.2ms ease-in-out;

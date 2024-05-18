@@ -24,6 +24,8 @@ import {useStore} from "vuex";
 import {Modal} from "bootstrap";
 import PatientService from "@/services/patients/Patient.service.js";
 import {getError} from "@/utils/helpers/getError.js";
+import AttachedDocumentsForm
+  from "@/components/patients/subComponents/PatientsList/Modals/formComponents/AttachedDocumentsForm.vue";
 
 const props = defineProps({
   itemInformation: Object
@@ -38,14 +40,15 @@ const authUser = computed(() => store.getters['auth/authUser'])
 const savingButtonStatus = ref(false)
 const crfModalRef = ref()
 
-const PatientEvolutionFormRef = ref(null)
-const PathologicalHistoryFormRef = ref(null)
-const PharmacologicalHistoryFormRef = ref(null)
-const OthersHistoryFormRef = ref(null)
-const LaboratoryHistoryFormRef = ref(null)
-const BiochemicalBackgroundFormRef = ref(null)
-const HormonalHistoryFormRef = ref(null)
-const DiagnosticImagingFormRef = ref(null)
+const PatientEvolutionFormRef = ref()
+const PathologicalHistoryFormRef = ref()
+const PharmacologicalHistoryFormRef = ref()
+const OthersHistoryFormRef = ref()
+const LaboratoryHistoryFormRef = ref()
+const BiochemicalBackgroundFormRef = ref()
+const HormonalHistoryFormRef = ref()
+const DiagnosticImagingFormRef = ref()
+const AttachedDocumentsFormRef = ref()
 
 function executeAllExposeClearFields() {
   PatientEvolutionFormRef.value.clearFields()
@@ -151,7 +154,7 @@ const saveComplementaryInfoForm = (patientID, userID) => {
                       :aria-selected="`${(index === 0)}`"
                       :class="`nav-link text-start ${index === 0 ? 'active' : ''}`"
                       :data-bs-target="`#v-pills-${option.value}-${props.itemInformation.id}`"
-                      :disabled="option.value === 'antecedentes' || option.value === 'laboratorios' || option.value === 'imagenes'"
+                      :disabled="option.value === 'antecedentes' || option.value === 'laboratorios' || option.value === 'imagenes' || option.value === 'anexoss'"
                       data-bs-toggle="pill"
                       role="tab"
                       type="button"
@@ -177,6 +180,8 @@ const saveComplementaryInfoForm = (patientID, userID) => {
               <HormonalHistoryForm ref="HormonalHistoryFormRef" :itemIndexVal="props.itemInformation.id"/>
 
               <DiagnosticImagingForm ref="DiagnosticImagingFormRef" :itemIndexVal="props.itemInformation.id"/>
+
+              <AttachedDocumentsForm ref="AttachedDocumentsFormRef" :itemIndexVal="props.itemInformation.id"/>
 
             </div>
 

@@ -27,6 +27,12 @@ import UserComponent from "@/components/platformAdministration/Users/UserCompone
 import PermissionsComponent from "@/components/platformAdministration/Permissions/PermissionsComponent.vue";
 import RolesComponent from "@/components/platformAdministration/Roles/RolesComponent.vue";
 import DashboardGraphicsAdmin from "@/components/Dashboard/DashboardGraphicsAdmin.vue";
+import CreatePatientComponent
+    from "@/components/patients/subComponents/CreatePatient/CreatePatientForm/CreatePatientComponent.vue";
+import InformedConsentComponent
+    from "@/components/patients/subComponents/CreatePatient/InformedConsent/InformedConsentComponent.vue";
+import PatientHealthSurvey
+    from "@/components/patients/subComponents/CreatePatient/HealthSurvey/PatientHealthSurvey.vue";
 
 
 const routes = [
@@ -87,7 +93,30 @@ const routes = [
                 path: '/patient/create-patient',
                 name: 'create-patient',
                 meta: {middleware: [auth]},
-                component: PatientsMainComponent
+                component: PatientsMainComponent,
+                redirect: () => {
+                    return {name: 'create-patient-form'}
+                },
+                children: [
+                    {
+                        path: '/patient/create-patient/form',
+                        name: 'create-patient-form',
+                        meta: {middleware: [auth]},
+                        component: CreatePatientComponent,
+                    },
+                    {
+                        path: '/patient/create-patient/informed-consent',
+                        name: 'create-patient-informed-consent',
+                        meta: {middleware: [auth]},
+                        component: InformedConsentComponent,
+                    },
+                    {
+                        path: '/patient/create-patient/survey',
+                        name: 'create-patient-survey',
+                        meta: {middleware: [auth]},
+                        component: PatientHealthSurvey,
+                    }
+                ]
             },
             {
                 path: '/patient/patient-list',
