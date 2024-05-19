@@ -13,7 +13,7 @@ const collapsedStatus = computed(() => store.getters["sidebar/collapsed"]);
 const dataDash = ref([]);
 const fullPage = ref(true);
 const errors = ref(null);
-
+//
 const $loading = useLoading({
   loader: 'dots',
   isFullPage: fullPage,
