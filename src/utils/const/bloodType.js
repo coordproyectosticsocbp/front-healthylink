@@ -8,3 +8,4 @@ export const bloodType = [
     {name: 'O+', value: 'O+'},
     {name: 'O-', value: 'O-'}
 ];
+//
