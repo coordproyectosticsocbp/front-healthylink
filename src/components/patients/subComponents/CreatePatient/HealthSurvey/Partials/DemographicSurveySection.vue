@@ -87,11 +87,6 @@ const patientAge = () => {
     demographicVariables.value.edad = calculateAgeTwo(new Date(birthDate))
   }
 }
-/*
-const getCityOfBirth = (event) => {
-  console.log(event.target.value)
-}
-*/
 
 const onIndigenousSelected = (event) => {
   if (event.target.value === 'Pueblos Indígenas') {
@@ -100,10 +95,6 @@ const onIndigenousSelected = (event) => {
     patientIsIndigenous.value = false
   }
 }
-
-/*const alertEvent = (message) => {
-  console.log(message)
-}*/
 
 defineExpose({
   handleSubmit

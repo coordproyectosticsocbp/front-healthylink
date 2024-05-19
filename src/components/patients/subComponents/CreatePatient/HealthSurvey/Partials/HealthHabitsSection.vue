@@ -40,6 +40,10 @@ const rules = computed(() => {
   }
 })
 
+const cualEnfermedadMadre = ref("")
+const cualEnfermedadPadre = ref("")
+const cualEnfermedadHermanos = ref("")
+
 const v$ = useVuelidate(rules, healthHabitsVariables)
 
 const handleSubmit = async () => {
@@ -57,13 +61,26 @@ const handleSubmit = async () => {
 const resetValuesIfNoOption = (key, event) => {
   const eventValue = event.target.value
   if (key === 'presion_arterial') {
-    if (eventValue === 'No' || eventValue !== 'No Sé') {
-      healthHabitsVariables.value.medicamento_para_presion_arterial = []
+    if (eventValue === 'No' || eventValue === 'No Sé') {
+      healthHabitsVariables.value.medicamento_para_presion_arterial = null
+    }
+  }
+  if (key === 'cual_afeccion_o_enfermededad_cronica__madre') {
+    if (eventValue === 'No' || eventValue === 'No Sé') {
+      healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__madre = []
+    }
+  }
+  if (key === 'cual_afeccion_o_enfermededad_cronica__padre') {
+    if (eventValue === 'No' || eventValue === 'No Sé') {
+      healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__padre = []
+    }
+  }
+  if (key === 'cual_afeccion_o_enfermededad_cronica__hermanos') {
+    if (eventValue === 'No' || eventValue === 'No Sé') {
+      healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__hermanos = []
     }
   }
 }
-
-const cualEnfermedad = ref(null)
 
 /*const patientHasHighBloodPressure = ref(false)
 const onHighBloodPressureSelected = (event) => {
@@ -71,10 +88,21 @@ const onHighBloodPressureSelected = (event) => {
 }*/
 
 const addIllnessToArray = (variableArray) => {
-  if (variableArray === 1) healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__madre.push(cualEnfermedad.value)
-  if (variableArray === 2) healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__padre.push(cualEnfermedad.value)
-  if (variableArray === 3) healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__hermanos.push(cualEnfermedad.value)
-  cualEnfermedad.value = null
+  if (variableArray === 1) {
+    healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__madre.push(cualEnfermedadMadre.value)
+  }
+
+  if (variableArray === 2) {
+    healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__padre.push(cualEnfermedadPadre.value)
+
+  }
+  if (variableArray === 3) {
+    healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__hermanos.push(cualEnfermedadHermanos.value)
+
+  }
+  cualEnfermedadMadre.value = null
+  cualEnfermedadPadre.value = null
+  cualEnfermedadHermanos.value = null
 }
 
 const removeIllnessFromArray = (variableArray, item) => {
@@ -259,7 +287,9 @@ defineExpose({
                             <input :id="`gridRadiosMadre-${index}`"
                                    v-model="healthHabitsVariables.afeccion_o_enfermededad_cronica__madre"
                                    :name="`gridRadiosMadre-${index}`"
-                                   :value="mci.value" class="form-check-input" type="radio">
+                                   :value="mci.value" class="form-check-input" type="radio"
+                                   @change.prevent="resetValuesIfNoOption('cual_afeccion_o_enfermededad_cronica__madre', $event)"
+                            >
                             <label :for="`gridRadiosMadre-${index}`" class="form-check-label">
                               {{ mci.label }}
                             </label>
@@ -282,7 +312,7 @@ defineExpose({
                     <div class="col">
                       <input
                           id="inputCualEnfermedad"
-                          v-model="cualEnfermedad"
+                          v-model="cualEnfermedadMadre"
                           class="form-control form-control-sm"
                           placeholder="Escriba la enfermedad" type="text"
                           @keyup.prevent.enter="addIllnessToArray(1)"
@@ -326,7 +356,9 @@ defineExpose({
                         <input :id="`gridRadiosPadre-${index}`"
                                v-model="healthHabitsVariables.afeccion_o_enfermededad_cronica__padre"
                                :name="`gridRadiosPadre-${index}`"
-                               :value="mci.value" class="form-check-input" type="radio">
+                               :value="mci.value" class="form-check-input" type="radio"
+                               @change.prevent="resetValuesIfNoOption('cual_afeccion_o_enfermededad_cronica__padre', $event)"
+                        >
                         <label :for="`gridRadiosPadre-${index}`" class="form-check-label">
                           {{ mci.label }}
                         </label>
@@ -347,7 +379,7 @@ defineExpose({
                 <div class="col">
                   <input
                       id="inputCualEnfermedadPadre"
-                      v-model="cualEnfermedad"
+                      v-model="cualEnfermedadPadre"
                       class="form-control form-control-sm"
                       placeholder="Escriba la enfermedad" type="text"
                       @keyup.prevent.enter="addIllnessToArray(2)"
@@ -389,7 +421,9 @@ defineExpose({
                         <input :id="`gridRadiosHermanos-${index}`"
                                v-model="healthHabitsVariables.afeccion_o_enfermededad_cronica__hermanos"
                                :name="`gridRadiosHermanos-${index}`"
-                               :value="mci.value" class="form-check-input" type="radio">
+                               :value="mci.value" class="form-check-input" type="radio"
+                               @change.prevent="resetValuesIfNoOption('cual_afeccion_o_enfermededad_cronica__hermanos', $event)"
+                        >
                         <label :for="`gridRadiosHermanos-${index}`" class="form-check-label">
                           {{ mci.label }}
                         </label>
@@ -409,7 +443,7 @@ defineExpose({
               <div class="row mb-3">
                 <div class="col">
                   <input
-                      v-model="cualEnfermedad"
+                      v-model="cualEnfermedadHermanos"
                       class="form-control form-control-sm"
                       placeholder="Escriba la enfermedad" type="text"
                       @keyup.prevent.enter="addIllnessToArray(3)"

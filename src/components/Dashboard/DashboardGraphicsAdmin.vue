@@ -295,15 +295,6 @@ onMounted(dataDashboard);
 
 <template>
   <div class="container border-radius-10">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="text-center text-uppercase fw-bold">
-          dashboard
-          <font-awesome-icon :icon="['fas', 'chart-line']"/>
-        </h5>
-      </div>
-    </div>
-    <br>
     <div class="row">
       <div class="col-md-4">
         <div class="card">

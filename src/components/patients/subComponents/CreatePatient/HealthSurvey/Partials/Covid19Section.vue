@@ -44,11 +44,13 @@ const resetValuesIfNoOption = (key, event) => {
       covidVariables.value.tipo_vacuna_recibida = []
       covidVariables.value.cantidad_dosis_vacunacion_recibida = 0
     }
-  } else if (key === 'tiempo_recuperacion_covid_19') {
+  }
+  if (key === 'tiempo_recuperacion_covid_19') {
     if (eventValue !== 'Más de 12 semanas') {
       covidVariables.value.sintomas_q_persisten_por_covid_19 = []
     }
-  } else if (key === 'presento_sintomas_por_covid') {
+  }
+  if (key === 'presento_sintomas_por_covid') {
     if (eventValue !== 'No' || eventValue !== 'No Sé') {
       covidVariables.value.sintomas_tenidos_por_covid = []
     }
@@ -346,6 +348,7 @@ defineExpose({
                       aria-label="Multiple select example" class="form-select form-select-sm"
                       multiple
                       size="10"
+                      @change.prevent="resetValuesIfNoOption('sintomas_q_persisten_por_covid_19', $event)"
               >
                 <option disabled value="null">Seleccione una o varias opciones</option>
                 <option v-for="vaccine in covidSymptoms" :key="vaccine" :value="vaccine.value">

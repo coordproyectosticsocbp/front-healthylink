@@ -5,6 +5,12 @@ import {getError} from '@/utils/helpers/getError.js'
 import AuthService from '@/services/authentication/Auth.service.js'
 import {useStore} from 'vuex'
 
+
+const appData = reactive({
+  app_version: import.meta.env.VITE_APP_VERSION,
+  app_version_date: import.meta.env.VITE_APP_VERSION_DATE,
+})
+
 const form = reactive({
   email: '',
   password: ''
@@ -115,6 +121,15 @@ async function loginFunction() {
         </div><!--end col-->
       </div> <!--end form-group-->
     </form><!--end form-->
+
+    <div class="row">
+      <div class="col text-center">
+        Version: {{ appData.app_version }} de
+        {{ appData.app_version_date }}
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
 
   </div>
   <!-- End Login Component -->
