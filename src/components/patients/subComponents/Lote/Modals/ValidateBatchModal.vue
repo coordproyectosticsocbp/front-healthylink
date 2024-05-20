@@ -264,12 +264,27 @@ const closeModal = () => Modal.getInstance(validateBatchModalRef.value)?.hide()
                 <div class="row">
                   <div class="col">
                     <form autocomplete="off" autofocus @submit.prevent="addSampleItemToArray">
-                      <input id="inputSampleValidate"
-                             v-model="codeSampleInput"
-                             autofocus
-                             class="form-control"
-                             placeholder="Ingrese el código de la muestra"
-                      />
+                      <div class="row">
+                        <div class="col-md-10">
+                          <input id="inputSampleValidate"
+                                 v-model="codeSampleInput"
+                                 autofocus
+                                 class="form-control"
+                                 placeholder="Ingrese el código de la muestra"
+                          />
+                        </div>
+                        <div class="col-md-2">
+                          <button
+                              class="btn btn-global-color"
+                              type="submit"
+                          >
+                            Agregar
+                          </button>
+                        </div>
+                      </div>
+
+
+
                     </form>
                   </div>
                   <!-- /.col -->
@@ -301,12 +316,26 @@ const closeModal = () => Modal.getInstance(validateBatchModalRef.value)?.hide()
 
               <div class="col">
                 <form autocomplete="off" autofocus @submit.prevent="addCounterSampleItemToArray">
-                  <input id="inputCounterSampleValidate"
-                         v-model="codeCounterSampleInput"
-                         autofocus
-                         class="form-control"
-                         placeholder="Ingrese el código de la contramuestra"
-                  />
+
+                  <div class="row">
+                    <div class="col-md-10">
+                      <input id="inputCounterSampleValidate"
+                             v-model="codeCounterSampleInput"
+                             autofocus
+                             class="form-control"
+                             placeholder="Ingrese el código de la contramuestra"
+                      />
+                    </div>
+                    <div class="col-md-2">
+                      <button
+                          class="btn btn-global-color"
+                          type="submit"
+                      >
+                        Agregar
+                      </button>
+                    </div>
+                  </div>
+
                 </form>
 
                 <hr>
