@@ -1,6 +1,7 @@
 <script setup>
 
 import {documentTypes} from "@/utils/const/documentTypes.js";
+import {bloodType} from "@/utils/const/bloodType.js";
 import {userGender} from "@/utils/const/userGender.js";
 import {computed, onMounted} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
@@ -252,18 +253,26 @@ onMounted(() => {
           </div>
 
           <div class="col-md-3">
-            <label class="form-label" for="input8">G.S. RH:</label>
-            <input id="input8" v-model="patient.grupo_sanguineo"
-                   class="form-control"
-                   placeholder="O+, O-, AB, etc..."
-                   type="text"
+            <label class="form-label" for="input7">G.S. RH:</label>
+            <select id="input7" v-model="patient.grupo_sanguineo"
+                    class="form-select"
+                    required
+
             >
-            <span v-if="v$.grupo_sanguineo.$error"
+              <option :value="null" selected>Seleccione el G.S. RH:</option>
+              <option v-for="gender in bloodType"
+                      :key="gender.value"
+                      :value="gender.value"
+                      v-text="gender.name"
+              />
+            </select>
+            <span v-if="v$.sexo.$error"
                   class="text-danger"
             >
-                  {{ v$.grupo_sanguineo.$errors[0]?.$message }}
+                 {{ v$.grupo_sanguineo.$errors[0]?.$message }}
                 </span>
           </div>
+
 
           <div class="col-md-8">
             <label class="form-label" for="input9">Email:</label>
