@@ -127,7 +127,7 @@ const saveComplementaryInfoForm = (patientID, userID) => {
       <div class="modal-content">
         <div class="modal-header">
           <h1 id="exampleModalLabel" class="modal-title fs-5">
-            2. Recolección de información por Historia clínica {{ props.itemInformation.id }}
+            2. Recolección de información por Historia clínica
           </h1>
           <button
               aria-label="Close"

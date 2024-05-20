@@ -4,7 +4,6 @@ import {ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
 import {drugsList} from "@/utils/const/drugsList.js";
 import {everyHowOften} from "@/utils/const/everyHowOften.js";
-import {userGender} from "@/utils/const/userGender.js";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -15,7 +14,7 @@ const initialValue = ref({
   drugDosage: 0,
   drugPresentation: '',
   drugConcentration: '',
-  everyHowOften:''
+  everyHowOften: null
 })
 const pharmacologicalHistory = useLocalStorage([], `pharmacologicalHistory-${props.itemIndexVal}`)
 
@@ -72,7 +71,7 @@ defineExpose({
       <div class="col">
         <form autocomplete="off" @submit.prevent="addItemToPharmArray">
           <div class="row">
-            <div class="col-6">
+            <div class="col-5">
               <label class="form-label" for="input-drug">Medicamento:</label>
               <VueMultiselect
                   id="input-drug"
@@ -95,12 +94,11 @@ defineExpose({
                      type="number"
               >
             </div>
-            <div class="col-2">
+            <div class="col-3">
               <label class="form-label" for="input7">Cada cuanto:</label>
               <select id="input7" v-model="initialValue.everyHowOften"
                       class="form-select"
                       required
-
               >
                 <option :value="null" selected>Seleccione cada cuanto...</option>
                 <option v-for="gender in everyHowOften"
