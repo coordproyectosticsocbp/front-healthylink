@@ -220,7 +220,7 @@ const saveInformedConsent = async () => {
                 title: 'Excelente!',
                 text: 'Todos los Componentes Registrados'
               })
-              //clearSurveyLocalStorage()
+              clearSurveyLocalStorage()
               router.push({
                 name: 'create-patient-form'
               })
