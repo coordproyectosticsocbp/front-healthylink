@@ -97,7 +97,8 @@ defineExpose({
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Alguna vez ha tenido un resultado positivo en la prueba del virus que causa el COVID-19 (p. ej., PCR o
+                33. ¿Alguna vez ha tenido un resultado positivo en la prueba del virus que causa el COVID-19 (p. ej.,
+                PCR o
                 prueba de antígenos)?
               </p>
               <div class="row">
@@ -131,7 +132,7 @@ defineExpose({
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Te has vacunado contra el virus COVID-19?
+                34. ¿Te has vacunado contra el virus COVID-19?
               </p>
               <div class="row">
                 <div class="col-xl-8 col-md-8 col-sm-12">
@@ -212,7 +213,7 @@ defineExpose({
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                Si tuvo un resultado positivo para COVID-19, ¿experimentó síntomas de esta afección?
+                35. Si tuvo un resultado positivo para COVID-19, ¿experimentó síntomas de esta afección?
               </p>
               <div class="row">
                 <div class="col-xl-8 col-md-8 col-sm-12">
@@ -269,7 +270,7 @@ defineExpose({
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Alguna vez ha sido hospitalizado debido al COVID-19?
+                36. ¿Alguna vez ha sido hospitalizado debido al COVID-19?
               </p>
               <div class="row">
                 <div class="col">
@@ -303,7 +304,8 @@ defineExpose({
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                Si tuvo un resultado positivo para COVID-19, ¿cuánto tiempo tardó o está tardando en recuperarse desde
+                37. Si tuvo un resultado positivo para COVID-19, ¿cuánto tiempo tardó o está tardando en recuperarse
+                desde
                 el momento en que se enteró de su diagnóstico de COVID-19?
               </p>
               <div class="row">

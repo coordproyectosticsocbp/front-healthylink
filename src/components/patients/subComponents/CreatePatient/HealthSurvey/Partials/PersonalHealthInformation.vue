@@ -101,7 +101,7 @@ onMounted(storageCie10Diagnosis)
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Alguna vez su médico le ha diagnosticado enfermedades cardíacas y/o cardiovasculares (por ejemplo,
+                22. ¿Alguna vez su médico le ha diagnosticado enfermedades cardíacas y/o cardiovasculares (por ejemplo,
                 enfermedades cardíacas, como ataques cardíacos, accidentes cerebrovasculares o insuficiencia cardíaca)?
               </p>
               <div class="row">
@@ -136,7 +136,7 @@ onMounted(storageCie10Diagnosis)
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Alguna vez su médico le ha diagnosticado enfermedades pulmonares?
+                23. ¿Alguna vez su médico le ha diagnosticado enfermedades pulmonares?
               </p>
               <div class="row">
                 <div class="col-xl-8 col-md-8 col-sm-12">
@@ -169,7 +169,8 @@ onMounted(storageCie10Diagnosis)
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Alguna vez su médico le ha diagnosticado enfermedades endocrinas o metabólicas (por ejemplo, diabetes,
+                24. ¿Alguna vez su médico le ha diagnosticado enfermedades endocrinas o metabólicas (por ejemplo,
+                diabetes,
                 trastornos del colesterol, enfermedades de la tiroides, etc.)?
               </p>
               <div class="row">
@@ -204,7 +205,7 @@ onMounted(storageCie10Diagnosis)
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Alguna vez le han diagnosticado enfermedades digestivas y/o hepáticas (estómago y/o intestinos; y/o
+                25. ¿Alguna vez le han diagnosticado enfermedades digestivas y/o hepáticas (estómago y/o intestinos; y/o
                 hígado)?
               </p>
               <div class="row">
@@ -239,7 +240,7 @@ onMounted(storageCie10Diagnosis)
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Alguna vez le han diagnosticado enfermedades renales?
+                26. ¿Alguna vez le han diagnosticado enfermedades renales?
               </p>
               <div class="row">
                 <div class="col-xl-8 col-md-8 col-sm-12">
@@ -273,7 +274,8 @@ onMounted(storageCie10Diagnosis)
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Alguna vez le han diagnosticado enfermedades neurológicas (por ejemplo, esclerosis múltiple, alzheimer,
+                27. ¿Alguna vez le han diagnosticado enfermedades neurológicas (por ejemplo, esclerosis múltiple,
+                alzheimer,
                 Parkinson) y/o mentales (por ejemplo, depresión)?
               </p>
               <div class="row">
@@ -308,7 +310,7 @@ onMounted(storageCie10Diagnosis)
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Alguna vez te han diagnosticado enfermedades dermatológicas (de la piel)?
+                28. ¿Alguna vez te han diagnosticado enfermedades dermatológicas (de la piel)?
               </p>
               <div class="row">
                 <div class="col-xl-8 col-md-8 col-sm-12">
@@ -342,7 +344,7 @@ onMounted(storageCie10Diagnosis)
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Alguna vez le han diagnosticado enfermedades reumáticas (por ejemplo, artritis)?
+                29. ¿Alguna vez le han diagnosticado enfermedades reumáticas (por ejemplo, artritis)?
               </p>
               <div class="row">
                 <div class="col-xl-8 col-md-8 col-sm-12">
@@ -376,7 +378,7 @@ onMounted(storageCie10Diagnosis)
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Ha recibido un diagnóstico de cáncer de su médico en los últimos 5 años?
+                30. ¿Ha recibido un diagnóstico de cáncer de su médico en los últimos 5 años?
               </p>
 
               <div class="row mb-3">
@@ -449,7 +451,8 @@ onMounted(storageCie10Diagnosis)
           <div class="row mb-3">
             <div class="col">
               <label class="form-label" for="selectPacienteConAfecciones">
-                ¿Alguna vez tu médico te ha diagnosticado alguna de las siguientes afecciones? Puede marcar más de una
+                31. ¿Alguna vez tu médico te ha diagnosticado alguna de las siguientes afecciones? Puede marcar más de
+                una
                 respuesta.
               </label>
               <select id="selectPacienteConAfecciones" v-model="personalHealthVariables.afecciones_diagnosticadas"
@@ -476,7 +479,7 @@ onMounted(storageCie10Diagnosis)
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Te has hecho análisis de sangre en los últimos 6 meses?
+                32. ¿Te has hecho análisis de sangre en los últimos 6 meses?
               </p>
               <div class="row">
                 <div class="col">

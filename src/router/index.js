@@ -1,10 +1,8 @@
 /** Main Importing */
 import {createRouter, createWebHashHistory} from 'vue-router'
-import store from '@/store/index.js'
 import middlewarePipeline from '@/middlewares/middlewarePipeline.js'
 import auth from '@/middlewares/auth.js'
 import guest from '@/middlewares/guest.js'
-
 
 import DashboardView from '@/views/Dashboard/DashboardView.vue'
 import AuthenticationView from '@/views/Authentication/AuthenticationView.vue'
@@ -33,7 +31,8 @@ import InformedConsentComponent
     from "@/components/patients/subComponents/CreatePatient/InformedConsent/InformedConsentComponent.vue";
 import PatientHealthSurvey
     from "@/components/patients/subComponents/CreatePatient/HealthSurvey/PatientHealthSurvey.vue";
-
+import NotFoundPage from "@/views/NOTFOUND/NotFoundPage.vue";
+import {useStore} from "vuex";
 
 const routes = [
     {
@@ -224,14 +223,19 @@ const routes = [
                 component: UserComponent
             },
         ]
-    }
+    }, // Ahora viene PAGE NOT FOUND
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'PageNotFound',
+        component: NotFoundPage,
+    },
 ]
 
 const router = createRouter({
     history: createWebHashHistory(),
     routes,
     strict: true,
-    linkActiveClass: 'active',
+    linkActiveClass: 'exact-active',
     linkExactActiveClass: 'exact-active',
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
@@ -243,7 +247,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const middleware = to.meta.middleware
+    const store = useStore()
+    const {middleware} = to.meta
     const context = {to, from, next, store}
 
     if (!middleware) {
