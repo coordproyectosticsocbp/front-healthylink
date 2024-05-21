@@ -45,12 +45,16 @@ const v$ = useVuelidate(rules, personalHealthVariables)
 const handleSubmit = async () => {
   const result = await v$.value.$validate()
   if (!result) {
-    window.localStorage.setItem('personalHealthInfoHasError', true)
+    window.localStorage.setItem('personalHealthInfoHasError', JSON.stringify({
+      value: true
+    }))
     toast.error('datos de salud INCOMPLETOS')
     return false
   }
   // If the form is valid, perform some action with the form data
-  window.localStorage.setItem('personalHealthInfoHasError', false)
+  window.localStorage.setItem('personalHealthInfoHasError', JSON.stringify({
+    value: false
+  }))
   return true;
 }
 

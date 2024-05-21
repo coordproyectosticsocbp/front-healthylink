@@ -56,12 +56,16 @@ const v$ = useVuelidate(rules, demographicVariables)
 const handleSubmit = async () => {
   const result = await v$.value.$validate()
   if (!result) {
-    window.localStorage.setItem('demographicHasError', true)
+    window.localStorage.setItem('demographicHasError', JSON.stringify({
+      value: true
+    }))
     toast.error('Información demográfica INCOMPLETA')
     return false
   }
   // If the form is valid, perform some action with the form data
-  window.localStorage.setItem('demographicHasError', false)
+  window.localStorage.setItem('demographicHasError', JSON.stringify({
+    value: false
+  }))
   return true;
 }
 

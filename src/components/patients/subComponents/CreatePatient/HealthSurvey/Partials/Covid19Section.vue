@@ -60,12 +60,19 @@ const resetValuesIfNoOption = (key, event) => {
 const handleSubmit = async () => {
   const result = await v$.value.$validate()
   if (!result) {
-    window.localStorage.setItem('covid19InfoHasError', false)
+    let storeMe = {
+      myBool: true
+    }
+    window.localStorage.setItem('covid19InfoHasError', JSON.stringify({
+      item: true
+    }))
     toast.error('datos sobre covid INCOMPLETOS')
     return false
   }
   // If the form is valid, perform some action with the form data
-  window.localStorage.setItem('covid19InfoHasError', false)
+  window.localStorage.setItem('covid19InfoHasError', JSON.stringify({
+    value: false
+  }))
   return true;
 }
 

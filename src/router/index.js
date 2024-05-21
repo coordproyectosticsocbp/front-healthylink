@@ -33,6 +33,7 @@ import PatientHealthSurvey
     from "@/components/patients/subComponents/CreatePatient/HealthSurvey/PatientHealthSurvey.vue";
 import NotFoundPage from "@/views/NOTFOUND/NotFoundPage.vue";
 import {useStore} from "vuex";
+import {adminGuard} from "@/middlewares/admin.js";
 
 const routes = [
     {
@@ -192,7 +193,7 @@ const routes = [
     {
         path: '/administration',
         name: 'administration',
-        meta: {middleware: [auth]},
+        meta: {middleware: [auth], adminGuard},
         component: DashboardView,
         redirect: () => {
             return {name: 'users'}
@@ -249,6 +250,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const store = useStore()
     const {middleware} = to.meta
+
     const context = {to, from, next, store}
 
     if (!middleware) {
