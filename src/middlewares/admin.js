@@ -2,9 +2,22 @@ import store from "@/store/index.js";
 
 export const adminGuard = (to, from, next) => {
 
-    if (store.state.auth.user && store.state.auth.user.roles[0].name === "TEST-RROLE") {
-        next()
-    } else {
-        next({name: 'PageNotFound'})
+    const isAuthenticated = store.getters['auth/authUser']
+    const requiredRole = to.matched.some(record => record.meta.requiredRole)
+
+    if (isAuthenticated) {
+
+        console.log(isAuthenticated.roles[0].name)
+
+        if (requiredRole && !hasRole(isAuthenticated.roles[0].name, requiredRole)) {
+            return next({name: 'PageNotFound'})
+        }
+        return next()
     }
+
+    return next({name: 'login'})
+}
+
+function hasRole(userRole, requiredRole) {
+    return userRole === requiredRole
 }

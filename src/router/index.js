@@ -17,23 +17,24 @@ import ClinicalSamples from "@/components/patients/subComponents/Lote/SubCompone
 import CounterSamples from "@/components/patients/subComponents/Lote/SubComponents/CounterSamples.vue";
 import ShelfAssignment from "@/components/patients/subComponents/ShelfAssignment/ShelfAssignment.vue";
 import ShelfClinicalSamples
-  from "@/components/patients/subComponents/ShelfAssignment/SubComponents/ShelfClinicalSamples.vue";
+    from "@/components/patients/subComponents/ShelfAssignment/SubComponents/ShelfClinicalSamples.vue";
 import ShelfClinicalCounterSamples
-  from "@/components/patients/subComponents/ShelfAssignment/SubComponents/ShelfClinicalCounterSamples.vue";
+    from "@/components/patients/subComponents/ShelfAssignment/SubComponents/ShelfClinicalCounterSamples.vue";
 import Receivealot from "@/components/patients/subComponents/Receivealot/Receivealot.vue";
 import UserComponent from "@/components/platformAdministration/Users/UserComponent.vue";
 import PermissionsComponent from "@/components/platformAdministration/Permissions/PermissionsComponent.vue";
 import RolesComponent from "@/components/platformAdministration/Roles/RolesComponent.vue";
 import DashboardGraphicsAdmin from "@/components/Dashboard/DashboardGraphicsAdmin.vue";
 import CreatePatientComponent
-  from "@/components/patients/subComponents/CreatePatient/CreatePatientForm/CreatePatientComponent.vue";
+    from "@/components/patients/subComponents/CreatePatient/CreatePatientForm/CreatePatientComponent.vue";
 import InformedConsentComponent
-  from "@/components/patients/subComponents/CreatePatient/InformedConsent/InformedConsentComponent.vue";
+    from "@/components/patients/subComponents/CreatePatient/InformedConsent/InformedConsentComponent.vue";
 import PatientHealthSurvey
-  from "@/components/patients/subComponents/CreatePatient/HealthSurvey/PatientHealthSurvey.vue";
+    from "@/components/patients/subComponents/CreatePatient/HealthSurvey/PatientHealthSurvey.vue";
 import NotFoundPage from "@/views/NOTFOUND/NotFoundPage.vue";
 import {useStore} from "vuex";
 import {adminGuard} from "@/middlewares/admin.js";
+import UnauthorizedPage from "@/views/UNATHORIZED/UnauthorizedPage.vue";
 
 const routes = [
     {
@@ -193,7 +194,7 @@ const routes = [
     {
         path: "/administration",
         name: "administration",
-        meta: {middleware: [auth], adminGuard},
+        meta: {middleware: [auth, adminGuard], requiredRole: 'SUPER-ADMIN'},
         component: DashboardView,
         redirect: () => {
             return {name: "users"};
@@ -202,29 +203,35 @@ const routes = [
             {
                 path: "/administration/users",
                 name: "users",
-                meta: {middleware: [auth]},
+                meta: {middleware: [auth], requiredRole: 'SUPER-ADMIN'},
                 component: UserComponent,
             },
             {
                 path: "/administration/roles",
                 name: "roles",
-                meta: {middleware: [auth]},
+                meta: {middleware: [auth], requiredRole: ['SUPER-ADMIN']},
                 component: RolesComponent,
             },
             {
                 path: "/administration/permissions",
                 name: "permissions",
-                meta: {middleware: [auth]},
+                meta: {middleware: [auth], requiredRole: ['SUPER-ADMIN']},
                 component: PermissionsComponent,
             },
             {
                 path: "/administration/locations",
                 name: "locations",
-                meta: {middleware: [auth]},
+                meta: {middleware: [auth], requiredRole: ['SUPER-ADMIN']},
                 component: UserComponent,
             },
         ],
-    }, // Ahora viene PAGE NOT FOUND
+    },
+    {
+        path: "/unauthorized",
+        name: "unauthorized",
+        component: UnauthorizedPage,
+    },
+    // Ahora viene PAGE NOT FOUND
     {
         path: "/:pathMatch(.*)*",
         name: "PageNotFound",
@@ -258,6 +265,8 @@ router.beforeEach((to, from, next) => {
         return next();
     }
 
+    //console.log(middleware[0])
+    //console.log(context)
     middleware[0]({
         ...context,
         next: middlewarePipeline(context, middleware, 1),
