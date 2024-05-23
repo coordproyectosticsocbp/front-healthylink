@@ -33,7 +33,6 @@ import PatientHealthSurvey
     from "@/components/patients/subComponents/CreatePatient/HealthSurvey/PatientHealthSurvey.vue";
 import NotFoundPage from "@/views/NOTFOUND/NotFoundPage.vue";
 import {useStore} from "vuex";
-import {adminGuard} from "@/middlewares/admin.js";
 import UnauthorizedPage from "@/views/UNATHORIZED/UnauthorizedPage.vue";
 
 const routes = [
@@ -93,7 +92,9 @@ const routes = [
             {
                 path: "/patient/create-patient",
                 name: "create-patient",
-                meta: {middleware: [auth]},
+                meta: {
+                    middleware: [auth], requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON']
+                },
                 component: PatientsMainComponent,
                 redirect: () => {
                     return {name: "create-patient-form"};
@@ -102,19 +103,28 @@ const routes = [
                     {
                         path: "/patient/create-patient/form",
                         name: "create-patient-form",
-                        meta: {middleware: [auth]},
+                        meta: {
+                            middleware: [auth],
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON']
+                        },
                         component: CreatePatientComponent,
                     },
                     {
                         path: "/patient/create-patient/informed-consent",
                         name: "create-patient-informed-consent",
-                        meta: {middleware: [auth]},
+                        meta: {
+                            middleware: [auth],
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON']
+                        },
                         component: InformedConsentComponent,
                     },
                     {
                         path: "/patient/create-patient/survey",
                         name: "create-patient-survey",
-                        meta: {middleware: [auth]},
+                        meta: {
+                            middleware: [auth],
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON']
+                        },
                         component: PatientHealthSurvey,
                     },
                 ],
@@ -122,19 +132,24 @@ const routes = [
             {
                 path: "/patient/patient-list",
                 name: "patient-list",
-                meta: {middleware: [auth]},
+                meta: {middleware: [auth], requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON']},
                 component: PatientList,
             },
             {
                 path: "/patient/FollowUp",
                 name: "Follow-up",
-                meta: {middleware: [auth]},
+                meta: {
+                    middleware: [auth],
+                    requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'AUDITOR']
+                },
                 component: followup,
             },
             {
                 path: "/patient/createLote",
                 name: "createLote",
-                meta: {middleware: [auth]},
+                meta: {
+                    middleware: [auth],
+                },
                 component: CreateLote,
                 redirect: () => {
                     return {name: "muestras"};
@@ -143,13 +158,19 @@ const routes = [
                     {
                         path: "/patient/createLote/clinical-samples",
                         name: "muestras",
-                        meta: {middleware: [auth]},
+                        meta: {
+                            middleware: [auth],
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON']
+                        },
                         component: ClinicalSamples,
                     },
                     {
                         path: "/patient/createLote/clinical-countersamples",
                         name: "contramuestras",
-                        meta: {middleware: [auth]},
+                        meta: {
+                            middleware: [auth],
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CONVEYOR']
+                        },
                         component: CounterSamples,
                     },
                 ],
@@ -157,19 +178,22 @@ const routes = [
             {
                 path: "/patient/transport",
                 name: "transport",
-                meta: {middleware: [auth]},
+                meta: {
+                    middleware: [auth],
+                    requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CONVEYOR']
+                },
                 component: transport,
             },
             {
                 path: "/patient/receivealot",
                 name: "receivealot",
-                meta: {middleware: [auth]},
+                meta: {middleware: [auth], requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CUSTODIAN-CENTER']},
                 component: Receivealot,
             },
             {
                 path: "/patient/shelf-assignment",
                 name: "shelf-assignment",
-                meta: {middleware: [auth]},
+                meta: {middleware: [auth], requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CUSTODIAN-CENTER']},
                 component: ShelfAssignment,
                 redirect: () => {
                     return {name: "shelf-assignment-samples"};
@@ -178,13 +202,19 @@ const routes = [
                     {
                         path: "/patient/shelf-assignment/samples",
                         name: "shelf-assignment-samples",
-                        meta: {middleware: [auth]},
+                        meta: {
+                            middleware: [auth],
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CUSTODIAN-CENTER']
+                        },
                         component: ShelfClinicalSamples,
                     },
                     {
                         path: "/patient/shelf-assignment/counter-samples",
                         name: "shelf-assignment-counter-samples",
-                        meta: {middleware: [auth]},
+                        meta: {
+                            middleware: [auth],
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CUSTODIAN-CENTER']
+                        },
                         component: ShelfClinicalCounterSamples,
                     },
                 ],
@@ -194,7 +224,7 @@ const routes = [
     {
         path: "/administration",
         name: "administration",
-        meta: {middleware: [auth, adminGuard], requiredRole: 'SUPER-ADMIN'},
+        meta: {middleware: [auth], requiredRole: ['SUPER-ADMIN']},
         component: DashboardView,
         redirect: () => {
             return {name: "users"};
@@ -203,7 +233,7 @@ const routes = [
             {
                 path: "/administration/users",
                 name: "users",
-                meta: {middleware: [auth], requiredRole: 'SUPER-ADMIN'},
+                meta: {middleware: [auth], requiredRole: ['SUPER-ADMIN']},
                 component: UserComponent,
             },
             {
