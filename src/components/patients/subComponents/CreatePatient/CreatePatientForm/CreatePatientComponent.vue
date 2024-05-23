@@ -10,6 +10,7 @@ import useVuelidate from "@vuelidate/core";
 import {toast} from "vue3-toastify";
 import dayjs from "dayjs";
 import {useRouter} from "vue-router";
+import {calculateAgeTwo} from "@/utils/helpers/ageCalculate.js";
 
 const router = useRouter()
 
@@ -96,6 +97,18 @@ const handleSubmit = async () => {
     toast.error('Datos personales incompletos')
     return false
   }
+
+  const patientAge = calculateAgeTwo(new Date(patient.value.fecha_nacimiento))
+
+  if (patientAge < 18 || patientAge > 80) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Oooops!',
+      text: `Candidato tiene ${patientAge} años y esta fuera de los rangos de edad permitidos para el proceso.`
+    })
+    return false
+  }
+
   // If the form is valid, perform some action with the form data
   await router.push({
     name: 'create-patient-informed-consent'

@@ -73,7 +73,8 @@ defineExpose({
                      type="date"
               >
               <br>
-              <input id="input-dosage" v-model="initialValue.valueLab"
+              <input id="input-dosage"
+                     v-model="initialValue.valueLab"
                      aria-label="Last name"
                      class="form-control"
                      min="1"
@@ -86,7 +87,8 @@ defineExpose({
             <div class="col-8 d-flex align-items-center">
 
               <div v-for="(item, index) in laboratoriesOptions" :key="index" class="form-check form-check-inline">
-                <input :id="`inlineRadio1-${index}`" v-model="initialValue.labType"
+                <input :id="`inlineRadio1-${index}`"
+                       v-model="initialValue.labType"
                        :value="item.value"
                        class="form-check-input"
                        name="inlineRadioOptions"
