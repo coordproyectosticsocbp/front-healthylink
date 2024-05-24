@@ -47,6 +47,5 @@
 
 .auth-page .auth-header-box {
   background-image: var(--vt-c-button-global-color);
-  border-top-left-radius: ;
 }
 </style>

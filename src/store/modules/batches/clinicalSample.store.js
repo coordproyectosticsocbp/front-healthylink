@@ -17,7 +17,7 @@ export const getters = {
 export const actions = {
     async getTemporalBatches({commit}, payload) {
         try {
-            const response = await BatchService.getTemporalBatches(payload.user_id, payload.sede_id)
+            const response = await BatchService.getTemporalBatches(payload.user_id, payload.sedes_toma_muestras_id)
             commit('SET_CLINICAL_SAMPLES', response.data.data.temp_Muestras)
         } catch (e) {
             commit('SET_ERROR', e.response.data.message)

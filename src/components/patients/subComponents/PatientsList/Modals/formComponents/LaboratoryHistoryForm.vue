@@ -10,7 +10,8 @@ const props = defineProps({
 
 const initialValue = ref({
   labDate: null,
-  labType: null
+  labType: null,
+  valueLab: null
 })
 
 const laboratoryHistory = useLocalStorage([], `laboratoryHistory-${props.itemIndexVal}`)
@@ -19,7 +20,8 @@ const addItemToLabArray = () => {
   laboratoryHistory.value.push({...initialValue.value})
   initialValue.value = {
     labDate: null,
-    labType: null
+    labType: null,
+    valueLab: null
   }
 }
 
@@ -70,12 +72,23 @@ defineExpose({
                      required
                      type="date"
               >
+              <br>
+              <input id="input-dosage"
+                     v-model="initialValue.valueLab"
+                     aria-label="Last name"
+                     class="form-control"
+                     min="1"
+                     placeholder="Valor"
+                     required
+                     type="text"
+              >
               <!--              </div>-->
             </div>
             <div class="col-8 d-flex align-items-center">
 
               <div v-for="(item, index) in laboratoriesOptions" :key="index" class="form-check form-check-inline">
-                <input :id="`inlineRadio1-${index}`" v-model="initialValue.labType"
+                <input :id="`inlineRadio1-${index}`"
+                       v-model="initialValue.labType"
                        :value="item.value"
                        class="form-check-input"
                        name="inlineRadioOptions"
@@ -138,6 +151,12 @@ defineExpose({
                         <p class="mb-0">
                           Tipo:
                           <span>{{ item.labType }}</span>
+                        </p>
+                      </li>
+                      <li>
+                        <p class="mb-0">
+                          Valor:
+                          <span>{{ item.valueLab }}</span>
                         </p>
                       </li>
                     </ul>

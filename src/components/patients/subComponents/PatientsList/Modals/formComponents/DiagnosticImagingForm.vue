@@ -12,7 +12,7 @@ const props = defineProps({
 const initialValue = ref({
   imageDate: null,
   imageType: null,
-  imageResult: null
+  imageResult: ''
 })
 
 const imagesHistory = useLocalStorage([], `imagesHistory-${props.itemIndexVal}`)
@@ -22,7 +22,7 @@ const addItemToLabArray = () => {
   initialValue.value = {
     imageDate: null,
     imageType: null,
-    imageResult: null
+    imageResult: ''
   }
 }
 
@@ -79,7 +79,11 @@ defineExpose({
                 <div class="col">
                   <label class="form-label" for="inputImageType">Tipo:</label>
                   <!--                  diagnosticImaging-->
-                  <select id="inputImageType" v-model="initialValue.imageType" class="form-select" required>
+                  <select id="inputImageType"
+                          v-model="initialValue.imageType"
+                          class="form-select"
+                          required
+                  >
                     <option value="null">Seleccione una Opción</option>
                     <option v-for="item in diagnosticImaging" :key="item.value">
                       {{ item.label }}

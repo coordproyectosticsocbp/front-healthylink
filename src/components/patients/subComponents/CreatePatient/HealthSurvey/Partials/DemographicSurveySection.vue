@@ -56,12 +56,16 @@ const v$ = useVuelidate(rules, demographicVariables)
 const handleSubmit = async () => {
   const result = await v$.value.$validate()
   if (!result) {
-    window.localStorage.setItem('demographicHasError', true)
+    window.localStorage.setItem('demographicHasError', JSON.stringify({
+      value: true
+    }))
     toast.error('Información demográfica INCOMPLETA')
     return false
   }
   // If the form is valid, perform some action with the form data
-  window.localStorage.setItem('demographicHasError', false)
+  window.localStorage.setItem('demographicHasError', JSON.stringify({
+    value: false
+  }))
   return true;
 }
 
@@ -125,7 +129,7 @@ onMounted(patientAge)
 
           <div class="row mb-3 g-3 align-items-center">
             <div class="col-auto">
-              <label class="col-form-label" for="inputAge">EDAD:</label>
+              <label class="col-form-label" for="inputAge">1. EDAD:</label>
               <input id="inputAge" v-model="demographicVariables.edad" aria-describedby="ageHelpInline"
                      class="form-control form-control-sm"
                      disabled
@@ -138,7 +142,7 @@ onMounted(patientAge)
 
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
-              <label class="col-form-label" for="inputHeight">ALTURA:</label>
+              <label class="col-form-label" for="inputHeight">2. ALTURA:</label>
               <input id="inputHeight" v-model="demographicVariables.altura" aria-describedby="ageHelpInline"
                      class="form-control form-control-sm"
                      placeholder="(Unidad: cm)"
@@ -151,7 +155,7 @@ onMounted(patientAge)
                 </span>
             </div>
             <div class="col">
-              <label class="col-form-label" for="inputWeight">PESO:</label>
+              <label class="col-form-label" for="inputWeight">3. PESO:</label>
               <input id="inputWeight" v-model="demographicVariables.peso" aria-describedby="ageHelpInline"
                      class="form-control form-control-sm"
                      placeholder="(Unidad: Kg)"
@@ -170,7 +174,7 @@ onMounted(patientAge)
             <div class="col">
               <label class="form-label" for="selectEtnia">
                 <font-awesome-icon :icon="['fas', 'people-group']"/>
-                ETNIA:
+                4. ETNIA:
               </label>
 
               <select id="selectEtnia" v-model="demographicVariables.etnia"
@@ -200,7 +204,7 @@ onMounted(patientAge)
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
               <label class="col-form-label" for="paisNacimientoEncuestado">
-                PAÍS DE NACIMIENTO:
+                5. PAÍS DE NACIMIENTO:
               </label>
               <input id="paisNacimientoEncuestado" v-model="demographicVariables.pais_nacimiento"
                      class="form-control form-control-sm"
@@ -222,7 +226,7 @@ onMounted(patientAge)
             </div>
             <div class="col">
               <label class="col-form-label" for="ciudadNacimientoEncuestado">
-                CIUDAD DE NACIMIENTO:
+                6. CIUDAD DE NACIMIENTO:
               </label>
               <input id="ciudadNacimientoEncuestado" v-model="demographicVariables.ciudad_nacimiento"
                      class="form-control form-control-sm"
@@ -246,7 +250,7 @@ onMounted(patientAge)
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
               <label class="col-form-label" for="paisNacimientoAbueloMaterno">
-                PAÍS DE NACIMIENTO DE ABUELO MATERNO:
+                7. PAÍS DE NACIMIENTO DE ABUELO MATERNO:
               </label>
               <input id="paisNacimientoAbueloMaterno" v-model="demographicVariables.pais_abuelo_materno"
                      class="form-control form-control-sm"
@@ -266,7 +270,7 @@ onMounted(patientAge)
             </div>
             <div class="col">
               <label class="col-form-label" for="ciudadNacimientoAbueloMaterno">
-                CIUDAD DE NACIMIENTO DE ABUELO MATERNO:
+                8. CIUDAD DE NACIMIENTO DE ABUELO MATERNO:
               </label>
               <input id="ciudadNacimientoAbueloMaterno" v-model="demographicVariables.ciudad_abuelo_materno"
                      class="form-control form-control-sm"
@@ -290,7 +294,7 @@ onMounted(patientAge)
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
               <label class="col-form-label" for="paisNacimientoAbuelaMaterna">
-                PAÍS DE NACIMIENTO DE ABUELA MATERNA:
+                9. PAÍS DE NACIMIENTO DE ABUELA MATERNA:
               </label>
               <input id="paisNacimientoAbuelaMaterna" v-model="demographicVariables.pais_abuela_materna"
                      class="form-control form-control-sm"
@@ -310,7 +314,7 @@ onMounted(patientAge)
             </div>
             <div class="col">
               <label class="col-form-label" for="ciudadNacimientoAbuelaMaterna">
-                CIUDAD DE NACIMIENTO DE ABUELA MATERNA:
+                10 .CIUDAD DE NACIMIENTO DE ABUELA MATERNA:
               </label>
               <input id="ciudadNacimientoAbuelaMaterna" v-model="demographicVariables.ciudad_abuela_materna"
                      class="form-control form-control-sm"
@@ -334,7 +338,7 @@ onMounted(patientAge)
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
               <label class="col-form-label" for="paisNacimientoAbueloPaterno">
-                PAÍS DE NACIMIENTO DE ABUELO PATERNO:
+                11. PAÍS DE NACIMIENTO DE ABUELO PATERNO:
               </label>
               <input id="paisNacimientoAbueloPaterno" v-model="demographicVariables.pais_abuelo_paterno"
                      class="form-control form-control-sm"
@@ -354,7 +358,7 @@ onMounted(patientAge)
             </div>
             <div class="col">
               <label class="col-form-label" for="ciudadNacimientoAbueloPaterno">
-                CIUDAD DE NACIMIENTO DE ABUELO PATERNO:
+                12. CIUDAD DE NACIMIENTO DE ABUELO PATERNO:
               </label>
               <input id="ciudadNacimientoAbueloPaterno" v-model="demographicVariables.ciudad_abuelo_paterno"
                      class="form-control form-control-sm"
@@ -378,7 +382,7 @@ onMounted(patientAge)
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
               <label class="col-form-label" for="paisNacimientoAbuelaPaterna">
-                PAÍS DE NACIMIENTO DE ABUELA PATERNA:
+                13. PAÍS DE NACIMIENTO DE ABUELA PATERNA:
               </label>
               <input id="paisNacimientoAbuelaPaterna" v-model="demographicVariables.pais_abuela_paterna"
                      class="form-control form-control-sm"
@@ -398,7 +402,7 @@ onMounted(patientAge)
             </div>
             <div class="col">
               <label class="col-form-label" for="ciudadNacimientoAbuelaPaterna">
-                CIUDAD DE NACIMIENTO DE ABUELA PATERNA:
+                14. CIUDAD DE NACIMIENTO DE ABUELA PATERNA:
               </label>
               <input id="ciudadNacimientoAbuelaPaterna" v-model="demographicVariables.ciudad_abuela_paterna"
                      class="form-control form-control-sm"
@@ -421,7 +425,7 @@ onMounted(patientAge)
           <div class="row mb-3 g-3 align-items-center">
             <div class="col">
               <label class="col-form-label" for="paisResideciaEncuestado">
-                CUAL ES SU PAÍS DE RESIDENCIA?:
+                15. CUAL ES SU PAÍS DE RESIDENCIA?:
               </label>
               <input id="paisResideciaEncuestado" v-model="demographicVariables.pais_residencia_paciente"
                      class="form-control form-control-sm"
@@ -442,7 +446,7 @@ onMounted(patientAge)
             </div>
             <div class="col">
               <label class="col-form-label" for="ciudadResideciaEncuestado">
-                CUAL ES SU CIUDAD DE RESIDENCIA?:
+                16. CUAL ES SU CIUDAD DE RESIDENCIA?:
               </label>
               <input id="ciudadResideciaEncuestado" v-model="demographicVariables.ciudad_residencia_paciente"
                      class="form-control form-control-sm"

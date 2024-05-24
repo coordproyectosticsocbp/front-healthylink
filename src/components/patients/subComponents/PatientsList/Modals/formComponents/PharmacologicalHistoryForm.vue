@@ -3,6 +3,7 @@
 import {ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
 import {drugsList} from "@/utils/const/drugsList.js";
+import {everyHowOften} from "@/utils/const/everyHowOften.js";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -13,6 +14,7 @@ const initialValue = ref({
   drugDosage: 0,
   drugPresentation: '',
   drugConcentration: '',
+  everyHowOften: null
 })
 const pharmacologicalHistory = useLocalStorage([], `pharmacologicalHistory-${props.itemIndexVal}`)
 
@@ -21,6 +23,7 @@ const addItemToPharmArray = () => {
   pharmacologicalHistory.value.push({
     drugName: initialValue.value.drugName[0].DescripcionComercial,
     drugDosage: initialValue.value.drugDosage,
+    everyHowOften: initialValue.value.everyHowOften,
     drugPresentation: '',
     drugConcentration: '',
   })
@@ -29,6 +32,7 @@ const addItemToPharmArray = () => {
     drugDosage: 0,
     drugPresentation: '',
     drugConcentration: '',
+    everyHowOften: '',
   }
 }
 
@@ -67,7 +71,7 @@ defineExpose({
       <div class="col">
         <form autocomplete="off" @submit.prevent="addItemToPharmArray">
           <div class="row">
-            <div class="col-8">
+            <div class="col-5">
               <label class="form-label" for="input-drug">Medicamento:</label>
               <VueMultiselect
                   id="input-drug"
@@ -89,6 +93,20 @@ defineExpose({
                      placeholder="Dosis"
                      type="number"
               >
+            </div>
+            <div class="col-3">
+              <label class="form-label" for="input7">Cada cuanto:</label>
+              <select id="input7" v-model="initialValue.everyHowOften"
+                      class="form-select"
+                      required
+              >
+                <option :value="null" selected>Seleccione cada cuanto...</option>
+                <option v-for="gender in everyHowOften"
+                        :key="gender.value"
+                        :value="gender.value"
+                        v-text="gender.name"
+                />
+              </select>
             </div>
             <!--            <div class="col-2">
                           <input id="input-presentation" v-model="initialValue.drugPresentation"
@@ -129,17 +147,21 @@ defineExpose({
           <li v-for="(item, index) in pharmacologicalHistory" :key="index" class="mb-1">
 
             <div class="row">
-              <div class="col-5 fw-bolder">MEDICAMENTO</div>
-              <div class="col-5 text-center fw-bolder">DOSIS</div>
+              <div class="col-6 fw-bolder">MEDICAMENTO</div>
+              <div class="col-2 text-center fw-bolder">DOSIS</div>
+              <div class="col-2 text-center fw-bolder">CADA CUANTO</div>
               <div class="col-2 text-center fw-bolder">OPCIONES</div>
             </div>
 
             <div class="row mb-3">
-              <div class="col-5">
+              <div class="col-6">
                 <p class="mb-0">{{ item.drugName }}</p>
               </div>
-              <div class="col-5 text-center">
+              <div class="col-2 text-center">
                 <p class="mb-0">{{ item.drugDosage }}</p>
+              </div>
+              <div class="col-2 text-center">
+                <p class="mb-0">{{ item.everyHowOften }}</p>
               </div>
               <div class="col-2 text-center">
                 <button class="btn btn-sm rounded btn-outline-danger"

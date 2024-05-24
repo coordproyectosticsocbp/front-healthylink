@@ -10,7 +10,7 @@ export const patientComplementayTabOption = [
         status: true
     },
     {
-        name: 'Patológicos',
+        name: 'Hallazgos',
         value: 'patologicos',
         status: false
     },
@@ -92,6 +92,11 @@ export const laboratoriesOptions = [
         value: 'Plaquetas',
         model: 'LabPlaquetas',
     },
+    {
+        label: 'N/A',
+        value: 'N/A',
+        model: 'N/A',
+    },
 ]
 
 export const biochemicalOptions = [
@@ -147,6 +152,11 @@ export const biochemicalOptions = [
         label: 'Trigliceridos',
         value: 'Trigliceridos',
     },
+    {
+        label: 'N/A',
+        value: 'N/A',
+        model: 'N/A',
+    },
 ]
 
 export const hormonalesOptions = [
@@ -154,6 +164,21 @@ export const hormonalesOptions = [
         label: 'TSH (hormona estimulante del tiroides)',
         value: 'TSH (hormona estimulante del tiroides)',
         model: 'tsh',
+    },
+    {
+        label: 'Hormonas T3',
+        value: 'Hormonas T3',
+        model: 'HormonasT3',
+    },
+    {
+        label: 'Hormonas T4',
+        value: 'Hormonas T4',
+        model: 'HormonasT4',
+    },
+    {
+        label: 'N/A',
+        value: 'N/A',
+        model: 'N/A',
     },
 ]
 
@@ -181,5 +206,10 @@ export const diagnosticImaging = [
     {
         label: 'Ecografía',
         value: 'Ecografía'
-    }
+    },
+    {
+        label: 'N/A',
+        value: 'N/A',
+        model: 'N/A',
+    },
 ]

@@ -49,12 +49,16 @@ const v$ = useVuelidate(rules, healthHabitsVariables)
 const handleSubmit = async () => {
   const result = await v$.value.$validate()
   if (!result) {
-    window.localStorage.setItem('healthHabitsHasError', true)
+    window.localStorage.setItem('healthHabitsHasError', JSON.stringify({
+      value: true
+    }))
     toast.error('Habitos de salud INCOMPLETOS')
     return false
   }
   // If the form is valid, perform some action with the form data
-  window.localStorage.setItem('healthHabitsHasError', false)
+  window.localStorage.setItem('healthHabitsHasError', JSON.stringify({
+    value: false
+  }))
   return true;
 }
 
@@ -153,7 +157,7 @@ defineExpose({
             <div class="col">
               <label class="form-label" for="selectPacienteFumador">
                 <font-awesome-icon :icon="['fas', 'smoking']"/>
-                ¿Eres fumador o has sido fumador toda tu vida? UNICA
+                17. ¿Eres fumador o has sido fumador toda tu vida? UNICA
               </label>
 
               <select id="selectPacienteFumador" v-model="healthHabitsVariables.es_fumador"
@@ -179,7 +183,7 @@ defineExpose({
             <div class="col">
               <label class="form-label" for="presionArterial">
                 <font-awesome-icon :icon="['fas', 'heart-pulse']"/>
-                ¿Tiene presión arterial alta? UNICA
+                18. ¿Tiene presión arterial alta? UNICA
               </label>
 
               <select id="presionArterial" v-model="healthHabitsVariables.presion_arterial"
@@ -218,7 +222,7 @@ defineExpose({
             <div class="col">
               <label class="form-label" for="selectColesterolNivel">
                 <font-awesome-icon :icon="['fas', 'heart']"/>
-                ¿Tienes niveles altos de colesterol? UNICA
+                19. ¿Tienes niveles altos de colesterol? UNICA
               </label>
 
               <select id="selectColesterolNivel" v-model="healthHabitsVariables.alto_nivel_colesterol"
@@ -245,7 +249,7 @@ defineExpose({
             <div class="col">
               <label class="form-label" for="selectBebidasAlcoholicas">
                 <font-awesome-icon :icon="['fas', 'champagne-glasses']"/>
-                ¿Con qué frecuencia consumes bebidas alcohólicas? UNICA
+                20. ¿Con qué frecuencia consumes bebidas alcohólicas? UNICA
               </label>
 
               <select id="selectBebidasAlcoholicas" v-model="healthHabitsVariables.frecuencia_bebidas_alcoholicas"
@@ -271,7 +275,7 @@ defineExpose({
           <div class="row mb-3">
             <div class="col">
               <p class="text-justify">
-                ¿Alguno de sus parientes cercanos (por ejemplo, padres, hermanos) tiene una afección o enfermedad
+                21. ¿Alguno de sus parientes cercanos (por ejemplo, padres, hermanos) tiene una afección o enfermedad
                 crónica no transmisible (Hipertensión Arterial, Diabetes Mellitus, Cáncer, Enfermedad Renal Crónica,
                 etc.? UNICA
               </p>

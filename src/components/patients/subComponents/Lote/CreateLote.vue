@@ -1,3 +1,8 @@
+<script setup>
+
+import ValidateBatchModal from "@/components/patients/subComponents/Lote/Modals/ValidateBatchModal.vue";
+</script>
+
 <template>
   <div class="container">
     <div class="row mb-5">
@@ -50,11 +55,6 @@
 
   </div>
 </template>
-
-<script setup>
-
-import ValidateBatchModal from "@/components/patients/subComponents/Lote/Modals/ValidateBatchModal.vue";
-</script>
 
 <style scoped>
 
