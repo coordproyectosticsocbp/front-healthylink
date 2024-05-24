@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, ref} from "vue";
 import BatchService from "@/services/batchs/Batch.service.js";
 import {useStore} from "vuex";
 import {toast} from "vue3-toastify";
@@ -12,6 +12,7 @@ const authUser = computed(() => store.getters["auth/authUser"])
 const clinicalCounterSamples = computed(() => store.state.clinicalCounterSamples.clinicalCounterSamples)
 const counterSampleCode = ref("")
 const filter = ref("")
+const headquarter = ref(null)
 //const errors = computed(() => store.state.clinicalSamples.error)
 const store = useStore()
 
@@ -36,19 +37,30 @@ const filteredItems = computed(() => {
                 .toLowerCase().includes(filter.value.toLowerCase());
           }) : clinicalCounterSamples.value
 })
+const headquartersList = computed(() => {
+  const headquarterStorage = window.localStorage.getItem('headquartersList')
+  let headquarterInfo = null
+  if (headquarterStorage) headquarterInfo = JSON.parse(headquarterStorage)
+  return headquarterInfo
+})
 
 const getTemporalBatches = () => {
+  const loader = $loading.show()
   try {
     const payload = {
       user_id: authUser.value.id,
-      sede_id: 1
+      sedes_toma_muestras_id: headquarter.value
     }
     store.dispatch('clinicalCounterSamples/getTemporalCounterSamplesBatches', payload)
+        .then(() => loader.hide())
+        .catch(() => loader.hide())
+        .finally(() => loader.hide())
   } catch (e) {
     Swal.fire({
       icon: 'error',
       text: e
     })
+    loader.hide()
   }
 }
 const addItemToClinicalCounterSamplesArray = () => {
@@ -94,9 +106,7 @@ const removeItemToClinicalCounterSamplesArray = (index) => {
   console.log(index)
 }
 
-onMounted(getTemporalBatches)
-
-
+//onMounted(getTemporalBatches)
 </script>
 
 <template>
@@ -110,6 +120,31 @@ onMounted(getTemporalBatches)
           </h5>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col">
+          <form autocomplete="off" @change.prevent="getTemporalBatches">
+            <div class="mb-3">
+              <label class="form-label" for="disabledSelect">
+                Sede actual:
+              </label>
+              <select id="disabledSelect" v-model="headquarter" class="form-select">
+                <option :value="null" disabled>Seleccione la sede</option>
+                <option v-for="(item, index) in headquartersList"
+                        :key="item.id"
+                        :value="item.id"
+                >
+                  {{ index + 1 }}. {{ item.nombre }}
+                </option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+      <hr>
 
       <div class="row">
         <div class="col-xl-4 border-end">

@@ -34,6 +34,7 @@ import PatientHealthSurvey
 import NotFoundPage from "@/views/NOTFOUND/NotFoundPage.vue";
 import {useStore} from "vuex";
 import UnauthorizedPage from "@/views/UNATHORIZED/UnauthorizedPage.vue";
+import DownloadPatientsData from "@/components/reports/DownloadPatientsData.vue";
 
 const routes = [
     {
@@ -220,6 +221,26 @@ const routes = [
                 ],
             },
         ],
+    },
+    {
+        path: "/reports",
+        name: "reports",
+        meta: {
+            middleware: [auth],
+            requiredRole: ['SUPER-ADMIN', 'AUDITOR']
+        },
+        component: DashboardView,
+        redirect: () => {
+            return {name: 'reports-main'}
+        },
+        children: [
+            {
+                path: "/reports/main",
+                name: "reports-main",
+                meta: {middleware: [auth]},
+                component: DownloadPatientsData,
+            },
+        ]
     },
     {
         path: "/administration",

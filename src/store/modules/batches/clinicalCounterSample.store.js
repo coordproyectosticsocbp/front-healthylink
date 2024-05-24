@@ -17,7 +17,7 @@ export const getters = {
 export const actions = {
     async getTemporalCounterSamplesBatches({commit}, payload) {
         try {
-            const response = await BatchService.getTemporalBatches(payload.user_id, payload.sede_id)
+            const response = await BatchService.getTemporalBatches(payload.user_id, payload.sedes_toma_muestras_id)
             commit('SET_CLINICAL_COUNTER_SAMPLES', response.data.data.tempContraMuestras)
         } catch (e) {
             commit('SET_ERROR', e.response.data.message)
