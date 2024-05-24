@@ -102,8 +102,41 @@ const addItemToClinicalCounterSamplesArray = () => {
         loader.hide()
       })
 }
-const removeItemToClinicalCounterSamplesArray = (index) => {
-  console.log(index)
+const removeItemToClinicalCounterSamplesArray = (id_encuesta, tipo_muestra) => {
+
+  const loader = $loading.show()
+  const payload = {
+    minv_formulario_id: id_encuesta,
+    tipo_muestra: tipo_muestra.toString()
+  }
+
+  console.log(payload)
+
+  BatchService.deleteBatchFromTemporal(payload)
+      .then((response) => {
+        if (response.data.statusCode !== 200) {
+          Swal.fire({
+            icon: 'error',
+            text: response.data.message
+          })
+          loader.hide()
+        } else {
+          getTemporalBatches()
+          Swal.fire({
+            icon: 'success',
+            text: response.data.message
+          })
+          loader.hide()
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          text: getError(error)
+        })
+        loader.hide()
+      })
+
 }
 
 //onMounted(getTemporalBatches)
@@ -195,7 +228,7 @@ const removeItemToClinicalCounterSamplesArray = (index) => {
               <button v-for="(item, index) in filteredItems"
                       :key="item"
                       class="btn btn-outline-primary me-2 mb-2"
-                      @click.prevent="removeItemToClinicalCounterSamplesArray(index)"
+                      @click.prevent="removeItemToClinicalCounterSamplesArray(item.minv_formulario_id, 'CONTRAMUESTRA')"
               >
                 CM{{ item.minv_formulario_id }}-{{ item.code_paciente }}-1-{{ authUser.id }}
 
