@@ -313,14 +313,17 @@ defineExpose({
                   </label>
                   <!--                  <p>Cuales Enfermedades?</p>-->
                   <div class="row mb-3">
-                    <div class="col">
+                    <div class="col d-flex justify-content-around">
                       <input
                           id="inputCualEnfermedad"
                           v-model="cualEnfermedadMadre"
-                          class="form-control form-control-sm"
+                          class="form-control form-control-sm me-2"
                           placeholder="Escriba la enfermedad" type="text"
                           @keyup.prevent.enter="addIllnessToArray(1)"
                       />
+                      <button class="btn btn-sm rounded-pill btn-outline-primary" @click.prevent="addIllnessToArray(1)">
+                        <font-awesome-icon :icon="['fas', 'plus']"/>
+                      </button>
                     </div>
                   </div>
                   <div class="row">
@@ -380,14 +383,17 @@ defineExpose({
                 Cuales Enfermedades?
               </label>
               <div class="row mb-3">
-                <div class="col">
+                <div class="col d-flex justify-content-around">
                   <input
                       id="inputCualEnfermedadPadre"
                       v-model="cualEnfermedadPadre"
-                      class="form-control form-control-sm"
+                      class="form-control me-2 form-control-sm"
                       placeholder="Escriba la enfermedad" type="text"
                       @keyup.prevent.enter="addIllnessToArray(2)"
                   />
+                  <button class="btn btn-sm rounded-pill btn-outline-primary" @click.prevent="addIllnessToArray(2)">
+                    <font-awesome-icon :icon="['fas', 'plus']"/>
+                  </button>
                 </div>
               </div>
               <div class="row">
@@ -445,13 +451,16 @@ defineExpose({
                 Cuales Enfermedades?
               </label>
               <div class="row mb-3">
-                <div class="col">
+                <div class="col d-flex justify-content-around">
                   <input
                       v-model="cualEnfermedadHermanos"
-                      class="form-control form-control-sm"
+                      class="form-control me-2 form-control-sm"
                       placeholder="Escriba la enfermedad" type="text"
                       @keyup.prevent.enter="addIllnessToArray(3)"
                   />
+                  <button class="btn btn-sm rounded-pill btn-outline-primary" @click.prevent="addIllnessToArray(3)">
+                    <font-awesome-icon :icon="['fas', 'plus']"/>
+                  </button>
                 </div>
 
               </div>
