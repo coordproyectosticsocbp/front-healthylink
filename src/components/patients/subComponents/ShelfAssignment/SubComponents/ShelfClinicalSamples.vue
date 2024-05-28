@@ -11,12 +11,13 @@ const errors = ref(null);
 const store = useStore()
 const authUser = computed(() => store.getters["auth/authUser"])
 const sampleCode = ref(null)
+const shelfCode = ref("")
 const fullPage = ref(true)
 
 /**
  * Expresiones regulares de validaciones
  * */
-const regexSamples = /^MU[0-9]{1,9}-\w{1,20}-\d-\d$/
+const regexSamples = /^MU([0-9]{1,9})?-\w{1,20}-\d-\d$/
 
 const $loading = useLoading({
   loader: 'dots',
@@ -48,66 +49,64 @@ const shelfSampleAssignment = () => {
 
   const loader = $loading.show()
 
-  const payload = {
-    user_id: authUser.value.id,
-    codigo_muestra: sampleCode.value,
-    codigo_ubicacion: '1-1-2-A'
-  }
   //CM5-FKHMMPLT-1-7
   //CM6-1RUJFAWI-1-7
   //samplesArray.value.push(payload)
 
-  if (!sampleCode.value.length) {
+  if (!sampleCode.value.length || !shelfCode.value.length) {
     Swal.fire({
       icon: 'error',
       title: 'Verifica!',
-      text: 'El campo de Muestras No puede estar vacío'
+      text: 'El campo de Muestras o de Ubicación No puede estar vacío'
     })
-    return false;
+    loader.hide()
+    return false
+  }
+
+  if (!regexSamples.test(sampleCode.value)) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Ooops!',
+      text: 'El Código de Muestra NO cumple con el coincide con el patron'
+    })
+    loader.hide()
+    return false
   } else {
 
-    if (!regexSamples.test(sampleCode.value)) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Ooops!',
-        text: 'El Código de Muestra NO cumple con el coincide con el patron'
-      })
-      return false;
-    } else {
+    const payload = {
+      user_id: authUser.value.id,
+      codigo_muestra: sampleCode.value,
+      ubicacion_bio_bancos: shelfCode.value
+    }
 
-      shelfAssignmentService.saveShelfSamplesAssignment(payload)
-          .then((response) => {
-            if (response.data.statusCode !== 201) {
-              loader.hide()
-              Swal.fire({
-                icon: 'error',
-                title: 'Oooops!',
-                text: response.data.message
-              })
-            } else {
-              loader.hide()
-              sampleCode.value = ""
-              Swal.fire({
-                icon: 'success',
-                title: 'Perfectooo!',
-                text: response.data.message
-              })
-
-            }
-          })
-          .catch((error) => {
+    shelfAssignmentService.saveShelfSamplesAssignment(payload)
+        .then((response) => {
+          if (response.data.statusCode !== 201) {
             loader.hide()
             Swal.fire({
               icon: 'error',
               title: 'Oooops!',
-              text: getError(error)
+              text: response.data.message
             })
+          } else {
+            loader.hide()
+            sampleCode.value = ""
+            Swal.fire({
+              icon: 'success',
+              title: 'Perfectooo!',
+              text: response.data.message
+            })
+          }
+        })
+        .catch((error) => {
+          loader.hide()
+          Swal.fire({
+            icon: 'error',
+            title: 'Oooops!',
+            text: getError(error)
           })
-
-    }
+        })
   }
-
-
 }
 
 const sendBoxSponsor = () => {
@@ -147,7 +146,7 @@ const sendBoxSponsor = () => {
                 title: 'Perfectooo!',
                 text: response.data.message
               })
-              tempBoxSponsor.value =[];
+              tempBoxSponsor.value = [];
             }
           })
           .catch((error) => {
@@ -190,6 +189,16 @@ const sendBoxSponsor = () => {
                    autofocus
                    class="form-control"
                    placeholder="Código de Muestra"
+                   type="text"
+            >
+          </div>
+
+          <div class="mb-5">
+            <label class="form-label" for="inputShelfCode">Seleccionar Ubicación de Asignación:</label>
+            <input id="inputShelfCode"
+                   v-model="shelfCode"
+                   class="form-control"
+                   placeholder="Código de ubicación ContraMuestra"
                    type="text"
             >
           </div>
