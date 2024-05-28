@@ -33,10 +33,6 @@ const shelfCounterSampleAssignment = () => {
 
   const loader = $loading.show()
 
-  //CM5-FKHMMPLT-1-7
-  //CM6-1RUJFAWI-1-7
-  //samplesArray.value.push(payload)
-
   if (!counterSampleCode.value.length || !shelfCode.value.length) {
     Swal.fire({
       icon: 'error',
