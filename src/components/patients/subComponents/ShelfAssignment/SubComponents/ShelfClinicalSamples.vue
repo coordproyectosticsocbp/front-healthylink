@@ -10,8 +10,8 @@ const tempBoxSponsor = ref([]);
 const errors = ref(null);
 const store = useStore()
 const authUser = computed(() => store.getters["auth/authUser"])
-const sampleCode = ref(null)
-const shelfCode = ref("")
+const sampleCode = ref("")
+//const shelfCode = ref("")
 const fullPage = ref(true)
 
 /**
@@ -53,7 +53,8 @@ const shelfSampleAssignment = () => {
   //CM6-1RUJFAWI-1-7
   //samplesArray.value.push(payload)
 
-  if (!sampleCode.value.length || !shelfCode.value.length) {
+  //if (!sampleCode.value.length || !shelfCode.value.length) {
+  if (!sampleCode.value.length) {
     Swal.fire({
       icon: 'error',
       title: 'Verifica!',
@@ -76,7 +77,7 @@ const shelfSampleAssignment = () => {
     const payload = {
       user_id: authUser.value.id,
       codigo_muestra: sampleCode.value,
-      ubicacion_bio_bancos: shelfCode.value
+      ubicacion_bio_bancos: 1
     }
 
     shelfAssignmentService.saveShelfSamplesAssignment(payload)
@@ -189,25 +190,27 @@ const sendBoxSponsor = () => {
                    autofocus
                    class="form-control"
                    placeholder="Código de Muestra"
+                   required
                    type="text"
             >
           </div>
 
-          <div class="mb-3">
-            <label class="form-label" for="inputShelfCode">Seleccionar Ubicación de Asignación:</label>
-            <input id="inputShelfCode"
-                   v-model="shelfCode"
-                   class="form-control"
-                   placeholder="Código de ubicación ContraMuestra"
-                   type="text"
-            >
-          </div>
+          <!--          <div class="mb-3">
+                      <label class="form-label" for="inputShelfCode">Seleccionar Ubicación de Asignación:</label>
+                      <input id="inputShelfCode"
+                             v-model="shelfCode"
+                             class="form-control"
+                             placeholder="Código de ubicación ContraMuestra"
+                             type="text"
+                      >
+                    </div>-->
 
           <hr>
 
           <div class="row">
             <div class="col text-end">
-              <button class="btn btn-sm btn-outline-success"
+              <button :disabled="!sampleCode.length"
+                      class="btn btn-sm btn-outline-success"
                       type="submit"
               >
                 <font-awesome-icon :icon="['fas', 'box']"/>
