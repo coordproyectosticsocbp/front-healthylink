@@ -172,7 +172,7 @@ const sendBoxSponsor = () => {
 <template>
   <div>
 
-    <div class="row mb-5">
+    <div class="row mb-3">
       <div class="col text-center">
         <h5 class="text-uppercase fw-bolder">Asignación de Muestra a Estante</h5>
       </div>
@@ -182,7 +182,7 @@ const sendBoxSponsor = () => {
       <div class="col">
         <form autocomplete="off" @submit.prevent="shelfSampleAssignment">
 
-          <div class="mb-5">
+          <div class="mb-3">
             <label class="form-label" for="inputSamplesCode">Código de Muestra:</label>
             <input id="inputSamplesCode"
                    v-model="sampleCode"
@@ -193,7 +193,7 @@ const sendBoxSponsor = () => {
             >
           </div>
 
-          <div class="mb-5">
+          <div class="mb-3">
             <label class="form-label" for="inputShelfCode">Seleccionar Ubicación de Asignación:</label>
             <input id="inputShelfCode"
                    v-model="shelfCode"
