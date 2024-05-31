@@ -32,7 +32,7 @@ const filteredItems = computed(() => {
       ? clinicalSamples.value.filter(
           item => {
             return prefixText
-                .concat(item.minv_formulario_id, "-", item.code_paciente, "-", item.sede_id, "-", item.user_id)
+                .concat(item.code_paciente, "-", item.sede_id, "-", item.user_id)
                 .toLowerCase().includes(filter.value.toLowerCase());
           }) : clinicalSamples.value
 })
@@ -230,7 +230,7 @@ const removeItemToClinicalSamplesArray = (id_encuesta, tipo_muestra) => {
                       class="btn btn-outline-primary me-2 mb-2"
                       @click.prevent="removeItemToClinicalSamplesArray(item.minv_formulario_id, 'MUESTRA')"
               >
-                MU{{ item.minv_formulario_id }}-{{ item.code_paciente }}-1-{{ authUser.id }}
+                MU-{{ item.code_paciente }}-{{ item.sede_id }}-{{ item.user_id }}
 
                 <font-awesome-icon :icon="['fas', 'times']" class="ms-2 text-danger"/>
 
