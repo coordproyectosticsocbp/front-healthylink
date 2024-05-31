@@ -270,10 +270,12 @@ const saveForm = async () => {
     const covid19InfoHasError = validateLocalStorage('covid19InfoHasError')
 
 
-    if (demographicHasError && healthHabitsHasError && personalHealthInfoHasError && covid19InfoHasError) {
+    if (!demographicHasError && !healthHabitsHasError && !personalHealthInfoHasError && !covid19InfoHasError) {
 
+      await saveUserInformation()
+      console.log('No hay Error acá')
 
-      if (!JSON.parse(window.localStorage.getItem('demographicHasError')).value
+      /*if (!JSON.parse(window.localStorage.getItem('demographicHasError')).value
           && !JSON.parse(window.localStorage.getItem('healthHabitsHasError')).value
           && !JSON.parse(window.localStorage.getItem('personalHealthInfoHasError')).value
           && !JSON.parse(window.localStorage.getItem('covid19InfoHasError')).value
@@ -286,7 +288,11 @@ const saveForm = async () => {
 
         console.log('Hay Error acá')
 
-      }
+      }*/
+    } else {
+
+      console.log('Hay Error acá')
+
     }
 
   } catch (e) {

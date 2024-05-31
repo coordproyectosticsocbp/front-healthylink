@@ -10,13 +10,14 @@ const tempBoxSponsor = ref([]);
 const errors = ref(null);
 const store = useStore()
 const authUser = computed(() => store.getters["auth/authUser"])
-const sampleCode = ref(null)
+const sampleCode = ref("")
+//const shelfCode = ref("")
 const fullPage = ref(true)
 
 /**
  * Expresiones regulares de validaciones
  * */
-const regexSamples = /^MU[0-9]{1,9}-\w{1,20}-\d-\d$/
+const regexSamples = /^MU([0-9]{1,9})?-\w{1,20}-\d-\d$/
 
 const $loading = useLoading({
   loader: 'dots',
@@ -48,66 +49,65 @@ const shelfSampleAssignment = () => {
 
   const loader = $loading.show()
 
-  const payload = {
-    user_id: authUser.value.id,
-    codigo_muestra: sampleCode.value,
-    codigo_ubicacion: '1-1-2-A'
-  }
   //CM5-FKHMMPLT-1-7
   //CM6-1RUJFAWI-1-7
   //samplesArray.value.push(payload)
 
+  //if (!sampleCode.value.length || !shelfCode.value.length) {
   if (!sampleCode.value.length) {
     Swal.fire({
       icon: 'error',
       title: 'Verifica!',
-      text: 'El campo de Muestras No puede estar vacío'
+      text: 'El campo de Muestras o de Ubicación No puede estar vacío'
     })
-    return false;
+    loader.hide()
+    return false
+  }
+
+  if (!regexSamples.test(sampleCode.value)) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Ooops!',
+      text: 'El Código de Muestra NO cumple con el coincide con el patron'
+    })
+    loader.hide()
+    return false
   } else {
 
-    if (!regexSamples.test(sampleCode.value)) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Ooops!',
-        text: 'El Código de Muestra NO cumple con el coincide con el patron'
-      })
-      return false;
-    } else {
+    const payload = {
+      user_id: authUser.value.id,
+      codigo_muestra: sampleCode.value,
+      ubicacion_bio_bancos: 1
+    }
 
-      shelfAssignmentService.saveShelfSamplesAssignment(payload)
-          .then((response) => {
-            if (response.data.statusCode !== 201) {
-              loader.hide()
-              Swal.fire({
-                icon: 'error',
-                title: 'Oooops!',
-                text: response.data.message
-              })
-            } else {
-              loader.hide()
-              sampleCode.value = ""
-              Swal.fire({
-                icon: 'success',
-                title: 'Perfectooo!',
-                text: response.data.message
-              })
-
-            }
-          })
-          .catch((error) => {
+    shelfAssignmentService.saveShelfSamplesAssignment(payload)
+        .then((response) => {
+          if (response.data.statusCode !== 201) {
             loader.hide()
             Swal.fire({
               icon: 'error',
               title: 'Oooops!',
-              text: getError(error)
+              text: response.data.message
             })
+          } else {
+            loader.hide()
+            sampleCode.value = ""
+            Swal.fire({
+              icon: 'success',
+              title: 'Perfectooo!',
+              text: response.data.message
+            })
+          }
+        })
+        .catch((error) => {
+          loader.hide()
+          Swal.fire({
+            icon: 'error',
+            title: 'Oooops!',
+            text: getError(error)
           })
-
-    }
+        })
   }
-
-
 }
 
 const sendBoxSponsor = () => {
@@ -147,7 +147,7 @@ const sendBoxSponsor = () => {
                 title: 'Perfectooo!',
                 text: response.data.message
               })
-              tempBoxSponsor.value =[];
+              tempBoxSponsor.value = [];
             }
           })
           .catch((error) => {
@@ -173,7 +173,7 @@ const sendBoxSponsor = () => {
 <template>
   <div>
 
-    <div class="row mb-5">
+    <div class="row mb-3">
       <div class="col text-center">
         <h5 class="text-uppercase fw-bolder">Asignación de Muestra a Estante</h5>
       </div>
@@ -183,22 +183,34 @@ const sendBoxSponsor = () => {
       <div class="col">
         <form autocomplete="off" @submit.prevent="shelfSampleAssignment">
 
-          <div class="mb-5">
+          <div class="mb-3">
             <label class="form-label" for="inputSamplesCode">Código de Muestra:</label>
             <input id="inputSamplesCode"
                    v-model="sampleCode"
                    autofocus
                    class="form-control"
                    placeholder="Código de Muestra"
+                   required
                    type="text"
             >
           </div>
+
+          <!--          <div class="mb-3">
+                      <label class="form-label" for="inputShelfCode">Seleccionar Ubicación de Asignación:</label>
+                      <input id="inputShelfCode"
+                             v-model="shelfCode"
+                             class="form-control"
+                             placeholder="Código de ubicación ContraMuestra"
+                             type="text"
+                      >
+                    </div>-->
 
           <hr>
 
           <div class="row">
             <div class="col text-end">
-              <button class="btn btn-sm btn-outline-success"
+              <button :disabled="!sampleCode.length"
+                      class="btn btn-sm btn-outline-success"
                       type="submit"
               >
                 <font-awesome-icon :icon="['fas', 'box']"/>

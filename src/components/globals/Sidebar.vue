@@ -4,8 +4,12 @@ import {computed} from 'vue'
 
 const store = useStore()
 
-const collapsed = computed(() => store.getters["sidebar/collapsed"])
+const collapsed = computed({
+  get: () => store.getters['sidebar/collapsed'],
+  set: (newValue) => store.commit('sidebar/SET_COLLAPSED', newValue)
+})
 const miniMenu = computed(() => store.getters["sidebar/miniMenu"])
+const isCollapsed = 1028
 
 const menu = [
   {
@@ -114,6 +118,7 @@ const menu = [
       v-model:collapsed="collapsed"
       v-model:miniMenu="miniMenu"
       :BottomMiniMenuBtn="false"
+      :autoCollapse="isCollapsed"
       :menu="menu"
       ChildrenOpenActiveRoute
       checkButtonActive
@@ -134,5 +139,4 @@ const menu = [
 </template>
 
 <style scoped>
-
 </style>

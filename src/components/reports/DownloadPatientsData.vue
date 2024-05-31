@@ -11,6 +11,7 @@ const currentDate = ref(dateToday)
 const initDate = ref(dateToday)
 const endDate = ref(dateToday)
 const dataToExport = ref([])
+const dataToExport2 = ref([])
 const isLoadingData = ref(false)
 const fullPage = ref(true)
 
@@ -26,10 +27,23 @@ const $loading = useLoading({
 const exportToExcel = () => {
   let data = XLSX.utils.json_to_sheet(dataToExport.value)
   const workbook = XLSX.utils.book_new()
+  const filename = 'informacionPrincipal'
+  XLSX.utils.book_append_sheet(workbook, data, filename)
+  XLSX.writeFile(workbook, `${filename}.xlsx`)
+}
+const exportToExcel2 = () => {
+  let data = XLSX.utils.json_to_sheet(dataToExport2.value)
+  const workbook = XLSX.utils.book_new()
   const filename = 'informacionComplementaria'
   XLSX.utils.book_append_sheet(workbook, data, filename)
   XLSX.writeFile(workbook, `${filename}.xlsx`)
 }
+
+const exportExcelFiles = () => {
+  exportToExcel()
+  exportToExcel2()
+}
+
 const getDataByDate = async () => {
 
   const loader = $loading.show()
@@ -47,7 +61,8 @@ const getDataByDate = async () => {
           isLoadingData.value = false
           loader.hide()
         } else {
-          dataToExport.value = response.data.data.dataComplementaria
+          dataToExport.value = response.data.data.survey
+          dataToExport2.value = response.data.data.dataComplementaria
           isLoadingData.value = false
           loader.hide()
         }
@@ -136,7 +151,7 @@ const getDataByDate = async () => {
 
     <div v-if="dataToExport.length" class="row">
       <div class="col d-flex justify-content-center">
-        <button class="btn btn-success" @click="exportToExcel">
+        <button class="btn btn-success" @click="exportExcelFiles">
           <font-awesome-icon :icon="['fas', 'download']"/>
           Descargar Datos
         </button>
