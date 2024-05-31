@@ -6,8 +6,8 @@ import useLocalStorage from "@/composables/useLocalStorage.js";
 import {useStore} from "vuex";
 import {useLoading} from "vue-loading-overlay";
 import {Modal} from "bootstrap";
-import {getError} from "@/utils/helpers/getError.js";
 import BatchService from "@/services/batchs/Batch.service.js";
+import {getError} from "@/utils/helpers/getError.js";
 
 /*
 *  Get Logged User
@@ -26,8 +26,8 @@ const mainClinicalSamples = computed(() => store.state.clinicalSamples.clinicalS
 const mainClinicalCounterSamples = computed(() => store.state.clinicalCounterSamples.clinicalCounterSamples)
 const validateBatchModalRef = ref(null)
 const fullPage = ref(true)
-const regexSamples = /^MU[0-9]{1,9}-\w{1,11}-\d-\d$/
-const regexCounterSamples = /^CM[0-9]{1,9}-\w{1,11}-\d-\d$/
+const regexSamples = /^MU([0-9]{1,9})?-\w{1,11}-\d-\d$/
+const regexCounterSamples = /^CM([0-9]{1,9})?-\w{1,11}-\d-\d$/
 
 
 const $loading = useLoading({
@@ -66,19 +66,15 @@ const addSampleItemToArray = () => {
 
 
 }
-
+//Agregar elemento al array de validacion
 const addCounterSampleItemToArray = () => {
-
   if (!regexCounterSamples.test(codeCounterSampleInput.value)) {
-
     Swal.fire({
       icon: 'error',
       title: 'Oooops!',
       text: 'El código ingresado no corresponde al patrón de la Contramuestra'
     })
-
   } else {
-
     if (clinicalCounterSamples.value.includes(codeCounterSampleInput.value)) {
       toast.error('Ya existe un elemento con este código')
       //codeSampleInput.value = ""
@@ -88,9 +84,7 @@ const addCounterSampleItemToArray = () => {
     codeCounterSampleInput.value = ""
     document.getElementById('inputCounterSampleValidate').focus()
     toast.success('Ítem agregado correctamente')
-
   }
-
 }
 
 const saveBatchesToDB = () => {
@@ -144,9 +138,10 @@ const saveBatchesToDB = () => {
           muestras: []
         }
 
-        mainClinicalSamples.value.map((item) => payload.muestras.push({
-          muestra_id: item.minv_formulario_id
-        }))
+        mainClinicalSamples.value.map((item) => payload.muestras.push(
+            item.code_paciente
+        ))
+        console.log(payload)
 
         BatchService.saveRealBatch(payload)
             .then((response) => {
@@ -197,14 +192,10 @@ const saveBatchesToDB = () => {
 
 const compareObjects = (array1, array2) => {
   const prefixText = "MU"
-  console.log(array1)
+  //console.log(array1)
   return array2.every(element => {
-    return array1.includes(prefixText
-        .concat(element.minv_formulario_id, "-", element.code_paciente, "-", element.sede_id, "-", element.user_id))
+    return array1.includes(prefixText.concat("-", element.code_paciente, "-", element.sede_id, "-", element.user_id))
   })
-
-  /*console.log(prefixText
-      .concat(obj2.minv_formulario_id, "-", obj2.code_paciente, "-", obj2.sede_id, "-", obj2.user_id))*/
 }
 
 const removeSampleFromArray = (id_muestra) => {
@@ -282,7 +273,6 @@ const closeModal = () => Modal.getInstance(validateBatchModalRef.value)?.hide()
                           </button>
                         </div>
                       </div>
-
 
 
                     </form>
