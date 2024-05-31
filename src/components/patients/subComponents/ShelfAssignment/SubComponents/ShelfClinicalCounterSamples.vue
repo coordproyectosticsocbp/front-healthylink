@@ -1,6 +1,6 @@
 <script setup>
 import {useStore} from "vuex";
-import {computed,ref} from "vue";
+import {computed, ref} from "vue";
 import {useLoading} from "vue-loading-overlay";
 import {getError} from "@/utils/helpers/getError.js";
 import shelfAssignmentService from "@/services/shelfAssignment/shelfAssignment.service.js";
@@ -15,7 +15,7 @@ const errors = ref(null);
 /**
  * Expresiones regulares de validaciones
  * */
-const regexCounterSamples = /^CM[0-9]{1,9}-\w{1,11}-\d-\d$/
+const regexCounterSamples = /^CM([0-9]{1,9})?-\w{1,11}-\d-\d$/
 
 //const samplesArray = ref([])
 
@@ -33,15 +33,6 @@ const shelfCounterSampleAssignment = () => {
 
   const loader = $loading.show()
 
-  const payload = {
-    user_id: authUser.value.id,
-    codigo_muestra: counterSampleCode.value,
-    codigo_ubicacion: shelfCode.value,// '1-1-2-A'
-  }
-  //CM5-FKHMMPLT-1-7
-  //CM6-1RUJFAWI-1-7
-  //samplesArray.value.push(payload)
-
   if (!counterSampleCode.value.length || !shelfCode.value.length) {
     Swal.fire({
       icon: 'error',
@@ -49,7 +40,7 @@ const shelfCounterSampleAssignment = () => {
       text: 'El campo de ContraMuestra o de Ubicación No puede estar vacío'
     })
     loader.hide()
-    return false;
+    return false
   }
 
   if (!regexCounterSamples.test(counterSampleCode.value)) {
@@ -59,8 +50,14 @@ const shelfCounterSampleAssignment = () => {
       text: 'El Código de ContraMuestra NO cumple con el coincide con el patron'
     })
     loader.hide()
-    return false;
+    return false
   } else {
+
+    const payload = {
+      user_id: authUser.value.id,
+      codigo_muestra: counterSampleCode.value,
+      ubicacion_bio_bancos: shelfCode.value,// '1-1-2-A'
+    }
 
     shelfAssignmentService.saveShelfCounterSamplesAssignment(payload)
         .then((response) => {

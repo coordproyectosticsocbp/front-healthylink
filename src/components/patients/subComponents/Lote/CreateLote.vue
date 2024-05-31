@@ -1,3 +1,7 @@
+<script setup>
+import ValidateBatchModal from "@/components/patients/subComponents/Lote/Modals/ValidateBatchModal.vue";
+</script>
+
 <template>
   <div class="container">
     <div class="row mb-5">
@@ -34,9 +38,6 @@
             <div class="row">
               <div class="col d-flex justify-content-end">
                 <ValidateBatchModal/>
-                <!--                <button class="btn btn-sm btn-outline-success">
-                                  Registrar Lote
-                                </button>-->
               </div>
               <!-- /.col -->
             </div>
@@ -50,11 +51,6 @@
 
   </div>
 </template>
-
-<script setup>
-
-import ValidateBatchModal from "@/components/patients/subComponents/Lote/Modals/ValidateBatchModal.vue";
-</script>
 
 <style scoped>
 

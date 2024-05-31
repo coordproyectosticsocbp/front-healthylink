@@ -49,13 +49,6 @@ const $loading = useLoading({
   zIndex: 999,
 })
 
-async function testEvent() {
-  await demographicSurveySectionRef.value.handleSubmit()
-  await healthHabitsSectionRef.value.handleSubmit()
-  await personalHealthInformationRef.value.handleSubmit()
-  await covid19SectionRef.value.handleSubmit()
-}
-
 const saveUserInformation = async () => {
 
   try {
@@ -130,9 +123,12 @@ const saveInformedConsent = async () => {
     const PersonalHealthExists = validateLocalStorage('PersonalHealthInformation')
     const covid19Exists = validateLocalStorage('covid19Information')
 
-    if (signatureExists && patientExists
-        && demographicExists && PersonalHealthExists
-        && covid19Exists && healthHabitsExists
+    if (signatureExists
+        && patientExists
+        && demographicExists
+        && PersonalHealthExists
+        && covid19Exists
+        && healthHabitsExists
     ) {
 
       /* Patient and Informed Consent Local Storage */
@@ -150,7 +146,7 @@ const saveInformedConsent = async () => {
         tipo_doc: storagePatientVal.tipo_doc,
         numero_documento: storagePatientVal.numero_documento,
         firma: storageSignatureVal,
-        sedes_toma_muestras_id: 1,
+        sedes_toma_muestras_id: storagePatientVal.sedes_toma_muestras_id,
         user_created_id: authUser.value.id,
         detalle: [
           {
@@ -220,7 +216,7 @@ const saveInformedConsent = async () => {
                 title: 'Excelente!',
                 text: 'Todos los Componentes Registrados'
               })
-              //clearSurveyLocalStorage()
+              clearSurveyLocalStorage()
               router.push({
                 name: 'create-patient-form'
               })
@@ -251,27 +247,7 @@ const saveInformedConsent = async () => {
     })
   }
 
-
 }
-
-/*const saveAllComponents = async () => {
-  try {
-    //await saveUserInformation()
-    await saveInformedConsent()
-
-    /!*await router.push({
-      name: 'create-patient-form'
-    })*!/
-
-  } catch (error) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Oooops!',
-      text: getError(error)
-    })
-    loader.hide()
-  }
-}*/
 const clearSurveyLocalStorage = async () => {
   await window.localStorage.removeItem('patientForm')
   await window.localStorage.removeItem('patientSignature')
@@ -287,8 +263,38 @@ const clearSurveyLocalStorage = async () => {
 }
 const saveForm = async () => {
   try {
-    await testEvent()
-    await saveUserInformation()
+
+    const demographicHasError = validateLocalStorage('demographicHasError')
+    const healthHabitsHasError = validateLocalStorage('healthHabitsHasError')
+    const personalHealthInfoHasError = validateLocalStorage('personalHealthInfoHasError')
+    const covid19InfoHasError = validateLocalStorage('covid19InfoHasError')
+
+
+    if (!demographicHasError && !healthHabitsHasError && !personalHealthInfoHasError && !covid19InfoHasError) {
+
+      await saveUserInformation()
+      console.log('No hay Error acá')
+
+      /*if (!JSON.parse(window.localStorage.getItem('demographicHasError')).value
+          && !JSON.parse(window.localStorage.getItem('healthHabitsHasError')).value
+          && !JSON.parse(window.localStorage.getItem('personalHealthInfoHasError')).value
+          && !JSON.parse(window.localStorage.getItem('covid19InfoHasError')).value
+      ) {
+
+        await saveUserInformation()
+        console.log('No hay Error acá')
+
+      } else {
+
+        console.log('Hay Error acá')
+
+      }*/
+    } else {
+
+      console.log('Hay Error acá')
+
+    }
+
   } catch (e) {
     console.error(e)
   }

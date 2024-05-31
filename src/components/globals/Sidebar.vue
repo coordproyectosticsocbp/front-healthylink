@@ -65,6 +65,15 @@ const menu = [
     ]
   },
   {
+    header: 'Reportes',
+    hiddenOnCollapse: false,
+  },
+  {
+    href: '/reports/main',
+    name: 'Reportes',
+    icon: {text: 'Pacientes', class: 'fa fa-file-excel'}
+  },
+  {
     header: 'Administración',
     hiddenOnCollapse: false,
   },

@@ -1,6 +1,7 @@
 <script setup>
 
 import {ref} from "vue";
+import FileUploadService from "@/services/patients/FileUpload.service.js";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -17,51 +18,52 @@ const fileInput = ref(null)
 * Methods
 *
 * */
-const handleFileChange = (event) => {
-  const files = event.target.files;
-  for (const file of files) {
-    console.log(file)
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const fileContent = e.target.result;
-      const fileData = parseFile(file.type, fileContent);
-      uploadedFiles.value.push({
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        content: fileContent,
-        ...fileData,
-      });
-    };
-    reader.readAsDataURL(file);
+const handleFileChange = async (event) => {
+  if (!event.target.files[0]) return
+  try {
+    //Step 1 Starts
+    const imageFile = event.target.files[0];
+    let fileName = imageFile.name
+    let fileExtension = fileName.split('.').pop()
+    let formData = new FormData();
+    const folder = 'files/' + props.itemIndexVal //Folder inside S3 where files will store
+
+    // FormData
+    formData.set("minv_formulario_id", props.itemIndexVal)
+    formData.set("filename", fileName)
+    formData.set("directory", folder)
+    formData.set("fileExtension", fileExtension)
+
+    //Consuming File Service
+    let res = await FileUploadService.imgPreSignedUrl(formData)
+    //Step 1 ends
+
+    // Step 5 Starts
+    let inputs = res.data.inputs;
+    let attributes = res.data.attributes;
+    formData = new FormData();
+    Object.keys(inputs).forEach((key) => {
+      formData.append(key, inputs[key]);
+    });
+    formData.append("file", imageFile)
+
+    let ress = await fetch(attributes.action, {
+      method: "POST",
+      body: formData,
+      mode: "cors",
+    })
+    console.log("Posted image on s3", ress);
+    // Step 5 Ends
+
+  } catch (err) {
+    console.log("Failed to upload");
+    console.log(err);
   }
 }
 const removeFile = (key) => {
   console.log(key)
   uploadedFiles.value.splice(key, 1)
 }
-const isPDF = (fileType) => fileType === 'application/pdf'
-const isExcel = (fileType) => fileType.startsWith('application/vnd.')
-
-const parseFile = (fileType, fileContent) => {
-  if (isPDF(fileType)) {
-    return fileContent
-  } else if (isExcel(fileType)) {
-    return fileContent
-  } else {
-    return {}
-  }
-};
-
-const fileSize = (size => {
-  if (size < 1024) {
-    return `${size} bytes`
-  } else if (size < 1048576) {
-    return `${(size / 1024).toFixed(1)}` + '.KB'
-  } else {
-    return `${(size / 1048576).toFixed(1)}` + '.MB'
-  }
-})
 
 </script>
 
@@ -106,13 +108,14 @@ const fileSize = (size => {
           <div v-for="(file, index) in uploadedFiles" :key="index">
             <div class="file-info">
               <span class="file-name">{{ file.name }}</span>
-              <span class="file-size">{{ fileSize(file.size) }}</span>
+              <span class="file-size">{{ file.size }}</span>
               <button class="btn btn-sm btn-outline-danger" @click="removeFile(index)">
                 <font-awesome-icon :icon="['fas', 'trash']"/>
               </button>
             </div>
-            <pre v-if="isPDF(file.type)"/>
-            <div v-else-if="isExcel(file.type)">
+            <!--            <pre v-if="isPDF(file.type)"/>-->
+            <!--            <div v-else-if="isExcel(file.type)">-->
+            <div>
               <table>
                 <thead>
                 <tr>

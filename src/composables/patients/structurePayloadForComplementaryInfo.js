@@ -87,27 +87,31 @@ function structurePayloadMultiple(data, questionNumber) {
     if (questionNumber === 2) {
         return {
             fecha: today.format('YYYY-MM-DD'),
-            respuesta: data.drugName.toUpperCase() + ';' + data.drugConcentration + ';' + data.drugPresentation + ';' + data.drugDosage,
-            pregunta_id: questionNumber
+            //respuesta: data.drugName.toUpperCase() + ';' + data.drugConcentration + ';' + data.drugPresentation + ';' + data.drugDosage,
+            respuesta: data.drugName.toUpperCase() + ';' + data.drugDosage + ';' + data.everyHowOften,
+            pregunta_id: questionNumber,
         }
     } else if (questionNumber === 3) {
         return {
             fecha: data.labDate,
             respuesta: data.labType.toUpperCase(),
-            pregunta_id: questionNumber
+            pregunta_id: questionNumber,
+            valor: data.valueLab
         }
     } else if (questionNumber === 4) {
         return {
             fecha: data.labDate,
             respuesta: data.labType.toUpperCase(),
             pregunta_id: questionNumber,
-            unidad: 'MG'
+            unidad: 'MG',
+            valor: data.valueLab
         }
     } else if (questionNumber === 5) {
         return {
             fecha: data.labDate,
             respuesta: data.labType.toUpperCase(),
-            pregunta_id: questionNumber
+            pregunta_id: questionNumber,
+            valor: data.valueLab
         }
     } else if (questionNumber === 6) {
         return {

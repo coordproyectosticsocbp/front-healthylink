@@ -53,6 +53,9 @@ import timezone from 'dayjs/plugin/timezone';
 import VueMultiselect from "vue-multiselect";
 import 'vue-multiselect/dist/vue-multiselect.css'
 
+/** Vue Excel */
+//import JsonExcel from "vue-json-excel3";
+
 const app = createApp(App)
 
 app.config.productionTip = false
@@ -70,6 +73,7 @@ window.Swal = app.config.globalProperties.$swal; //to make a globals property
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.component('EasyDataTable', Vue3EasyDataTable)
 app.component('VueMultiselect', VueMultiselect)
+//app.component("downloadExcel", JsonExcel)
 
 app.config.globalProperties.$dayjs = dayjs.extend(relativeTime);
 app.config.globalProperties.$dayjs = dayjs.extend(utc);

@@ -3,7 +3,6 @@ import Navbar from '@/components/globals/Navbar.vue'
 import Footer from '@/components/globals/Footer.vue'
 import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
-import DashboardGraphicsAdmin from '@/components/Dashboard/DashboardGraphicsAdmin.vue'
 import ReportsDashboard from "@/services/Reports/Reports.services.js";
 import { getError } from "@/utils/helpers/getError.js";
 import { useLoading } from "vue-loading-overlay";

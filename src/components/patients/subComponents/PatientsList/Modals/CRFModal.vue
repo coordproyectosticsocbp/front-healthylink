@@ -21,11 +21,12 @@ import {computed, ref} from "vue";
 import clearAllLocalStorage from "@/composables/patients/clearAllComplementaryLocalStorage.js";
 import structurePayloadForComplementaryInfo from "@/composables/patients/structurePayloadForComplementaryInfo.js";
 import {useStore} from "vuex";
-import {Modal} from "bootstrap";
-import PatientService from "@/services/patients/Patient.service.js";
-import {getError} from "@/utils/helpers/getError.js";
 import AttachedDocumentsForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/AttachedDocumentsForm.vue";
+import PatientService from "@/services/patients/Patient.service.js";
+import {getError} from "@/utils/helpers/getError.js";
+//import {Modal} from "bootstrap";
+import {Modal} from "bootstrap";
 
 const props = defineProps({
   itemInformation: Object
@@ -68,36 +69,52 @@ const cancelComplementaryInfo = async (patientId) => {
 
 const saveComplementaryInfoForm = (patientID, userID) => {
 
-  savingButtonStatus.value = true
-  const payload = structurePayloadForComplementaryInfo(patientID, userID)
+  Swal.fire({
+    icon: "question",
+    title: 'Deseas REALMENTE registrar la información complementaria del paciente?',
+    showCancelButton: true,
+    confirmButtonText: "Guardar",
+  })
+      .then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
 
-  PatientService.saveComplementaryInformation(payload)
-      .then((response) => {
-        if (response.data.statusCode !== 201) {
-          savingButtonStatus.value = false
-          Swal.fire({
-            icon: 'error',
-            text: response.data.message
-          })
-        } else {
-          emit('onSubmit')
-          savingButtonStatus.value = false
-          cancelComplementaryInfo(patientID)
-          Swal.fire({
-            icon: 'success',
-            text: response.data.message
-          })
-          Modal.getInstance(crfModalRef.value)?.hide()
+          savingButtonStatus.value = true
+          const payload = structurePayloadForComplementaryInfo(patientID, userID)
+
+          //console.log(payload)
+
+          PatientService.saveComplementaryInformation(payload)
+              .then((response) => {
+                if (response.data.statusCode !== 201) {
+                  savingButtonStatus.value = false
+                  Swal.fire({
+                    icon: 'error',
+                    text: response.data.message
+                  })
+                } else {
+                  emit('onSubmit')
+                  savingButtonStatus.value = false
+                  cancelComplementaryInfo(patientID)
+                  Swal.fire({
+                    icon: 'success',
+                    text: response.data.message
+                  })
+                  Modal.getInstance(crfModalRef.value)?.hide()
+                }
+              })
+              .catch((error) => {
+                console.log(error)
+                savingButtonStatus.value = false
+                Swal.fire({
+                  icon: 'error',
+                  text: getError(error)
+                })
+              })
+
         }
       })
-      .catch((error) => {
-        console.log(error)
-        savingButtonStatus.value = false
-        Swal.fire({
-          icon: 'error',
-          text: getError(error)
-        })
-      })
+
 }
 
 </script>
@@ -127,7 +144,7 @@ const saveComplementaryInfoForm = (patientID, userID) => {
       <div class="modal-content">
         <div class="modal-header">
           <h1 id="exampleModalLabel" class="modal-title fs-5">
-            2. Recolección de información por Historia clínica {{ props.itemInformation.id }}
+            2. Recolección de información por Historia clínica
           </h1>
           <button
               aria-label="Close"

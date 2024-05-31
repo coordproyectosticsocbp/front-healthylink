@@ -76,6 +76,7 @@ defineExpose({
                      class="form-control"
                      min="1"
                      placeholder="Valor"
+                     required
                      type="text"
               >
               <!--              </div>-->
