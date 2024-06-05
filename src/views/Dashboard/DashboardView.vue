@@ -20,6 +20,9 @@ const $loading = useLoading({
   zIndex: 999,
 })
 
+const getDocumentTypes = async () => {
+  await store.dispatch('documentTypes/getDocumentTypes')
+}
 
 const countriesObject = async () => {
   const storageVal = window.localStorage.getItem('countries')
@@ -94,6 +97,7 @@ const getHeadquartersList = async () => {
 
 
 onMounted(() => {
+  getDocumentTypes()
   countriesObject()
   statesObject()
   citiesObject()

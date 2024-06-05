@@ -7,11 +7,11 @@ import ReportsDashboard from "@/services/Reports/Reports.services.js";
 import {getError} from "@/utils/helpers/getError.js";
 import {useLoading} from "vue-loading-overlay";
 
-const dataDash = ref([]);
-const fullPage = ref(true);
-const errors = ref(null);
-const totalMuestras = ref(0);
-const muestrasEnviadasAlSponsor = ref(0);
+const dataDash = ref([])
+const fullPage = ref(true)
+const errors = ref(null)
+const totalMuestras = ref(0)
+const muestrasEnviadasAlSponsor = ref(0)
 
 const $loading = useLoading({
   loader: 'dots',
@@ -21,19 +21,19 @@ const $loading = useLoading({
   backgroundColor: '#ffffff',
   opacity: 0.5,
   zIndex: 999,
-});
+})
 
 const dataDashboard = async () => {
   const loader = $loading.show();
   try {
-    const response = await ReportsDashboard.getDataDashboard();
-    dataDash.value = response.data.data;
-    loader.hide();
+    const response = await ReportsDashboard.getDataDashboard()
+    dataDash.value = response.data.data
+    loader.hide()
   } catch (error) {
-    loader.hide();
-    errors.value = getError(error);
+    loader.hide()
+    errors.value = getError(error)
   }
-};
+}
 
 watch(() => dataDash.value, (dataDashboardStart) => {
   renderSamplesByState(dataDashboardStart.muestrasPorEstados);
