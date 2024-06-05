@@ -103,7 +103,7 @@ onMounted(getPatientsFullList)
 
                   <template #item-actions="item">
 
-                    <BarCodeGenerator :sampleCode="item.code_muestra"/>
+                    <BarCodeGenerator :itemId="item.id" :sampleCode="item.code_muestra"/>
 
                     <TreeDetailView :itemId="item.id" :patientCode="item.code_paciente"/>
 

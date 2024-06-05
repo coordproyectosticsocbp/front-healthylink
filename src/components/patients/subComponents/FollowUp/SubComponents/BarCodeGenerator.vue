@@ -3,6 +3,7 @@
 import {toRefs} from "vue";
 
 const props = defineProps({
+  itemId: Number,
   sampleCode: String
 })
 const {sampleCode} = toRefs(props)
@@ -14,7 +15,8 @@ const generatePatientBarCodes = () => {
 </script>
 
 <template>
-  <button class="btn btn-sm rounded-pill btn-warning me-1"
+  <button :id="`btnCodeBar-${itemId}`"
+          class="btn btn-sm rounded-pill btn-warning me-1"
           type="button"
           @click.prevent="generatePatientBarCodes"
   >

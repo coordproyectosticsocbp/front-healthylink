@@ -35,7 +35,6 @@ const props = defineProps({
 /* Events */
 const emit = defineEmits(['onSubmit'])
 
-
 const store = useStore()
 const authUser = computed(() => store.getters['auth/authUser'])
 const savingButtonStatus = ref(false)
@@ -82,8 +81,6 @@ const saveComplementaryInfoForm = (patientID, userID) => {
           savingButtonStatus.value = true
           const payload = structurePayloadForComplementaryInfo(patientID, userID)
 
-          //console.log(payload)
-
           PatientService.saveComplementaryInformation(payload)
               .then((response) => {
                 if (response.data.statusCode !== 201) {
@@ -128,6 +125,7 @@ const saveComplementaryInfoForm = (patientID, userID) => {
           type="button"
   >
     <font-awesome-icon :icon="['fas', 'list-check']"/>
+    completar
   </button>
 
   <!-- Modal -->

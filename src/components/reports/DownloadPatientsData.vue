@@ -56,7 +56,7 @@ const getDataByDate = async () => {
           Swal.fire({
             icon: 'error',
             title: 'Oooops!',
-            text: 'Error al Obtener los DATOS.'
+            text: response.data.message
           })
           isLoadingData.value = false
           loader.hide()
