@@ -52,6 +52,7 @@ function clearFields() {
   laboratoriesOptions.value.forEach(option => {
     formData.value[option.value] = '';
   });*/
+  //
 }
 
 defineExpose({
