@@ -2,7 +2,6 @@
 import {ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
 import dayjs from "dayjs";
-//import {laboratoriesOptions} from "@/utils/const/patientComplementaryInfo.js";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -18,12 +17,6 @@ const laboratoriesOptions = ref([
 const formDate = ref('')
 const formValues = ref({})
 
-/*const formData = ref(
-    laboratoriesOptions.value.reduce((acc, option) => {
-      acc[option.value] = ''
-      return acc
-    }, {date: ''})
-);*/
 
 const laboratoryHistory = useLocalStorage([], `laboratoryHistory-${props.itemIndexVal}`)
 
@@ -36,7 +29,6 @@ const addItemToLabArray = () => {
       valueLab: `${formValues.value[option.model] || 0} ${option.unity}`,
     }))
   }
-  //console.log(newData)
   laboratoryHistory.value.push(newData)
   clearFields()
 }
@@ -48,11 +40,6 @@ const removeLabFromArray = (index) => {
 function clearFields() {
   formDate.value = ''
   formValues.value = {}
-  /*formData.value.date = '';
-  laboratoriesOptions.value.forEach(option => {
-    formData.value[option.value] = '';
-  });*/
-  //
 }
 
 defineExpose({
@@ -181,45 +168,6 @@ defineExpose({
                   <!-- /.row -->
 
                 </li>
-                <!--                <li>
-                                  <div class="row">
-                                    <div class="col">
-                                      <ul class="list-unstyled">
-                                        <li>
-                                          <p class="mb-0 fw-bold text-uppercase">
-                                            LABORATORIO # {{ index + 1 }}:
-                                          </p>
-
-                                          <ul class="list-unstyled">
-                                            <li>
-                                              <p class="mb-0">
-                                                Fecha:
-                                                <span>{{ item.labDate }}</span>
-                                              </p>
-                                            </li>
-                                            <li>
-                                              <p class="mb-0">
-                                                Tipo:
-                                                <span>{{ item.labType }}</span>
-                                              </p>
-                                            </li>
-                                            <li>
-                                              <p class="mb-0">
-                                                Valor:
-                                                <span>{{ item.valueLab }}</span>
-                                              </p>
-                                            </li>
-                                          </ul>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <div class="col text-end">
-                                      <button class="btn btn-sm rounded btn-outline-danger" @click.prevent="removeLabFromArray(index)">
-                                        <font-awesome-icon :icon="['fas', 'trash']"/>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </li>-->
 
               </ul>
             </div>
@@ -233,7 +181,6 @@ defineExpose({
         </form>
       </div>
     </div>
-
 
   </div>
 </template>
