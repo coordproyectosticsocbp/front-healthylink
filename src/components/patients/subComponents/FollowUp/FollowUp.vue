@@ -5,6 +5,7 @@ import {getError} from "@/utils/helpers/getError.js";
 import {useLoading} from "vue-loading-overlay";
 import dayjs from "dayjs";
 import TreeDetailView from "@/components/patients/subComponents/FollowUp/SubComponents/TreeDetailView.vue";
+import BarCodeGenerator from "@/components/patients/subComponents/FollowUp/SubComponents/BarCodeGenerator.vue";
 
 const headers = [
   {text: 'Codigo paciente', value: 'code_paciente'},
@@ -95,13 +96,15 @@ onMounted(getPatientsFullList)
                                buttons-pagination
                                show-index
                 >
+
                   <template #item-created_at="item">
                     {{ dayjs(item.created_at).format('DD-MM-YYYY') }}
                   </template>
 
                   <template #item-actions="item">
 
-                    <!--                    <TreeDetailView ref="offCanvasComponent" :itemId="item.id"/>-->
+                    <BarCodeGenerator :sampleCode="item.code_muestra"/>
+
                     <TreeDetailView :itemId="item.id" :patientCode="item.code_paciente"/>
 
                   </template>
