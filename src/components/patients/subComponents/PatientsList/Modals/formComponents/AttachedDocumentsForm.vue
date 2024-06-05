@@ -32,6 +32,7 @@ const handleFileChange = async (event) => {
     formData.set("minv_formulario_id", props.itemIndexVal)
     formData.set("filename", fileName)
     formData.set("directory", folder)
+    formData.set("file", imageFile)
     formData.set("fileExtension", fileExtension)
 
     //Consuming File Service
@@ -87,18 +88,19 @@ const removeFile = (key) => {
 
     <div class="row mb-4">
       <div class="col">
-        <div class="filezone">
-          <input ref="fileInput" :accept="acceptFormats"
-                 multiple
-                 type="file"
-                 @change="handleFileChange"
-          />
-          <p>
-            Arrastra tus archivos aquí <br>o click aquí para Buscar
-            <br>
-            Formatos aceptados: (.xlsx, .xls, .pdf)
-          </p>
-        </div>
+        <form enctype="multipart/form-data" @change="handleFileChange">
+          <div class="filezone">
+            <input ref="fileInput" :accept="acceptFormats"
+                   multiple
+                   type="file"
+            />
+            <p>
+              Arrastra tus archivos aquí <br>o click aquí para Buscar
+              <br>
+              Formatos aceptados: (.xlsx, .xls, .pdf)
+            </p>
+          </div>
+        </form>
       </div>
     </div>
 

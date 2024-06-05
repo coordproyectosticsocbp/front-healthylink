@@ -56,7 +56,7 @@ const shelfCounterSampleAssignment = () => {
     const payload = {
       user_id: authUser.value.id,
       codigo_muestra: counterSampleCode.value,
-      ubicacion_bio_bancos: shelfCode.value,// '1-1-2-A'
+      codigo_ubicacion: shelfCode.value,// '1-1-2-A'
     }
 
     shelfAssignmentService.saveShelfCounterSamplesAssignment(payload)

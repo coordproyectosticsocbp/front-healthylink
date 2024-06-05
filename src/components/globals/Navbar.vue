@@ -7,6 +7,7 @@ import {useLoading} from "vue-loading-overlay";
 
 const store = useStore()
 const authUser = computed(() => store.getters['auth/authUser'])
+const collapsed = computed(() => store.getters["sidebar/collapsed"])
 const fullPage = ref(true)
 
 const $loading = useLoading({
@@ -32,8 +33,8 @@ function logoutFunction() {
       })
 }
 
-function updateCollapsed() {
-  store.dispatch('sidebar/updateCollapsed')
+const updateCollapsed = () => {
+  store.dispatch('sidebar/updateCollapsed', !collapsed.value)
 }
 
 </script>
