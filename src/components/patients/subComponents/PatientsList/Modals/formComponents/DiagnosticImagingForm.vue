@@ -95,7 +95,7 @@ defineExpose({
                 <div class="col">
                   <textarea id="diagnosticImagesTextArea" v-model="initialValue.imageResult"
                             class="form-control"
-                            placeholder="Antecedentes Patológicos"
+                            placeholder="Resultado de Imagen"
                             required
                             rows="3"
                   />

@@ -49,7 +49,7 @@ defineExpose({
     <div class="row mb-3">
       <div class="col text-center">
         <h6 class="fw-bold text-uppercase">
-          Antecedentes de Laboratorios Bioquímicos
+          Resultados de Laboratorios Bioquímicos
         </h6>
       </div>
     </div>
