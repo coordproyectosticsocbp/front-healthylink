@@ -1,7 +1,6 @@
 <script setup>
 
-import {ref} from "vue";
-import FileUploadService from "@/services/patients/FileUpload.service.js";
+import {ref, toRefs} from "vue";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -18,7 +17,7 @@ const fileInput = ref(null)
 * Methods
 *
 * */
-const handleFileChange = async (event) => {
+/*const handleFileChange = async (event) => {
   if (!event.target.files[0]) return
   try {
     //Step 1 Starts
@@ -64,6 +63,13 @@ const handleFileChange = async (event) => {
 const removeFile = (key) => {
   console.log(key)
   uploadedFiles.value.splice(key, 1)
+}*/
+
+const redirectToFileUpload = () => {
+
+  const {itemIndexVal} = toRefs(props)
+
+  window.open(`https://archivos.mibcode.com/upload.php?id=${itemIndexVal.value}`, '_blank')
 }
 
 </script>
@@ -88,54 +94,57 @@ const removeFile = (key) => {
 
     <div class="row mb-4">
       <div class="col">
-        <form enctype="multipart/form-data" @change="handleFileChange">
-          <div class="filezone">
-            <input ref="fileInput" :accept="acceptFormats"
-                   multiple
-                   type="file"
-            />
-            <p>
-              Arrastra tus archivos aquí <br>o click aquí para Buscar
-              <br>
-              Formatos aceptados: (.xlsx, .xls, .pdf)
-            </p>
-          </div>
-        </form>
+        <!--        <form enctype="multipart/form-data" @change="handleFileChange">-->
+        <div class="filezone" @click.prevent="redirectToFileUpload">
+          <input ref="fileInput" :accept="acceptFormats"
+                 multiple
+                 type="file"
+          />
+          <p>
+            Click aquí para cargar el archivo!
+          </p>
+          <!--          <p>
+                      Arrastra tus archivos aquí <br>o click aquí para Buscar
+                      <br>
+                      Formatos aceptados: (.xlsx, .xls, .pdf)
+                    </p>-->
+        </div>
+        <!--        </form>-->
       </div>
     </div>
 
-    <div class="row mb-4">
-      <div class="col">
-        <div class="uploaded-files-container">
-          <div v-for="(file, index) in uploadedFiles" :key="index">
-            <div class="file-info">
-              <span class="file-name">{{ file.name }}</span>
-              <span class="file-size">{{ file.size }}</span>
-              <button class="btn btn-sm btn-outline-danger" @click="removeFile(index)">
-                <font-awesome-icon :icon="['fas', 'trash']"/>
-              </button>
-            </div>
-            <!--            <pre v-if="isPDF(file.type)"/>-->
-            <!--            <div v-else-if="isExcel(file.type)">-->
-            <div>
-              <table>
-                <thead>
-                <tr>
-                  <th v-for="(column, index) in file.headers" :key="index">{{ column }}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(row, index) in file.data" :key="index">
-                  <td v-for="(cell, index) in row" :key="index">{{ cell }}</td>
-                </tr>
-                </tbody>
-              </table>
+    <!--    <div class="row mb-4">
+          <div class="col">
+            <div class="uploaded-files-container">
+              <div v-for="(file, index) in uploadedFiles" :key="index">
+                <div class="file-info">
+                  <span class="file-name">{{ file.name }}</span>
+                  <span class="file-size">{{ file.size }}</span>
+                  <button class="btn btn-sm btn-outline-danger" @click="removeFile(index)">
+                    <font-awesome-icon :icon="['fas', 'trash']"/>
+                  </button>
+                </div>
+                &lt;!&ndash;            <pre v-if="isPDF(file.type)"/>&ndash;&gt;
+                &lt;!&ndash;            <div v-else-if="isExcel(file.type)">&ndash;&gt;
+                <div>
+                  <table>
+                    <thead>
+                    <tr>
+                      <th v-for="(column, index) in file.headers" :key="index">{{ column }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(row, index) in file.data" :key="index">
+                      <td v-for="(cell, index) in row" :key="index">{{ cell }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <!-- /.col -->
-    </div>
+          &lt;!&ndash; /.col &ndash;&gt;
+        </div>-->
 
   </div>
 

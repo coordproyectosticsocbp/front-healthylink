@@ -115,7 +115,6 @@ defineExpose({
                                  :name="item.value"
                                  :placeholder="item.value"
                                  class="form-control"
-                                 required
                                  type="text"
                           >
                         </div>
