@@ -18,15 +18,15 @@ import PatientEvolutionForm
 import DiagnosticImagingForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/DiagnosticImagingForm.vue";
 import {computed, ref} from "vue";
-import clearAllLocalStorage from "@/composables/patients/clearAllComplementaryLocalStorage.js";
 import structurePayloadForComplementaryInfo from "@/composables/patients/structurePayloadForComplementaryInfo.js";
 import {useStore} from "vuex";
 import AttachedDocumentsForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/AttachedDocumentsForm.vue";
 import PatientService from "@/services/patients/Patient.service.js";
 import {getError} from "@/utils/helpers/getError.js";
-//import {Modal} from "bootstrap";
 import {Modal} from "bootstrap";
+import clearAllLocalStorage from "@/composables/patients/clearAllComplementaryLocalStorage.js";
+//import {Modal} from "bootstrap";
 
 const props = defineProps({
   itemInformation: Object
@@ -34,7 +34,6 @@ const props = defineProps({
 
 /* Events */
 const emit = defineEmits(['onSubmit'])
-
 
 const store = useStore()
 const authUser = computed(() => store.getters['auth/authUser'])
@@ -128,6 +127,7 @@ const saveComplementaryInfoForm = (patientID, userID) => {
           type="button"
   >
     <font-awesome-icon :icon="['fas', 'list-check']"/>
+    completar
   </button>
 
   <!-- Modal -->

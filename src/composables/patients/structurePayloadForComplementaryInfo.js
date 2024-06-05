@@ -16,59 +16,60 @@ export default function structurePayloadForComplementaryInfo(surveyID, userID) {
         user_id: userID,
         datos: []
     }
+    let data = []
 
     if (evolutionInfo) {
-        payload.datos.push(
+        data.push(
             structurePayloadSingle(JSON.parse(evolutionInfo).patientEvolution, 7)
         )
     }
     if (pathologicalInfo) {
-        payload.datos.push(
+        data.push(
             structurePayloadSingle(JSON.parse(pathologicalInfo).patientPathologicalHistory, 1)
         )
     }
     if (othersInfo) {
-        payload.datos.push(
+        data.push(
             structurePayloadSingle(JSON.parse(othersInfo).patientOtherInfo, 8)
         )
     }
     if (pharmacologicalHistory) {
         JSON.parse(pharmacologicalHistory).map((item) => {
-            payload.datos.push(
+            data.push(
                 structurePayloadMultiple(item, 2)
             )
         })
     }
     if (laboratoryHistory) {
         JSON.parse(laboratoryHistory).map((item) => {
-            payload.datos.push(
+            data.push(
                 structurePayloadMultiple(item, 3)
             )
         })
     }
     if (biochemicalHistory) {
         JSON.parse(biochemicalHistory).map((item) => {
-            payload.datos.push(
+            data.push(
                 structurePayloadMultiple(item, 4)
             )
         })
     }
     if (hormonalHistory) {
         JSON.parse(hormonalHistory).map((item) => {
-            payload.datos.push(
+            data.push(
                 structurePayloadMultiple(item, 5)
             )
         })
     }
     if (imagesHistory) {
         JSON.parse(imagesHistory).map((item) => {
-            payload.datos.push(
+            data.push(
                 structurePayloadMultiple(item, 6)
             )
         })
     }
-    console.log(payload)
 
+    payload.datos = flattenArray(data)
     return payload
 
 }
@@ -92,28 +93,37 @@ function structurePayloadMultiple(data, questionNumber) {
             pregunta_id: questionNumber,
         }
     } else if (questionNumber === 3) {
-        return {
-            fecha: data.labDate,
-            respuesta: data.labType.toUpperCase(),
+
+        const {labDate, values} = data
+
+        return values.map(item => ({
+            fecha: labDate,
+            respuesta: item.labType.toUpperCase(),
             pregunta_id: questionNumber,
-            valor: data.valueLab
-        }
+            valor: item.valueLab
+        }))
     } else if (questionNumber === 4) {
-        return {
-            fecha: data.labDate,
-            respuesta: data.labType.toUpperCase(),
+
+        const {labDate, values} = data
+
+        return values.map(item => ({
+            fecha: labDate,
+            respuesta: item.labType.toUpperCase(),
             pregunta_id: questionNumber,
             unidad: 'MG',
-            valor: data.valueLab
-        }
+            valor: item.valueLab
+        }))
     } else if (questionNumber === 5) {
-        return {
-            fecha: data.labDate,
-            respuesta: data.labType.toUpperCase(),
+        const {labDate, values} = data
+
+        return values.map(item => ({
+            fecha: labDate,
+            respuesta: item.labType.toUpperCase(),
             pregunta_id: questionNumber,
-            valor: data.valueLab
-        }
+            valor: item.valueLab
+        }))
     } else if (questionNumber === 6) {
+
         return {
             fecha: data.imageDate,
             respuesta: data.imageResult.toUpperCase(),
@@ -121,4 +131,24 @@ function structurePayloadMultiple(data, questionNumber) {
             tipo_imagen: data.imageType.toUpperCase()
         }
     }
+}
+
+//Funcion que recorre el array y deja al mismo nivel
+function flattenArray(arr) {
+    const result = [];
+
+    function flatten(item) {
+        if (Array.isArray(item)) {
+            item.forEach(flatten);
+        } else if (typeof item === 'object' && item !== null) {
+            if (Array.isArray(item)) {
+                flatten(item);
+            } else {
+                result.push(item);
+            }
+        }
+    }
+
+    arr.forEach(flatten);
+    return result;
 }
