@@ -21,7 +21,7 @@ const generatePatientBarCodes = () => {
           @click.prevent="generatePatientBarCodes"
   >
     <font-awesome-icon :icon="['fas', 'barcode']"/>
-    Bar
+    Imprimir
   </button>
 </template>
 
