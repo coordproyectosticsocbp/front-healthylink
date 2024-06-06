@@ -20,15 +20,35 @@ const onButtonClick = () => {
 }
 
 function saveSignature(t) {
-  consentComponentSignature.value = signature1.value.save(t)
-  if (!storageVal) {
-    //console.log(consentComponentSignature.value.toString())
-    window.localStorage.setItem('patientSignature', JSON.stringify(consentComponentSignature.value.toString()))
-    storageSignature.value = consentComponentSignature.value.toString()
-    patientSignatureExists.value = true
-  }
-  emit('onSignatureSubmit')
-  Modal.getInstance(InformedConsentSignaturePadRef.value)?.hide()
+
+  Swal.fire({
+    title: "Registrar firma?",
+    icon: 'warning',
+    text: 'Esta acción es irreversible!',
+    confirmButtonColor: "#198754",
+    cancelButtonColor: "#dc3545",
+    confirmButtonText: "Si, Registrar",
+    cancelButtonText: "Cancelar",
+    showCancelButton: true
+  }).then(result => {
+    if (result.isConfirmed) {
+
+      consentComponentSignature.value = signature1.value.save(t)
+      if (!storageVal) {
+        //console.log(consentComponentSignature.value.toString())
+        window.localStorage.setItem('patientSignature', JSON.stringify(consentComponentSignature.value.toString()))
+        storageSignature.value = consentComponentSignature.value.toString()
+        patientSignatureExists.value = true
+      }
+      emit('onSignatureSubmit')
+      Modal.getInstance(InformedConsentSignaturePadRef.value)?.hide()
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Firma Registrada!',
+      })
+    }
+  })
 }
 
 function clearPad() {
