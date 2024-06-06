@@ -49,6 +49,16 @@ const $loading = useLoading({
   zIndex: 999,
 })
 
+const executeAllFormValidate = async () => {
+  const demo = await demographicSurveySectionRef.value.handleSubmit()
+  const health = await healthHabitsSectionRef.value.handleSubmit()
+  const personalH = await personalHealthInformationRef.value.handleSubmit()
+  const covid19 = await covid19SectionRef.value.handleSubmit()
+
+  return !!(demo && health && personalH && covid19);
+
+}
+
 const saveUserInformation = async () => {
 
   try {
@@ -73,6 +83,9 @@ const saveUserInformation = async () => {
         correo_electronico: storageFormatted.correo_electronico,
         grupo_sanguineo: storageFormatted.grupo_sanguineo,
       }
+
+      //console.log(payload)
+      //loader.hide()
 
       await PatientService.createPatient(payload)
           .then((response) => {
@@ -264,36 +277,46 @@ const clearSurveyLocalStorage = async () => {
 const saveForm = async () => {
   try {
 
-    const demographicHasError = validateLocalStorage('demographicHasError')
-    const healthHabitsHasError = validateLocalStorage('healthHabitsHasError')
-    const personalHealthInfoHasError = validateLocalStorage('personalHealthInfoHasError')
-    const covid19InfoHasError = validateLocalStorage('covid19InfoHasError')
+    const validate = await executeAllFormValidate()
+
+    if (!validate) {
+      console.log('Hay Error acá')
+      return false
+    }
+
+    await saveUserInformation()
+    console.log('No hay Error acá')
 
 
-    if (!demographicHasError && !healthHabitsHasError && !personalHealthInfoHasError && !covid19InfoHasError) {
+    /*console.log(demographicHasError)
+    console.log(healthHabitsHasError)
+    console.log(personalHealthInfoHasError)
+    console.log(covid19InfoHasError)*/
+
+    //if (!demographicHasError && !healthHabitsHasError && !personalHealthInfoHasError && !covid19InfoHasError) {
+
+    /* saveUserInformation()
+     console.log('No hay Error acá')*/
+
+    /*if (!JSON.parse(window.localStorage.getItem('demographicHasError')).value
+        && !JSON.parse(window.localStorage.getItem('healthHabitsHasError')).value
+        && !JSON.parse(window.localStorage.getItem('personalHealthInfoHasError')).value
+        && !JSON.parse(window.localStorage.getItem('covid19InfoHasError')).value
+    ) {
 
       await saveUserInformation()
       console.log('No hay Error acá')
 
-      /*if (!JSON.parse(window.localStorage.getItem('demographicHasError')).value
-          && !JSON.parse(window.localStorage.getItem('healthHabitsHasError')).value
-          && !JSON.parse(window.localStorage.getItem('personalHealthInfoHasError')).value
-          && !JSON.parse(window.localStorage.getItem('covid19InfoHasError')).value
-      ) {
-
-        await saveUserInformation()
-        console.log('No hay Error acá')
-
-      } else {
-
-        console.log('Hay Error acá')
-
-      }*/
     } else {
 
       console.log('Hay Error acá')
 
-    }
+    }*/
+    /*} else {
+
+      console.log('Hay Error acá')
+
+    }*/
 
   } catch (e) {
     console.error(e)
