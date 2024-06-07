@@ -4,8 +4,9 @@ import {onMounted, ref} from 'vue'
 import PatientService from '@/services/patients/Patient.service.js'
 import {getError} from "@/utils/helpers/getError.js";
 import {useLoading} from "vue-loading-overlay";
-import CRFModal from "@/components/patients/subComponents/PatientsList/Modals/CRFModal.vue";
 import dayjs from "dayjs";
+import ECRFButtonComponent
+  from "@/components/patients/subComponents/PatientsList/SubComponents/ECRFButtonComponent.vue";
 
 const headers = [
   {text: 'Código Paciente', value: 'code_paciente'},
@@ -104,8 +105,10 @@ onMounted(
                   </template>
 
                   <template #item-actions="item">
-                    <CRFModal :itemInformation="item" @onSubmit="getPatientsFullList"/>
+                    <ECRFButtonComponent :itemInformation="item.id"/>
+                    <!--                    <CRFModal :itemInformation="item.id" @onSubmit="getPatientsFullList"/>-->
                   </template>
+
                 </EasyDataTable>
               </div>
             </div>

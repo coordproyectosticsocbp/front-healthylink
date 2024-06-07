@@ -17,7 +17,7 @@ import PatientEvolutionForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/PatientEvolutionForm.vue";
 import DiagnosticImagingForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/DiagnosticImagingForm.vue";
-import {computed, ref} from "vue";
+import {computed, ref, toRefs} from "vue";
 import structurePayloadForComplementaryInfo from "@/composables/patients/structurePayloadForComplementaryInfo.js";
 import {useStore} from "vuex";
 import AttachedDocumentsForm
@@ -29,8 +29,10 @@ import clearAllLocalStorage from "@/composables/patients/clearAllComplementaryLo
 //import {Modal} from "bootstrap";
 
 const props = defineProps({
-  itemInformation: Object
+  itemInformation: Number
 })
+
+const {itemInformation} = toRefs(props)
 
 /* Events */
 const emit = defineEmits(['onSubmit'])
@@ -120,7 +122,7 @@ const saveComplementaryInfoForm = (patientID, userID) => {
 
 <template>
 
-  <button :data-bs-target="`#crfModal-${props.itemInformation.id}`"
+  <button :data-bs-target="`#crfModal-${itemInformation}`"
           class="btn btn-global-color btn-sm rounded"
           data-bs-toggle="modal"
           title="Completar CRF"
@@ -131,7 +133,7 @@ const saveComplementaryInfoForm = (patientID, userID) => {
   </button>
 
   <!-- Modal -->
-  <div :id="`crfModal-${props.itemInformation.id}`"
+  <div :id="`crfModal-${itemInformation}`"
        ref="crfModalRef"
        aria-hidden="true"
        aria-labelledby="exampleModalLabel"
@@ -144,7 +146,7 @@ const saveComplementaryInfoForm = (patientID, userID) => {
       <div class="modal-content">
         <div class="modal-header">
           <h1 id="exampleModalLabel" class="modal-title fs-5">
-            2. Recolección de información por Historia clínica
+            2. Recolección de información por Historia clínica {{ itemInformation }}
           </h1>
           <button
               aria-label="Close"
@@ -159,18 +161,18 @@ const saveComplementaryInfoForm = (patientID, userID) => {
           <!-- Form Fields -->
           <div class="d-flex align-items-start">
 
-            <div :id="`v-pills-tab-${props.itemInformation.id}`"
+            <div :id="`v-pills-tab-${itemInformation}`"
                  aria-orientation="vertical"
                  class="nav flex-column nav-pills me-3 border-end p-1"
                  role="tablist"
             >
               <button v-for="(option, index) in patientComplementayTabOption"
-                      :id="`v-pills-${option.value}-tab-${props.itemInformation.id}`"
+                      :id="`v-pills-${option.value}-tab-${itemInformation}`"
                       :key="option.value"
-                      :aria-controls="`v-pills-${option.value}-${props.itemInformation.id}`"
+                      :aria-controls="`v-pills-${option.value}-${itemInformation}`"
                       :aria-selected="`${(index === 0)}`"
                       :class="`nav-link text-start ${index === 0 ? 'active' : ''}`"
-                      :data-bs-target="`#v-pills-${option.value}-${props.itemInformation.id}`"
+                      :data-bs-target="`#v-pills-${option.value}-${itemInformation}`"
                       :disabled="option.value === 'antecedentes' || option.value === 'laboratorios' || option.value === 'imagenes' || option.value === 'anexoss'"
                       data-bs-toggle="pill"
                       role="tab"
@@ -180,25 +182,25 @@ const saveComplementaryInfoForm = (patientID, userID) => {
               </button>
             </div>
 
-            <div :id="`v-pills-tabContent-${props.itemInformation.id}`" class="tab-content w-100">
+            <div :id="`v-pills-tabContent-${itemInformation}`" class="tab-content w-100">
 
-              <PatientEvolutionForm ref="PatientEvolutionFormRef" :itemIndexVal="props.itemInformation.id"/>
+              <PatientEvolutionForm ref="PatientEvolutionFormRef" :itemIndexVal="itemInformation"/>
 
-              <PathologicalHistoryForm ref="PathologicalHistoryFormRef" :itemIndexVal="props.itemInformation.id"/>
+              <PathologicalHistoryForm ref="PathologicalHistoryFormRef" :itemIndexVal="itemInformation"/>
 
-              <PharmacologicalHistoryForm ref="PharmacologicalHistoryFormRef" :itemIndexVal="props.itemInformation.id"/>
+              <PharmacologicalHistoryForm ref="PharmacologicalHistoryFormRef" :itemIndexVal="itemInformation"/>
 
-              <OthersHistoryForm ref="OthersHistoryFormRef" :itemIndexVal="props.itemInformation.id"/>
+              <OthersHistoryForm ref="OthersHistoryFormRef" :itemIndexVal="itemInformation"/>
 
-              <LaboratoryHistoryForm ref="LaboratoryHistoryFormRef" :itemIndexVal="props.itemInformation.id"/>
+              <LaboratoryHistoryForm ref="LaboratoryHistoryFormRef" :itemIndexVal="itemInformation"/>
 
-              <BiochemicalBackgroundForm ref="BiochemicalBackgroundFormRef" :itemIndexVal="props.itemInformation.id"/>
+              <BiochemicalBackgroundForm ref="BiochemicalBackgroundFormRef" :itemIndexVal="itemInformation"/>
 
-              <HormonalHistoryForm ref="HormonalHistoryFormRef" :itemIndexVal="props.itemInformation.id"/>
+              <HormonalHistoryForm ref="HormonalHistoryFormRef" :itemIndexVal="itemInformation"/>
 
-              <DiagnosticImagingForm ref="DiagnosticImagingFormRef" :itemIndexVal="props.itemInformation.id"/>
+              <DiagnosticImagingForm ref="DiagnosticImagingFormRef" :itemIndexVal="itemInformation"/>
 
-              <AttachedDocumentsForm ref="AttachedDocumentsFormRef" :itemIndexVal="props.itemInformation.id"/>
+              <AttachedDocumentsForm ref="AttachedDocumentsFormRef" :itemIndexVal="itemInformation"/>
 
             </div>
 
@@ -215,7 +217,7 @@ const saveComplementaryInfoForm = (patientID, userID) => {
             <button class="btn btn-sm btn-outline-danger me-md-2"
                     data-bs-dismiss="modal"
                     type="button"
-                    @click="cancelComplementaryInfo(props.itemInformation.id)"
+                    @click="cancelComplementaryInfo(itemInformation)"
             >
               <font-awesome-icon :icon="['fas', 'times']"/>
               Cancelar
@@ -223,9 +225,9 @@ const saveComplementaryInfoForm = (patientID, userID) => {
             <button :disabled="savingButtonStatus"
                     class="btn btn-sm btn-outline-success"
                     type="button"
-                    @click.prevent="saveComplementaryInfoForm(props.itemInformation.id, authUser.id)"
+                    @click.prevent="saveComplementaryInfoForm(itemInformation, authUser.id)"
             >
-              <!--              @click.prevent="saveComplementaryInfoForm(props.itemInformation.id)"-->
+              <!--              @click.prevent="saveComplementaryInfoForm(itemInformation)"-->
               <span v-if="savingButtonStatus" aria-hidden="true" class="spinner-grow spinner-grow-sm"/>
               <font-awesome-icon v-else :icon="['fas', 'floppy-disk']"/>
               {{ savingButtonStatus ? 'Guardando...' : 'Guardar' }}
