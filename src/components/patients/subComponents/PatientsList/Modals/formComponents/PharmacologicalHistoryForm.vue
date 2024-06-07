@@ -16,7 +16,7 @@ const initialValue = ref({
   drugConcentration: '',
   everyHowOften: null
 })
-const pharmacologicalHistory = useLocalStorage([], `pharmacologicalHistory-${props.itemIndexVal}`)
+const pharmacologicalHistory = useLocalStorage([], `pharmacologicalHistory`)
 
 const addItemToPharmArray = () => {
   //pharmacologicalHistory.value.push({...initialValue.value})
@@ -89,7 +89,6 @@ defineExpose({
               <input id="input-dosage" v-model="initialValue.drugDosage"
                      aria-label="Last name"
                      class="form-control"
-                     min="1"
                      placeholder="Dosis"
                      type="number"
               >

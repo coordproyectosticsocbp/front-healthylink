@@ -52,9 +52,10 @@ const handleSubmit = async () => {
     return false
   }
   // If the form is valid, perform some action with the form data
-  window.localStorage.setItem('personalHealthInfoHasError', JSON.stringify({
+  /*window.localStorage.setItem('personalHealthInfoHasError', JSON.stringify({
     value: false
-  }))
+  }))*/
+  if (window.localStorage.getItem('personalHealthInfoHasError')) window.localStorage.removeItem('personalHealthInfoHasError')
   return true;
 }
 

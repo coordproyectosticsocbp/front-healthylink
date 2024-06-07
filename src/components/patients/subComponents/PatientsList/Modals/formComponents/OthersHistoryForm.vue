@@ -8,58 +8,9 @@ const props = defineProps({
 const othersInfo = useLocalStorage(
     {
       patientOtherInfo: ''
-    }, `othersInfo-${props.itemIndexVal}`
+    }, `othersInfo`
 )
 
-/*const infoArray = ref([])
-const savingButtonStatus = ref(false)
-const othersStorage = window.localStorage.getItem(`othersInfo-${props.itemIndexVal}`)
-
-const saveOthersInfo = async () => {
-
-  savingButtonStatus.value = true
-
-  if (othersStorage) {
-    infoArray.value.push({
-      fecha: dayjs().format('YYYY-MM-DD'),
-      respuesta: JSON.parse(othersStorage).patientOtherInfo,
-      pregunta_id: 8
-    })
-  }
-
-  const payload = {
-    encuesta_id: props.itemIndexVal,
-    user_id: 1,
-    datos: infoArray.value
-  }
-
-  console.log(payload)
-
-  PatientService.saveComplementaryInformation(payload)
-      .then((response) => {
-        if (response.data.statusCode !== 201) {
-          savingButtonStatus.value = false
-          Swal.fire({
-            icon: 'error',
-            text: response.data.message
-          })
-        } else {
-          savingButtonStatus.value = false
-          Swal.fire({
-            icon: 'success',
-            text: response.data.message
-          })
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        savingButtonStatus.value = false
-        Swal.fire({
-          icon: 'error',
-          text: getError(error)
-        })
-      })
-}*/
 function clearFields() {
   othersInfo.value.patientOtherInfo = ''
 }

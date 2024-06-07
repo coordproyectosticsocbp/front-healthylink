@@ -49,6 +49,16 @@ const $loading = useLoading({
   zIndex: 999,
 })
 
+const executeAllFormValidate = async () => {
+  const demo = await demographicSurveySectionRef.value.handleSubmit()
+  const health = await healthHabitsSectionRef.value.handleSubmit()
+  const personalH = await personalHealthInformationRef.value.handleSubmit()
+  const covid19 = await covid19SectionRef.value.handleSubmit()
+
+  return !!(demo && health && personalH && covid19);
+
+}
+
 const saveUserInformation = async () => {
 
   try {
@@ -231,8 +241,6 @@ const saveInformedConsent = async () => {
             loader.hide()
           })
 
-      console.log('bn aqui payload---->', payload)
-      //loader.hide()
     } else {
       Swal.fire({
         icon: 'error',
@@ -264,39 +272,21 @@ const clearSurveyLocalStorage = async () => {
 const saveForm = async () => {
   try {
 
-    const demographicHasError = validateLocalStorage('demographicHasError')
-    const healthHabitsHasError = validateLocalStorage('healthHabitsHasError')
-    const personalHealthInfoHasError = validateLocalStorage('personalHealthInfoHasError')
-    const covid19InfoHasError = validateLocalStorage('covid19InfoHasError')
+    const validate = await executeAllFormValidate()
 
-
-    if (!demographicHasError && !healthHabitsHasError && !personalHealthInfoHasError && !covid19InfoHasError) {
-
-      await saveUserInformation()
-      console.log('No hay Error acá')
-
-      /*if (!JSON.parse(window.localStorage.getItem('demographicHasError')).value
-          && !JSON.parse(window.localStorage.getItem('healthHabitsHasError')).value
-          && !JSON.parse(window.localStorage.getItem('personalHealthInfoHasError')).value
-          && !JSON.parse(window.localStorage.getItem('covid19InfoHasError')).value
-      ) {
-
-        await saveUserInformation()
-        console.log('No hay Error acá')
-
-      } else {
-
-        console.log('Hay Error acá')
-
-      }*/
-    } else {
-
+    if (!validate) {
       console.log('Hay Error acá')
-
+      return false
     }
 
-  } catch (e) {
-    console.error(e)
+    await saveUserInformation()
+    console.log('No hay Error acá')
+
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      text: getError(error)
+    })
   }
 }
 

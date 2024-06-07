@@ -63,9 +63,10 @@ const handleSubmit = async () => {
     return false
   }
   // If the form is valid, perform some action with the form data
-  window.localStorage.setItem('demographicHasError', JSON.stringify({
+  /*window.localStorage.setItem('demographicHasError', JSON.stringify({
     value: false
-  }))
+  }))*/
+  if (window.localStorage.getItem('demographicHasError')) window.localStorage.removeItem('demographicHasError')
   return true;
 }
 
