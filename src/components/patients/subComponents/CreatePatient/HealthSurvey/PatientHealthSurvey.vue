@@ -84,9 +84,6 @@ const saveUserInformation = async () => {
         grupo_sanguineo: storageFormatted.grupo_sanguineo,
       }
 
-      //console.log(payload)
-      //loader.hide()
-
       await PatientService.createPatient(payload)
           .then((response) => {
             if (response.data.statusCode !== 201) {
@@ -244,8 +241,6 @@ const saveInformedConsent = async () => {
             loader.hide()
           })
 
-      console.log('bn aqui payload---->', payload)
-      //loader.hide()
     } else {
       Swal.fire({
         icon: 'error',
@@ -287,39 +282,11 @@ const saveForm = async () => {
     await saveUserInformation()
     console.log('No hay Error acá')
 
-
-    /*console.log(demographicHasError)
-    console.log(healthHabitsHasError)
-    console.log(personalHealthInfoHasError)
-    console.log(covid19InfoHasError)*/
-
-    //if (!demographicHasError && !healthHabitsHasError && !personalHealthInfoHasError && !covid19InfoHasError) {
-
-    /* saveUserInformation()
-     console.log('No hay Error acá')*/
-
-    /*if (!JSON.parse(window.localStorage.getItem('demographicHasError')).value
-        && !JSON.parse(window.localStorage.getItem('healthHabitsHasError')).value
-        && !JSON.parse(window.localStorage.getItem('personalHealthInfoHasError')).value
-        && !JSON.parse(window.localStorage.getItem('covid19InfoHasError')).value
-    ) {
-
-      await saveUserInformation()
-      console.log('No hay Error acá')
-
-    } else {
-
-      console.log('Hay Error acá')
-
-    }*/
-    /*} else {
-
-      console.log('Hay Error acá')
-
-    }*/
-
-  } catch (e) {
-    console.error(e)
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      text: getError(error)
+    })
   }
 }
 
