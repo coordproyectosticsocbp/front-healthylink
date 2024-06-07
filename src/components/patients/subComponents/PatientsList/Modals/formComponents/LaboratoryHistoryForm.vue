@@ -18,7 +18,7 @@ const formDate = ref('')
 const formValues = ref({})
 
 
-const laboratoryHistory = useLocalStorage([], `laboratoryHistory-${props.itemIndexVal}`)
+const laboratoryHistory = useLocalStorage([], `laboratoryHistory`)
 
 const addItemToLabArray = () => {
 
@@ -40,6 +40,7 @@ const removeLabFromArray = (index) => {
 function clearFields() {
   formDate.value = ''
   formValues.value = {}
+  laboratoryHistory.value = []
 }
 
 defineExpose({

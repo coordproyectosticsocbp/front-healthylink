@@ -1,42 +1,26 @@
 <script setup>
 
-import {ref, toRefs} from "vue";
+import useLocalStorage from "@/composables/useLocalStorage.js";
+import {toRefs} from "vue";
 
-/* Getting Props */
 const props = defineProps({
   itemIndexVal: Number
 })
 const {itemIndexVal} = toRefs(props)
-/*
-const localStorageKey = `evolutionInfo-${itemIndexVal.value}`
-*/
 
-/* Form Refs */
-const patientEvolution = ref('')
-
-/*
-/!*const evolutionInfo = useLocalStorage(
+const evolutionInfo = useLocalStorage(
     {
       patientEvolution: ''
-    }, localStorageKey
-)*!/
-
-const saveTemporaryRecord = () => {
-
-  if (patientEvolution.value.length > 1)
-    window.localStorage.setItem(localStorageKey, JSON.stringify({patientEvolution: patientEvolution.value}))
-
-}
-*/
+    }, 'evolutionInfo'
+)
 
 function clearFields() {
-  patientEvolution.value = ''
+  evolutionInfo.value.patientEvolution = ''
 }
 
 defineExpose({
   clearFields
 })
-
 </script>
 
 <template>
@@ -62,8 +46,8 @@ defineExpose({
 
           <div class="mb-3">
             <label class="form-label" for="EvolutionTextArea">Evolución:</label>
-            <textarea id="EvolutionTextArea" v-model="patientEvolution"
-                      :placeholder="`Evolución del Paciente--${itemIndexVal}`"
+            <textarea id="EvolutionTextArea" v-model="evolutionInfo.patientEvolution"
+                      :placeholder="`Evolución del Paciente`"
                       class="form-control"
                       required
                       rows="5"

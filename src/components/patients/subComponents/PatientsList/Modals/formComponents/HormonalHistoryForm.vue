@@ -30,7 +30,7 @@ const hormonalesOptions = ref([
 const formDate = ref('')
 const formValues = ref({})
 
-const hormonalHistory = useLocalStorage([], `hormonalHistory-${props.itemIndexVal}`)
+const hormonalHistory = useLocalStorage([], `hormonalHistory`)
 
 const addItemToLabArray = () => {
   const newData = {
@@ -51,6 +51,7 @@ const removeLabFromArray = (index) => {
 function clearFields() {
   formDate.value = ''
   formValues.value = {}
+  hormonalHistory.value = []
 }
 
 defineExpose({

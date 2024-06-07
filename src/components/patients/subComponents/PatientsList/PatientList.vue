@@ -105,7 +105,7 @@ onMounted(
                   </template>
 
                   <template #item-actions="item">
-                    <ECRFButtonComponent :itemInformation="item.id"/>
+                    <ECRFButtonComponent :itemInformation="item.id" @onSubmit="getPatientsFullList"/>
                     <!--                    <CRFModal :itemInformation="item.id" @onSubmit="getPatientsFullList"/>-->
                   </template>
 

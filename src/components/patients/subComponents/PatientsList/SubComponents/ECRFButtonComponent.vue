@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {Modal} from "bootstrap";
 import {patientComplementayTabOption} from "@/utils/const/patientComplementaryInfo.js";
 import PathologicalHistoryForm
@@ -20,13 +20,46 @@ import HormonalHistoryForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/HormonalHistoryForm.vue";
 import PatientEvolutionForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/PatientEvolutionForm.vue";
+import clearAllLocalStorage from "@/composables/patients/clearAllComplementaryLocalStorage.js";
+import {useStore} from "vuex";
+import structurePayloadForComplementaryInfo from "@/composables/patients/structurePayloadForComplementaryInfo.js";
+import PatientService from "@/services/patients/Patient.service.js";
+import {getError} from "@/utils/helpers/getError.js";
 
 const props = defineProps({
   itemInformation: Number
 })
 
+/* Events */
+const emit = defineEmits(['onSubmit'])
+
+const store = useStore()
+const authUser = computed(() => store.getters['auth/authUser'])
+const savingButtonStatus = ref(false)
+
 // Refs
 const crfModalRef = ref(null)
+
+const PatientEvolutionFormRef = ref()
+const PathologicalHistoryFormRef = ref()
+const PharmacologicalHistoryFormRef = ref()
+const OthersHistoryFormRef = ref()
+const LaboratoryHistoryFormRef = ref()
+const BiochemicalBackgroundFormRef = ref()
+const HormonalHistoryFormRef = ref()
+const DiagnosticImagingFormRef = ref()
+const AttachedDocumentsFormRef = ref()
+
+function executeAllExposeClearFields() {
+  PatientEvolutionFormRef.value.clearFields()
+  PathologicalHistoryFormRef.value.clearFields()
+  PharmacologicalHistoryFormRef.value.clearFields()
+  OthersHistoryFormRef.value.clearFields()
+  LaboratoryHistoryFormRef.value.clearFields()
+  BiochemicalBackgroundFormRef.value.clearFields()
+  HormonalHistoryFormRef.value.clearFields()
+  DiagnosticImagingFormRef.value.clearFields()
+}
 
 const showECRFModal = () => {
   console.log(props.itemInformation)
@@ -48,9 +81,61 @@ const closeECRFModal = () => {
     confirmButtonColor: '#dc3545'
   }).then((result) => {
     if (result.isConfirmed) {
+      clearAllLocalStorage()
       Modal.getInstance(crfModalRef.value)?.hide()
     }
   })
+}
+
+const saveComplementaryInfoForm = (patientID, userID) => {
+
+  Swal.fire({
+    icon: "question",
+    title: 'Deseas REALMENTE registrar la información complementaria del paciente?',
+    showCancelButton: true,
+    confirmButtonText: "Guardar",
+  })
+      .then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+
+          savingButtonStatus.value = true
+          const payload = structurePayloadForComplementaryInfo(patientID, userID)
+
+          //console.log(payload)
+
+          PatientService.saveComplementaryInformation(payload)
+              .then((response) => {
+                if (response.data.statusCode !== 201) {
+                  savingButtonStatus.value = false
+                  Swal.fire({
+                    icon: 'error',
+                    text: response.data.message
+                  })
+                } else {
+                  emit('onSubmit')
+                  savingButtonStatus.value = false
+                  executeAllExposeClearFields()
+                  clearAllLocalStorage()
+                  Swal.fire({
+                    icon: 'success',
+                    text: response.data.message
+                  })
+                  Modal.getInstance(crfModalRef.value)?.hide()
+                }
+              })
+              .catch((error) => {
+                console.log(error)
+                savingButtonStatus.value = false
+                Swal.fire({
+                  icon: 'error',
+                  text: getError(error)
+                })
+              })
+
+        }
+      })
+
 }
 
 
@@ -60,7 +145,7 @@ const closeECRFModal = () => {
   <button class="btn btn-global-color btn-sm rounded"
           title="Completar CRF"
           type="button"
-          @click="showECRFModal"
+          @click.prevent="showECRFModal"
   >
     <font-awesome-icon :icon="['fas', 'list-check']"/>
     completar
@@ -85,7 +170,7 @@ const closeECRFModal = () => {
               aria-label="Close"
               class="btn-close"
               type="button"
-              @click="closeECRFModal"
+              @click.prevent="closeECRFModal"
           />
         </div>
 
@@ -144,6 +229,30 @@ const closeECRFModal = () => {
 
         </div>
         <!-- End Modal Body -->
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-sm btn-outline-danger me-md-2"
+                    type="button"
+                    @click.prevent="closeECRFModal"
+            >
+              <font-awesome-icon :icon="['fas', 'times']"/>
+              Cancelar
+            </button>
+            <button :disabled="savingButtonStatus"
+                    class="btn btn-sm btn-outline-success"
+                    type="button"
+                    @click.prevent="saveComplementaryInfoForm(itemInformation, authUser.id)"
+            >
+              <!--              @click.prevent="saveComplementaryInfoForm(itemInformation)"-->
+              <span v-if="savingButtonStatus" aria-hidden="true" class="spinner-grow spinner-grow-sm"/>
+              <font-awesome-icon v-else :icon="['fas', 'floppy-disk']"/>
+              {{ savingButtonStatus ? 'Guardando...' : 'Guardar' }}
+            </button>
+          </div>
+        </div>
+        <!-- End Modal Footer -->
 
       </div>
     </div>

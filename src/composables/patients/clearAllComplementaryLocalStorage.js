@@ -1,10 +1,10 @@
-export default function clearAllLocalStorage(itemId) {
-    window.localStorage.removeItem(`evolutionInfo-${itemId}`)
-    window.localStorage.removeItem(`pathologicalInfo-${itemId}`)
-    window.localStorage.removeItem(`othersInfo-${itemId}`)
-    window.localStorage.removeItem(`pharmacologicalHistory-${itemId}`)
-    window.localStorage.removeItem(`laboratoryHistory-${itemId}`)
-    window.localStorage.removeItem(`biochemicalHistory-${itemId}`)
-    window.localStorage.removeItem(`hormonalHistory-${itemId}`)
-    window.localStorage.removeItem(`imagesHistory-${itemId}`)
+export default function clearAllLocalStorage() {
+    window.localStorage.removeItem(`evolutionInfo`)
+    window.localStorage.removeItem(`pathologicalInfo`)
+    window.localStorage.removeItem(`othersInfo`)
+    window.localStorage.removeItem(`pharmacologicalHistory`)
+    window.localStorage.removeItem(`laboratoryHistory`)
+    window.localStorage.removeItem(`biochemicalHistory`)
+    window.localStorage.removeItem(`hormonalHistory`)
+    window.localStorage.removeItem(`imagesHistory`)
 }

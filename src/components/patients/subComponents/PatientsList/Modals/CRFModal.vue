@@ -63,9 +63,9 @@ function executeAllExposeClearFields() {
   DiagnosticImagingFormRef.value.clearFields()
 }
 
-const cancelComplementaryInfo = async (patientId) => {
+const cancelComplementaryInfo = async () => {
   await executeAllExposeClearFields()
-  await clearAllLocalStorage(patientId)
+  await clearAllLocalStorage()
 }
 
 const saveComplementaryInfoForm = (patientID, userID) => {
@@ -96,7 +96,7 @@ const saveComplementaryInfoForm = (patientID, userID) => {
                 } else {
                   emit('onSubmit')
                   savingButtonStatus.value = false
-                  cancelComplementaryInfo(patientID)
+                  cancelComplementaryInfo()
                   Swal.fire({
                     icon: 'success',
                     text: response.data.message

@@ -2,14 +2,14 @@ import dayjs from "dayjs";
 
 export default function structurePayloadForComplementaryInfo(surveyID, userID) {
 
-    const evolutionInfo = window.localStorage.getItem(`evolutionInfo-${surveyID}`)
-    const pathologicalInfo = window.localStorage.getItem(`pathologicalInfo-${surveyID}`)
-    const othersInfo = window.localStorage.getItem(`othersInfo-${surveyID}`)
-    const pharmacologicalHistory = window.localStorage.getItem(`pharmacologicalHistory-${surveyID}`)
-    const laboratoryHistory = window.localStorage.getItem(`laboratoryHistory-${surveyID}`)
-    const biochemicalHistory = window.localStorage.getItem(`biochemicalHistory-${surveyID}`)
-    const hormonalHistory = window.localStorage.getItem(`hormonalHistory-${surveyID}`)
-    const imagesHistory = window.localStorage.getItem(`imagesHistory-${surveyID}`)
+    const evolutionInfo = window.localStorage.getItem(`evolutionInfo`)
+    const pathologicalInfo = window.localStorage.getItem(`pathologicalInfo`)
+    const othersInfo = window.localStorage.getItem(`othersInfo`)
+    const pharmacologicalHistory = window.localStorage.getItem(`pharmacologicalHistory`)
+    const laboratoryHistory = window.localStorage.getItem(`laboratoryHistory`)
+    const biochemicalHistory = window.localStorage.getItem(`biochemicalHistory`)
+    const hormonalHistory = window.localStorage.getItem(`hormonalHistory`)
+    const imagesHistory = window.localStorage.getItem(`imagesHistory`)
 
     let payload = {
         encuesta_id: surveyID,
