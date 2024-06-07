@@ -11,7 +11,7 @@ import store from '@/store/index.js'
 
 /** Importing Design Framework */
 import FontAwesomeIcon from '@/components/icons/index'
-
+//
 /** Complementary packages */
 import axios from 'axios'
 import VueAxios from 'vue-axios'

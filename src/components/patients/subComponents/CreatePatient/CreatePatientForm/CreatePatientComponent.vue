@@ -1,6 +1,5 @@
 <script setup>
 
-import {documentTypes} from "@/utils/const/documentTypes.js";
 import {bloodType} from "@/utils/const/bloodType.js";
 import {userGender} from "@/utils/const/userGender.js";
 import {computed, onMounted} from "vue";
@@ -11,8 +10,10 @@ import {toast} from "vue3-toastify";
 import dayjs from "dayjs";
 import {useRouter} from "vue-router";
 import {calculateAgeTwo} from "@/utils/helpers/ageCalculate.js";
+import {useStore} from "vuex";
 
 const router = useRouter()
+const store = useStore()
 
 const storageCountryVal = window.localStorage.getItem('countries')
 const storageStateVal = window.localStorage.getItem('states')
@@ -20,6 +21,11 @@ const storageCitiesVal = window.localStorage.getItem('cities')
 const storageHeadquartersVal = window.localStorage.getItem('headquartersList')
 
 /** Logic */
+
+const documentTypesObject = computed(() => {
+  return store.state.documentTypes.documentTypes
+})
+
 const countriesObject = computed(() => {
   let arrayCountry = null;
   if (storageCountryVal) arrayCountry = JSON.parse(storageCountryVal)
@@ -150,9 +156,9 @@ onMounted(() => {
                     @change="placeFocusOnDocNum"
             >
               <option :value="null" selected>Seleccione el tipo</option>
-              <option v-for="doctype in documentTypes" :key="doctype.value"
-                      :value="doctype.value"
-                      v-text="doctype.name"
+              <option v-for="doctype in documentTypesObject" :key="doctype.value"
+                      :value="doctype.name"
+                      v-text="doctype.description"
               />
             </select>
             <span v-if="v$.tipo_doc.$error"
@@ -332,7 +338,7 @@ onMounted(() => {
                     class="form-select"
                     required
             >
-              <option :value="null">Seleccione el país</option>
+              <option :value="null" selected>Seleccione el país</option>
               <option v-for="country in countriesObject"
                       :key="country.id"
                       :value="country.name.toUpperCase()"
@@ -353,7 +359,7 @@ onMounted(() => {
                     class="form-select"
                     required
             >
-              <option :value="null">Seleccione el Departamento</option>
+              <option :value="null" selected>Seleccione el Departamento</option>
               <option v-for="state in statesObject"
                       :key="state.id"
                       :value="state.name.toUpperCase()"
@@ -371,7 +377,7 @@ onMounted(() => {
           <div class="col-md-4">
             <label class="form-label" for="input13">Ciudad Nacimiento:</label>
             <select id="input13" v-model="patient.ciudad_residencia" class="form-select" required>
-              <option :value="null">Seleccione la Ciudad</option>
+              <option :value="null" selected>Seleccione la Ciudad</option>
               <option v-for="city in citiesObject"
                       :key="city.id"
                       :value="city.name.toUpperCase()"
