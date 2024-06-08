@@ -144,9 +144,10 @@ export const hospitalizationByCovid = [
 ]
 
 export const hospitalizationTime = [
-    {label: ' 1 semana', value: ' 1 semana'},
+    {label: '1 semana', value: '1 semana'},
     {label: '2-4 semanas', value: '2-4 semanas'},
     {label: '4-8 semanas', value: '4-8 semanas'},
     {label: '8-12 semanas', value: '8-12 semanas'},
     {label: 'Más de 12 semanas', value: 'Más de 12 semanas'},
+    {label: 'N/A', value: 'N/A'},
 ]

@@ -12,6 +12,7 @@ import useLocalStorage from "@/composables/useLocalStorage.js";
 import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import {toast} from "vue3-toastify";
+import {cie10Diseases} from "@/utils/const/cie10Diseases.js";
 
 const healthHabitsVariables = useLocalStorage({
   es_fumador: null,
@@ -308,20 +309,28 @@ defineExpose({
                 <div v-if="healthHabitsVariables.afeccion_o_enfermededad_cronica__madre === 'Si'"
                      class="col-xl-4 col-md-4 col-sm-12"
                 >
-                  <label class="form-label" for="inputCualEnfermedad">
+                  <label class="form-label" for="inputCualEnfermedadMadre">
                     <font-awesome-icon :icon="['fas', 'hospital-user']"/>
                     Cuales Enfermedades?
                   </label>
                   <!--                  <p>Cuales Enfermedades?</p>-->
                   <div class="row mb-3">
                     <div class="col d-flex justify-content-around">
-                      <input
-                          id="inputCualEnfermedad"
+                      <VueMultiselect
+                          id="inputCualEnfermedadMadre"
                           v-model="cualEnfermedadMadre"
-                          class="form-control form-control-sm me-2"
-                          placeholder="Escriba la enfermedad" type="text"
-                          @keyup.prevent.enter="addIllnessToArray(1)"
+                          :options="cie10Diseases"
+                          label="ci10"
+                          placeholder="Seleccione la Enfermedad"
+                          track-by="ci10"
                       />
+                      <!--                      <input
+                                                id="inputCualEnfermedad"
+                                                v-model="cualEnfermedadMadre"
+                                                class="form-control form-control-sm me-2"
+                                                placeholder="Escriba la enfermedad" type="text"
+                                                @keyup.prevent.enter="addIllnessToArray(1)"
+                                            />-->
                       <button class="btn btn-sm rounded-pill btn-outline-primary" @click.prevent="addIllnessToArray(1)">
                         <font-awesome-icon :icon="['fas', 'plus']"/>
                       </button>
@@ -334,7 +343,7 @@ defineExpose({
                           @click.prevent="removeIllnessFromArray(1,ill)"
                       >
                         <span class="badge text-bg-primary me-1">
-                          {{ ill }}
+                          {{ ill.ci10 }}
                           <font-awesome-icon :icon="['fas', 'x']" class="ms-2"/>
                         </span>
                       </h6>
@@ -385,13 +394,21 @@ defineExpose({
               </label>
               <div class="row mb-3">
                 <div class="col d-flex justify-content-around">
-                  <input
+                  <VueMultiselect
                       id="inputCualEnfermedadPadre"
                       v-model="cualEnfermedadPadre"
-                      class="form-control me-2 form-control-sm"
-                      placeholder="Escriba la enfermedad" type="text"
-                      @keyup.prevent.enter="addIllnessToArray(2)"
+                      :options="cie10Diseases"
+                      label="ci10"
+                      placeholder="Seleccione la Enfermedad"
+                      track-by="ci10"
                   />
+                  <!--                  <input
+                                        id="inputCualEnfermedadPadre"
+                                        v-model="cualEnfermedadPadre"
+                                        class="form-control me-2 form-control-sm"
+                                        placeholder="Escriba la enfermedad" type="text"
+                                        @keyup.prevent.enter="addIllnessToArray(2)"
+                                    />-->
                   <button class="btn btn-sm rounded-pill btn-outline-primary" @click.prevent="addIllnessToArray(2)">
                     <font-awesome-icon :icon="['fas', 'plus']"/>
                   </button>
@@ -404,7 +421,7 @@ defineExpose({
                       @click.prevent="removeIllnessFromArray(2, ill)"
                   >
                         <span class="badge text-bg-primary me-1">
-                          {{ ill }}
+                          {{ ill.ci10 }}
                           <font-awesome-icon :icon="['fas', 'x']" class="ms-2"/>
                         </span>
                   </h6>
@@ -447,18 +464,26 @@ defineExpose({
             <div v-if="healthHabitsVariables.afeccion_o_enfermededad_cronica__hermanos === 'Si'"
                  class="col-xl-4 col-md-4 col-sm-12"
             >
-              <label class="form-label" for="inputCualEnfermedad">
+              <label class="form-label" for="inputCualEnfermedadHermanos">
                 <font-awesome-icon :icon="['fas', 'hospital-user']"/>
                 Cuales Enfermedades?
               </label>
               <div class="row mb-3">
                 <div class="col d-flex justify-content-around">
-                  <input
+                  <VueMultiselect
+                      id="inputCualEnfermedadHermanos"
                       v-model="cualEnfermedadHermanos"
-                      class="form-control me-2 form-control-sm"
-                      placeholder="Escriba la enfermedad" type="text"
-                      @keyup.prevent.enter="addIllnessToArray(3)"
+                      :options="cie10Diseases"
+                      label="ci10"
+                      placeholder="Seleccione la Enfermedad"
+                      track-by="ci10"
                   />
+                  <!--                  <input
+                                        v-model="cualEnfermedadHermanos"
+                                        class="form-control me-2 form-control-sm"
+                                        placeholder="Escriba la enfermedad" type="text"
+                                        @keyup.prevent.enter="addIllnessToArray(3)"
+                                    />-->
                   <button class="btn btn-sm rounded-pill btn-outline-primary" @click.prevent="addIllnessToArray(3)">
                     <font-awesome-icon :icon="['fas', 'plus']"/>
                   </button>
@@ -472,7 +497,7 @@ defineExpose({
                       @click.prevent="removeIllnessFromArray(3, ill)"
                   >
                         <span class="badge text-bg-primary me-1">
-                          {{ ill }}
+                          {{ ill.ci10 }}
                           <font-awesome-icon :icon="['fas', 'x']" class="ms-2"/>
                         </span>
                   </h6>

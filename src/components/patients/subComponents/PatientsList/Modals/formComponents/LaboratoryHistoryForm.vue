@@ -30,16 +30,19 @@ const addItemToLabArray = () => {
     }))
   }
   laboratoryHistory.value.push(newData)
-  clearFields()
+  clearArray()
 }
 
 const removeLabFromArray = (index) => {
   laboratoryHistory.value.splice(index, 1)
 }
 
-function clearFields() {
+function clearArray() {
   formDate.value = ''
   formValues.value = {}
+}
+
+function clearFields() {
   laboratoryHistory.value = []
 }
 
