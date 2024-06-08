@@ -414,31 +414,10 @@ onMounted(storageCie10Diagnosis)
                           :multiple="true"
                           :options="cie10Diagnosis"
                           label="descripcion"
-                          placeholder="Pick some"
+                          placeholder="Seleccione el tipo de cáncer"
                           track-by="descripcion"
                       />
-                      <!--                      <input id="exampleDataListCie10" v-model="personalHealthVariables.cancer_diagnosticado"
-                                                   class="form-control"
-                                                   list="datalistOptionsCie10"
-                                                   placeholder="Type to search..."
-                                                   @input="getDiagnosisFromList($event)"
-                                            >
-                                            <datalist v-if="showCie10SearchOptions" id="datalistOptionsCie10">
-                                              <option v-for="diagnosis in cie10Diagnosis" :key="diagnosis.id"
-                                                      :value="diagnosis.descripcion"
-                                              >
-                                                {{ diagnosis.codigo }}
-                                              </option>
-                                            </datalist>-->
                     </div>
-                    <!--                    <div class="col">
-                                          <textarea id="exampleFormControlTextarea1"
-                                                    :value="personalHealthVariables.cancer_diagnosticado"
-                                                    class="form-control form-control-sm"
-                                                    placeholder="Escriba la enfermedad"
-                                                    rows="3"
-                                          />
-                                        </div>-->
                   </div>
                 </div>
               </div>
