@@ -13,11 +13,12 @@ import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import {toast} from "vue3-toastify";
 import {cie10Diseases} from "@/utils/const/cie10Diseases.js";
+import {drugsList} from "@/utils/const/drugsList.js";
 
 const healthHabitsVariables = useLocalStorage({
   es_fumador: null,
   presion_arterial: null,
-  medicamento_para_presion_arterial: null,
+  medicamento_para_presion_arterial: [],
   alto_nivel_colesterol: null,
   frecuencia_bebidas_alcoholicas: null,
   afeccion_o_enfermededad_cronica__madre: null,
@@ -57,9 +58,6 @@ const handleSubmit = async () => {
     return false
   }
   // If the form is valid, perform some action with the form data
-  /*window.localStorage.setItem('healthHabitsHasError', JSON.stringify({
-    value: false
-  }))*/
   if (window.localStorage.getItem('healthHabitsHasError')) window.localStorage.removeItem('healthHabitsHasError')
   return true;
 }
@@ -68,7 +66,7 @@ const resetValuesIfNoOption = (key, event) => {
   const eventValue = event.target.value
   if (key === 'presion_arterial') {
     if (eventValue === 'No' || eventValue === 'No Sé') {
-      healthHabitsVariables.value.medicamento_para_presion_arterial = null
+      healthHabitsVariables.value.medicamento_para_presion_arterial = []
     }
   }
   if (key === 'cual_afeccion_o_enfermededad_cronica__madre') {
@@ -122,6 +120,15 @@ const removeIllnessFromArray = (variableArray, item) => {
     const index = healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__hermanos.indexOf(item)
     if (index > -1) healthHabitsVariables.value.cual_afeccion_o_enfermededad_cronica__hermanos.splice(index, 1)
   }
+}
+
+const ObtainDrugsDescription = () => {
+
+  healthHabitsVariables.value.medicamento_para_presion_arterial.map(item => {
+    healthHabitsVariables.value.medicamento_para_presion_arterial.push(item.DescripcionComercial)
+  })
+
+
 }
 
 defineExpose({
@@ -204,15 +211,26 @@ defineExpose({
                   {{ v$.presion_arterial.$errors[0]?.$message }}
                 </span>
 
-              <div v-if="healthHabitsVariables.presion_arterial === 'Si'">
+              <div v-if="healthHabitsVariables.presion_arterial === 'Si'" class="mt-3 mb-5">
                 <label class="form-label" for="areaMedicamentoControl">
                   Si respondiste afirmativamente a la presión arterial alta, ¿estás tomando algún medicamento para
                   controlarla?
                 </label>
-                <textarea id="areaMedicamentoControl" v-model="healthHabitsVariables.medicamento_para_presion_arterial"
-                          class="form-control"
-                          rows="2"
+                <VueMultiselect
+                    id="areaMedicamentoControl"
+                    v-model="healthHabitsVariables.medicamento_para_presion_arterial"
+                    :close-on-select="true"
+                    :multiple="true"
+                    :options="drugsList"
+                    label="DescripcionComercial"
+                    placeholder="Selccione el o los medicamentos"
+                    track-by="DescripcionComercial"
+                    va
                 />
+                <!--                <textarea id="areaMedicamentoControl" v-model="healthHabitsVariables.medicamento_para_presion_arterial"
+                                          class="form-control"
+                                          rows="2"
+                                />-->
               </div>
 
             </div>
@@ -283,73 +301,85 @@ defineExpose({
               </p>
 
               <div class="row">
-                <div class="col-xl-8 col-md-8 col-sm-12">
+                <div class="col-xl col-md col-sm-12">
                   <ul>
                     <li>
                       <fieldset class="row mb-3">
-                        <legend class="col-form-label col-4 pt-0 fw-bold">MADRE:</legend>
-                        <div class="col-8">
-                          <div v-for="(mci, index) in motherWithChronicIllness" :key="mci.value" class="form-check">
-                            <input :id="`gridRadiosMadre-${index}`"
-                                   v-model="healthHabitsVariables.afeccion_o_enfermededad_cronica__madre"
-                                   :name="`gridRadiosMadre-${index}`"
-                                   :value="mci.value" class="form-check-input" type="radio"
-                                   @change.prevent="resetValuesIfNoOption('cual_afeccion_o_enfermededad_cronica__madre', $event)"
-                            >
-                            <label :for="`gridRadiosMadre-${index}`" class="form-check-label">
-                              {{ mci.label }}
-                            </label>
+                        <legend class="col-form-label col-2 pt-0 fw-bold">MADRE:</legend>
+                        <div class="col-10">
+
+                          <div class="row">
+
+                            <div class="col-xl-2 col-sm-12">
+                              <div v-for="(mci, index) in motherWithChronicIllness" :key="mci.value" class="form-check">
+                                <input :id="`gridRadiosMadre-${index}`"
+                                       v-model="healthHabitsVariables.afeccion_o_enfermededad_cronica__madre"
+                                       :name="`gridRadiosMadre-${index}`"
+                                       :value="mci.value" class="form-check-input" type="radio"
+                                       @change.prevent="resetValuesIfNoOption('cual_afeccion_o_enfermededad_cronica__madre', $event)"
+                                >
+                                <label :for="`gridRadiosMadre-${index}`" class="form-check-label">
+                                  {{ mci.label }}
+                                </label>
+                              </div>
+                            </div>
+
+                            <div class="col-xl-10 col-sm-12">
+                              <div v-if="healthHabitsVariables.afeccion_o_enfermededad_cronica__madre === 'Si'"
+                                   class="col-xl col-md col-sm-12"
+                              >
+                                <label class="form-label" for="inputCualEnfermedadMadre">
+                                  <font-awesome-icon :icon="['fas', 'hospital-user']"/>
+                                  Cuales Enfermedades?
+                                </label>
+                                <!--                  <p>Cuales Enfermedades?</p>-->
+                                <div class="row mb-3">
+                                  <div class="col d-flex justify-content-around">
+                                    <VueMultiselect
+                                        id="inputCualEnfermedadMadre"
+                                        v-model="cualEnfermedadMadre"
+                                        :options="cie10Diseases"
+                                        label="ci10"
+                                        placeholder="Seleccione la Enfermedad"
+                                        track-by="ci10"
+                                    />
+                                    <!--                      <input
+                                                              id="inputCualEnfermedad"
+                                                              v-model="cualEnfermedadMadre"
+                                                              class="form-control form-control-sm me-2"
+                                                              placeholder="Escriba la enfermedad" type="text"
+                                                              @keyup.prevent.enter="addIllnessToArray(1)"
+                                                          />-->
+                                    <button class="btn btn-sm rounded-pill btn-outline-primary"
+                                            @click.prevent="addIllnessToArray(1)">
+                                      <font-awesome-icon :icon="['fas', 'plus']"/>
+                                    </button>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col">
+                                    <h6 v-for="ill in healthHabitsVariables.cual_afeccion_o_enfermededad_cronica__madre"
+                                        :key="ill" class="d-inline-block"
+                                        @click.prevent="removeIllnessFromArray(1,ill)"
+                                    >
+                        <span class="badge text-bg-primary me-1">
+                          {{ ill.ci10 }}
+                          <font-awesome-icon :icon="['fas', 'x']" class="ms-2"/>
+                        </span>
+                                    </h6>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
                           </div>
+
                         </div>
                       </fieldset>
                     </li>
                   </ul>
                 </div>
 
-                <div v-if="healthHabitsVariables.afeccion_o_enfermededad_cronica__madre === 'Si'"
-                     class="col-xl-4 col-md-4 col-sm-12"
-                >
-                  <label class="form-label" for="inputCualEnfermedadMadre">
-                    <font-awesome-icon :icon="['fas', 'hospital-user']"/>
-                    Cuales Enfermedades?
-                  </label>
-                  <!--                  <p>Cuales Enfermedades?</p>-->
-                  <div class="row mb-3">
-                    <div class="col d-flex justify-content-around">
-                      <VueMultiselect
-                          id="inputCualEnfermedadMadre"
-                          v-model="cualEnfermedadMadre"
-                          :options="cie10Diseases"
-                          label="ci10"
-                          placeholder="Seleccione la Enfermedad"
-                          track-by="ci10"
-                      />
-                      <!--                      <input
-                                                id="inputCualEnfermedad"
-                                                v-model="cualEnfermedadMadre"
-                                                class="form-control form-control-sm me-2"
-                                                placeholder="Escriba la enfermedad" type="text"
-                                                @keyup.prevent.enter="addIllnessToArray(1)"
-                                            />-->
-                      <button class="btn btn-sm rounded-pill btn-outline-primary" @click.prevent="addIllnessToArray(1)">
-                        <font-awesome-icon :icon="['fas', 'plus']"/>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <h6 v-for="ill in healthHabitsVariables.cual_afeccion_o_enfermededad_cronica__madre"
-                          :key="ill" class="d-inline-block"
-                          @click.prevent="removeIllnessFromArray(1,ill)"
-                      >
-                        <span class="badge text-bg-primary me-1">
-                          {{ ill.ci10 }}
-                          <font-awesome-icon :icon="['fas', 'x']" class="ms-2"/>
-                        </span>
-                      </h6>
-                    </div>
-                  </div>
-                </div>
 
                 <span v-if="v$.afeccion_o_enfermededad_cronica__madre.$error"
                       class="text-danger"
@@ -363,70 +393,86 @@ defineExpose({
 
           <!-- Enfermedades cronicas del padre -->
           <div class="row mb-3">
-            <div class="col-xl-8 col-md-8 col-sm-12">
+            <div class="col-xl col-md col-sm-12">
               <ul>
                 <li>
                   <fieldset class="row mb-3">
-                    <legend class="col-form-label col-4 pt-0 fw-bold">PADRE:</legend>
-                    <div class="col-8">
-                      <div v-for="(mci, index) in motherWithChronicIllness" :key="mci.value" class="form-check">
-                        <input :id="`gridRadiosPadre-${index}`"
-                               v-model="healthHabitsVariables.afeccion_o_enfermededad_cronica__padre"
-                               :name="`gridRadiosPadre-${index}`"
-                               :value="mci.value" class="form-check-input" type="radio"
-                               @change.prevent="resetValuesIfNoOption('cual_afeccion_o_enfermededad_cronica__padre', $event)"
-                        >
-                        <label :for="`gridRadiosPadre-${index}`" class="form-check-label">
-                          {{ mci.label }}
-                        </label>
-                      </div>
-                    </div>
-                  </fieldset>
-                </li>
-              </ul>
-            </div>
-            <div v-if="healthHabitsVariables.afeccion_o_enfermededad_cronica__padre === 'Si'"
-                 class="col-xl-4 col-md-4 col-sm-12"
-            >
-              <label class="form-label" for="inputCualEnfermedadPadre">
-                <font-awesome-icon :icon="['fas', 'hospital-user']"/>
-                Cuales Enfermedades?
-              </label>
-              <div class="row mb-3">
-                <div class="col d-flex justify-content-around">
-                  <VueMultiselect
-                      id="inputCualEnfermedadPadre"
-                      v-model="cualEnfermedadPadre"
-                      :options="cie10Diseases"
-                      label="ci10"
-                      placeholder="Seleccione la Enfermedad"
-                      track-by="ci10"
-                  />
-                  <!--                  <input
-                                        id="inputCualEnfermedadPadre"
-                                        v-model="cualEnfermedadPadre"
-                                        class="form-control me-2 form-control-sm"
-                                        placeholder="Escriba la enfermedad" type="text"
-                                        @keyup.prevent.enter="addIllnessToArray(2)"
-                                    />-->
-                  <button class="btn btn-sm rounded-pill btn-outline-primary" @click.prevent="addIllnessToArray(2)">
-                    <font-awesome-icon :icon="['fas', 'plus']"/>
-                  </button>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <h6 v-for="ill in healthHabitsVariables.cual_afeccion_o_enfermededad_cronica__padre"
-                      :key="ill" class="d-inline-block"
-                      @click.prevent="removeIllnessFromArray(2, ill)"
-                  >
+                    <legend class="col-form-label col-2 pt-0 fw-bold">PADRE:</legend>
+                    <div class="col-10">
+
+                      <div class="row">
+
+                        <div class="col-xl-2 col-sm-12">
+                          <div v-for="(mci, index) in motherWithChronicIllness" :key="mci.value" class="form-check">
+                            <input :id="`gridRadiosPadre-${index}`"
+                                   v-model="healthHabitsVariables.afeccion_o_enfermededad_cronica__padre"
+                                   :name="`gridRadiosPadre-${index}`"
+                                   :value="mci.value" class="form-check-input" type="radio"
+                                   @change.prevent="resetValuesIfNoOption('cual_afeccion_o_enfermededad_cronica__padre', $event)"
+                            >
+                            <label :for="`gridRadiosPadre-${index}`" class="form-check-label">
+                              {{ mci.label }}
+                            </label>
+                          </div>
+                        </div>
+                        <!-- /.col -->
+
+
+                        <div class="col-xl-10 col-sm-12">
+                          <div v-if="healthHabitsVariables.afeccion_o_enfermededad_cronica__padre === 'Si'"
+                               class="col-xl col-md col-sm-12"
+                          >
+                            <label class="form-label" for="inputCualEnfermedadPadre">
+                              <font-awesome-icon :icon="['fas', 'hospital-user']"/>
+                              Cuales Enfermedades?
+                            </label>
+                            <div class="row mb-3">
+                              <div class="col d-flex justify-content-around">
+                                <VueMultiselect
+                                    id="inputCualEnfermedadPadre"
+                                    v-model="cualEnfermedadPadre"
+                                    :options="cie10Diseases"
+                                    label="ci10"
+                                    placeholder="Seleccione la Enfermedad"
+                                    track-by="ci10"
+                                />
+                                <!--                  <input
+                                                      id="inputCualEnfermedadPadre"
+                                                      v-model="cualEnfermedadPadre"
+                                                      class="form-control me-2 form-control-sm"
+                                                      placeholder="Escriba la enfermedad" type="text"
+                                                      @keyup.prevent.enter="addIllnessToArray(2)"
+                                                  />-->
+                                <button class="btn btn-sm rounded-pill btn-outline-primary"
+                                        @click.prevent="addIllnessToArray(2)">
+                                  <font-awesome-icon :icon="['fas', 'plus']"/>
+                                </button>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col">
+                                <h6 v-for="ill in healthHabitsVariables.cual_afeccion_o_enfermededad_cronica__padre"
+                                    :key="ill" class="d-inline-block"
+                                    @click.prevent="removeIllnessFromArray(2, ill)"
+                                >
                         <span class="badge text-bg-primary me-1">
                           {{ ill.ci10 }}
                           <font-awesome-icon :icon="['fas', 'x']" class="ms-2"/>
                         </span>
-                  </h6>
-                </div>
-              </div>
+                                </h6>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- /.col -->
+
+                      </div>
+                      <!-- /.row -->
+
+                    </div>
+                  </fieldset>
+                </li>
+              </ul>
             </div>
 
             <span v-if="v$.afeccion_o_enfermededad_cronica__padre.$error"
@@ -439,70 +485,85 @@ defineExpose({
 
           <!-- Enfermedades cronicas de los Hermanos -->
           <div class="row mb-3">
-            <div class="col-xl-8 col-md-8 col-sm-12">
+            <div class="col-xl col-md col-sm-12">
               <ul>
                 <li>
                   <fieldset class="row mb-3">
-                    <legend class="col-form-label col-4 pt-0 fw-bold">HERMANOS:</legend>
-                    <div class="col-8">
-                      <div v-for="(mci, index) in motherWithChronicIllness" :key="mci.value" class="form-check">
-                        <input :id="`gridRadiosHermanos-${index}`"
-                               v-model="healthHabitsVariables.afeccion_o_enfermededad_cronica__hermanos"
-                               :name="`gridRadiosHermanos-${index}`"
-                               :value="mci.value" class="form-check-input" type="radio"
-                               @change.prevent="resetValuesIfNoOption('cual_afeccion_o_enfermededad_cronica__hermanos', $event)"
-                        >
-                        <label :for="`gridRadiosHermanos-${index}`" class="form-check-label">
-                          {{ mci.label }}
-                        </label>
-                      </div>
-                    </div>
-                  </fieldset>
-                </li>
-              </ul>
-            </div>
-            <div v-if="healthHabitsVariables.afeccion_o_enfermededad_cronica__hermanos === 'Si'"
-                 class="col-xl-4 col-md-4 col-sm-12"
-            >
-              <label class="form-label" for="inputCualEnfermedadHermanos">
-                <font-awesome-icon :icon="['fas', 'hospital-user']"/>
-                Cuales Enfermedades?
-              </label>
-              <div class="row mb-3">
-                <div class="col d-flex justify-content-around">
-                  <VueMultiselect
-                      id="inputCualEnfermedadHermanos"
-                      v-model="cualEnfermedadHermanos"
-                      :options="cie10Diseases"
-                      label="ci10"
-                      placeholder="Seleccione la Enfermedad"
-                      track-by="ci10"
-                  />
-                  <!--                  <input
-                                        v-model="cualEnfermedadHermanos"
-                                        class="form-control me-2 form-control-sm"
-                                        placeholder="Escriba la enfermedad" type="text"
-                                        @keyup.prevent.enter="addIllnessToArray(3)"
-                                    />-->
-                  <button class="btn btn-sm rounded-pill btn-outline-primary" @click.prevent="addIllnessToArray(3)">
-                    <font-awesome-icon :icon="['fas', 'plus']"/>
-                  </button>
-                </div>
+                    <legend class="col-form-label col-2 pt-0 fw-bold">HERMANOS:</legend>
+                    <div class="col-10">
 
-              </div>
-              <div class="row">
-                <div class="col">
-                  <h6 v-for="ill in healthHabitsVariables.cual_afeccion_o_enfermededad_cronica__hermanos"
-                      :key="ill" class="d-inline-block"
-                      @click.prevent="removeIllnessFromArray(3, ill)"
-                  >
+                      <div class="row">
+
+                        <div class="col-xl-2 col-sm-12">
+                          <div v-for="(mci, index) in motherWithChronicIllness" :key="mci.value" class="form-check">
+                            <input :id="`gridRadiosHermanos-${index}`"
+                                   v-model="healthHabitsVariables.afeccion_o_enfermededad_cronica__hermanos"
+                                   :name="`gridRadiosHermanos-${index}`"
+                                   :value="mci.value" class="form-check-input" type="radio"
+                                   @change.prevent="resetValuesIfNoOption('cual_afeccion_o_enfermededad_cronica__hermanos', $event)"
+                            >
+                            <label :for="`gridRadiosHermanos-${index}`" class="form-check-label">
+                              {{ mci.label }}
+                            </label>
+                          </div>
+                        </div>
+                        <!-- /.col -->
+
+                        <div class="col-xl-10 col-sm-12">
+                          <div v-if="healthHabitsVariables.afeccion_o_enfermededad_cronica__hermanos === 'Si'"
+                               class="col-xl col-md col-sm-12"
+                          >
+                            <label class="form-label" for="inputCualEnfermedadHermanos">
+                              <font-awesome-icon :icon="['fas', 'hospital-user']"/>
+                              Cuales Enfermedades?
+                            </label>
+                            <div class="row mb-3">
+                              <div class="col d-flex justify-content-around">
+                                <VueMultiselect
+                                    id="inputCualEnfermedadHermanos"
+                                    v-model="cualEnfermedadHermanos"
+                                    :options="cie10Diseases"
+                                    label="ci10"
+                                    placeholder="Seleccione la Enfermedad"
+                                    track-by="ci10"
+                                />
+                                <!--                  <input
+                                                      v-model="cualEnfermedadHermanos"
+                                                      class="form-control me-2 form-control-sm"
+                                                      placeholder="Escriba la enfermedad" type="text"
+                                                      @keyup.prevent.enter="addIllnessToArray(3)"
+                                                  />-->
+                                <button class="btn btn-sm rounded-pill btn-outline-primary"
+                                        @click.prevent="addIllnessToArray(3)">
+                                  <font-awesome-icon :icon="['fas', 'plus']"/>
+                                </button>
+                              </div>
+
+                            </div>
+                            <div class="row">
+                              <div class="col">
+                                <h6 v-for="ill in healthHabitsVariables.cual_afeccion_o_enfermededad_cronica__hermanos"
+                                    :key="ill" class="d-inline-block"
+                                    @click.prevent="removeIllnessFromArray(3, ill)"
+                                >
                         <span class="badge text-bg-primary me-1">
                           {{ ill.ci10 }}
                           <font-awesome-icon :icon="['fas', 'x']" class="ms-2"/>
                         </span>
-                  </h6>
-                </div>
-              </div>
+                                </h6>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- /.col -->
+
+                      </div>
+                      <!-- /.row -->
+                      
+                    </div>
+                  </fieldset>
+                </li>
+              </ul>
             </div>
           </div>
           <!-- End Enfermedades cronicas de los Hermanos -->
