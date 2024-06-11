@@ -211,10 +211,10 @@ const saveInformedConsent = async () => {
         ]
       }
 
-      console.log(payload)
-      loader.hide()
+      //console.log(payload)
+      //loader.hide()
 
-      /*await PatientService.saveInformedConsent(payload)
+      await PatientService.saveInformedConsent(payload)
           .then((response) => {
             if (response.data.statusCode !== 201) {
               Swal.fire({
@@ -242,7 +242,7 @@ const saveInformedConsent = async () => {
               text: getError(error)
             })
             loader.hide()
-          })*/
+          })
 
     } else {
       Swal.fire({
@@ -282,8 +282,8 @@ const saveForm = async () => {
       return false
     }
 
-    //await saveUserInformation()
-    await saveInformedConsent()
+    await saveUserInformation()
+    //await saveInformedConsent()
     console.log('No hay Error acá')
 
   } catch (error) {
