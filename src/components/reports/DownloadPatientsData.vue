@@ -99,7 +99,7 @@ const getDataByDate = async () => {
 
                 <div class="col-xl-5 col-sm-12 mb-sm-3">
                   <label class="form-label" for="inputInitDate">
-                    Fecha Inicio:
+                    Fecha Fin:
                   </label>
                   <input id="inputInitDate"
                          v-model="endDate"
