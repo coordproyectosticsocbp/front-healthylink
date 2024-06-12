@@ -25,6 +25,8 @@ import {useStore} from "vuex";
 import structurePayloadForComplementaryInfo from "@/composables/patients/structurePayloadForComplementaryInfo.js";
 import PatientService from "@/services/patients/Patient.service.js";
 import {getError} from "@/utils/helpers/getError.js";
+import FindingsHistoryForm
+  from "@/components/patients/subComponents/PatientsList/Modals/formComponents/FindingsHistoryForm.vue";
 
 const props = defineProps({
   itemInformation: Number
@@ -41,6 +43,7 @@ const savingButtonStatus = ref(false)
 const crfModalRef = ref(null)
 
 const PatientEvolutionFormRef = ref()
+const FindingsHistoryFormRef = ref()
 const PathologicalHistoryFormRef = ref()
 const PharmacologicalHistoryFormRef = ref()
 const OthersHistoryFormRef = ref()
@@ -52,6 +55,7 @@ const AttachedDocumentsFormRef = ref()
 
 function executeAllExposeClearFields() {
   PatientEvolutionFormRef.value.clearFields()
+  FindingsHistoryFormRef.value.clearFields()
   PathologicalHistoryFormRef.value.clearFields()
   PharmacologicalHistoryFormRef.value.clearFields()
   OthersHistoryFormRef.value.clearFields()
@@ -132,7 +136,6 @@ const saveComplementaryInfoForm = (patientID, userID) => {
                   text: getError(error)
                 })
               })
-
         }
       })
 
@@ -204,6 +207,8 @@ const saveComplementaryInfoForm = (patientID, userID) => {
             <div :id="`v-pills-tabContent-${props.itemInformation}`" class="tab-content w-100">
 
               <PatientEvolutionForm ref="PatientEvolutionFormRef" :itemIndexVal="props.itemInformation"/>
+
+              <FindingsHistoryForm ref="FindingsHistoryFormRef" :itemIndexVal="props.itemInformation"/>
 
               <PathologicalHistoryForm ref="PathologicalHistoryFormRef" :itemIndexVal="props.itemInformation"/>
 

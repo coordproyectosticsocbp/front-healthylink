@@ -107,22 +107,6 @@ defineExpose({
                 />
               </select>
             </div>
-            <!--            <div class="col-2">
-                          <input id="input-presentation" v-model="initialValue.drugPresentation"
-                                 aria-label="Last name"
-                                 class="form-control"
-                                 placeholder="Presentación"
-                                 required
-                                 type="text">
-                        </div>
-                        <div class="col-2">
-                          <input id="input-concentration" v-model="initialValue.drugConcentration"
-                                 aria-label="Last name"
-                                 class="form-control"
-                                 placeholder="Concentración"
-                                 required
-                                 type="text">
-                        </div>-->
             <div class="col-2 d-flex align-items-center justify-content-end">
               <button class="btn btn-sm rounded btn-outline-secondary"
                       title="Agregar nuevo registro"

@@ -1,5 +1,6 @@
 export default function clearAllLocalStorage() {
     window.localStorage.removeItem(`evolutionInfo`)
+    window.localStorage.removeItem(`findingsInfo`)
     window.localStorage.removeItem(`pathologicalInfo`)
     window.localStorage.removeItem(`othersInfo`)
     window.localStorage.removeItem(`pharmacologicalHistory`)
