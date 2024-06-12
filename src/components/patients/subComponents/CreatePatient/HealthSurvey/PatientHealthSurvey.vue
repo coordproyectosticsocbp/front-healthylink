@@ -175,7 +175,7 @@ const saveInformedConsent = async () => {
             nacionalidad_ciudad_abuela_paterno: storageDemographicVal.ciudad_abuela_paterna,
             es_fumador: storageHealthHabitsVal.es_fumador,
             presion_arterial: storageHealthHabitsVal.presion_arterial,
-            medicamento_para_presion_arterial: storageHealthHabitsVal.medicamento_para_presion_arterial,
+            medicamento_para_presion_arterial: separateArrayBySemicolon(storageHealthHabitsVal.medicamento_para_presion_arterial, 'DescripcionComercial'),
             altos_niveles_colesterol: storageHealthHabitsVal.alto_nivel_colesterol,
             frecuencia_consumo_bebidas_alcoholicas: storageHealthHabitsVal.frecuencia_bebidas_alcoholicas,
             afeccion_o_enfermededad_cronica__madre: storageHealthHabitsVal.afeccion_o_enfermededad_cronica__madre,
@@ -210,6 +210,9 @@ const saveInformedConsent = async () => {
           }
         ]
       }
+
+      //console.log(payload)
+      //loader.hide()
 
       await PatientService.saveInformedConsent(payload)
           .then((response) => {
@@ -280,6 +283,7 @@ const saveForm = async () => {
     }
 
     await saveUserInformation()
+    //await saveInformedConsent()
     console.log('No hay Error acá')
 
   } catch (error) {

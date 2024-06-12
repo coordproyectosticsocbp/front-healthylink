@@ -36733,5 +36733,8 @@ export const drugsList = [
     },
     {
         "DescripcionComercial": "XALAR 4 MG"
+    },
+    {
+        "DescripcionComercial": "N/A"
     }
 ]

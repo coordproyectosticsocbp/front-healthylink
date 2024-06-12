@@ -53,6 +53,14 @@ const resetValuesIfNoOption = (key, event) => {
   if (key === 'presento_sintomas_por_covid') {
     if (eventValue !== 'No' || eventValue !== 'No Sé') {
       covidVariables.value.sintomas_tenidos_por_covid = []
+      covidVariables.value.hospitalizado_por_covid_19 = 'No'
+      covidVariables.value.tiempo_recuperacion_covid_19 = 'N/A'
+      covidVariables.value.sintomas_q_persisten_por_covid_19 = []
+    } else if (eventValue !== 'Si') {
+      covidVariables.value.sintomas_tenidos_por_covid = []
+      covidVariables.value.hospitalizado_por_covid_19 = null
+      covidVariables.value.tiempo_recuperacion_covid_19 = null
+      covidVariables.value.sintomas_q_persisten_por_covid_19 = []
     }
   }
 }
@@ -67,9 +75,6 @@ const handleSubmit = async () => {
     return false
   }
   // If the form is valid, perform some action with the form data
-  /*window.localStorage.setItem('covid19InfoHasError', JSON.stringify({
-    value: false
-  }))*/
   if (window.localStorage.getItem('covid19InfoHasError')) window.localStorage.removeItem('covid19InfoHasError')
   return true;
 }
@@ -285,7 +290,8 @@ defineExpose({
                         <input :id="`gridRadiosHospCovid-${index}`"
                                v-model="covidVariables.hospitalizado_por_covid_19"
                                :name="`gridRadiosHospCovid-${index}`"
-                               :value="mci.value" class="form-check-input" type="radio"
+                               :value="mci.value"
+                               class="form-check-input" type="radio"
                         >
                         <label :for="`gridRadiosHospCovid-${index}`" class="form-check-label">
                           {{ mci.label }}

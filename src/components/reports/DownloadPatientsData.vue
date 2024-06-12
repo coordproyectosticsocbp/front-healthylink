@@ -11,7 +11,6 @@ const currentDate = ref(dateToday)
 const initDate = ref(dateToday)
 const endDate = ref(dateToday)
 const dataToExport = ref([])
-const dataToExport2 = ref([])
 const isLoadingData = ref(false)
 const fullPage = ref(true)
 
@@ -31,17 +30,9 @@ const exportToExcel = () => {
   XLSX.utils.book_append_sheet(workbook, data, filename)
   XLSX.writeFile(workbook, `${filename}.xlsx`)
 }
-const exportToExcel2 = () => {
-  let data = XLSX.utils.json_to_sheet(dataToExport2.value)
-  const workbook = XLSX.utils.book_new()
-  const filename = 'informacionComplementaria'
-  XLSX.utils.book_append_sheet(workbook, data, filename)
-  XLSX.writeFile(workbook, `${filename}.xlsx`)
-}
 
 const exportExcelFiles = () => {
   exportToExcel()
-  exportToExcel2()
 }
 
 const getDataByDate = async () => {
@@ -62,7 +53,6 @@ const getDataByDate = async () => {
           loader.hide()
         } else {
           dataToExport.value = response.data.data.survey
-          dataToExport2.value = response.data.data.dataComplementaria
           isLoadingData.value = false
           loader.hide()
         }
@@ -109,7 +99,7 @@ const getDataByDate = async () => {
 
                 <div class="col-xl-5 col-sm-12 mb-sm-3">
                   <label class="form-label" for="inputInitDate">
-                    Fecha Inicio:
+                    Fecha Fin:
                   </label>
                   <input id="inputInitDate"
                          v-model="endDate"

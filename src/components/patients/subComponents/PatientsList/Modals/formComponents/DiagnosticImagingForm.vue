@@ -15,7 +15,7 @@ const initialValue = ref({
   imageResult: ''
 })
 
-const imagesHistory = useLocalStorage([], `imagesHistory-${props.itemIndexVal}`)
+const imagesHistory = useLocalStorage([], `imagesHistory`)
 
 const addItemToLabArray = () => {
   imagesHistory.value.push({...initialValue.value})

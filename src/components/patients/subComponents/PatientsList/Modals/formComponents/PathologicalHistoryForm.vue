@@ -9,7 +9,7 @@ const props = defineProps({
 const pathologicalInfo = useLocalStorage(
     {
       patientPathologicalHistory: ''
-    }, `pathologicalInfo-${props.itemIndexVal}`
+    }, `pathologicalInfo`
 )
 
 function clearFields() {

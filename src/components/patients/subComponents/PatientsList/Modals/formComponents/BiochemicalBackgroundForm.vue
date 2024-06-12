@@ -90,7 +90,7 @@ const biochemicalOptions = ref([
 const formDate = ref('')
 const formValues = ref({})
 
-const biochemicalHistory = useLocalStorage([], `biochemicalHistory-${props.itemIndexVal}`)
+const biochemicalHistory = useLocalStorage([], `biochemicalHistory`)
 
 const addItemToLabArray = () => {
   const newData = {
@@ -101,16 +101,20 @@ const addItemToLabArray = () => {
     }))
   }
   biochemicalHistory.value.push(newData)
-  clearFields()
+  clearArray()
 }
 
 const removeLabFromArray = (index) => {
   biochemicalHistory.value.splice(index, 1)
 }
 
-function clearFields() {
+function clearArray() {
   formDate.value = ''
   formValues.value = {}
+}
+
+function clearFields() {
+  biochemicalHistory.value = []
 }
 
 defineExpose({
