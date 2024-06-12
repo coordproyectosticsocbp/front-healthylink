@@ -11,6 +11,7 @@ const dataDash = ref([])
 const fullPage = ref(true)
 const errors = ref(null)
 const totalMuestras = ref(0)
+const pendientesEcrf = ref(0)
 const muestrasEnviadasAlSponsor = ref(0)
 
 const $loading = useLoading({
@@ -42,6 +43,7 @@ watch(() => dataDash.value, (dataDashboardStart) => {
   renderBarGeneroPatienst(dataDashboardStart.generoDePacientes);
 
   totalMuestras.value = dataDashboardStart.totalmuestrastomadas;
+  pendientesEcrf.value=dataDashboardStart.pendientesecrf;
   muestrasEnviadasAlSponsor.value = dataDashboardStart.muestrasEnviadasAlsponsor;
 });
 
@@ -297,16 +299,33 @@ onMounted(dataDashboard);
   <div class="container border-radius-10">
     <div class="row">
       <div class="col-md-4">
-        <div class="card">
-          <div class="card-body text-center">
-            <h5 class="card-title">Total muestras tomadas</h5>
-            <br>
-            <font-awesome-icon :icon="['fas', 'syringe']" style="font-size: 3em;"/>
-            <p class="h1">{{ totalMuestras }}</p>
-            <p class="text-muted">Muestras</p>
-            <small class="text-secondary">*Últimos 30 días </small>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body text-center">
+                <h5 class="card-title">Total muestras tomadas</h5>
+                <br>
+                <font-awesome-icon :icon="['fas', 'syringe']" style="font-size: 3em;"/>
+                <p class="h1">{{ totalMuestras }}</p>
+                <p class="text-muted">Muestras</p>
+                <small class="text-secondary">*Todas</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body text-center">
+                <h5 class="card-title">Pacientes Pendientes por eCRF</h5>
+                <br>
+                <font-awesome-icon :icon="['fas', 'square-poll-horizontal']" style="font-size: 3em;"/>
+                <p class="h1">{{ pendientesEcrf }}</p>
+                <p class="text-muted">Muestras</p>
+                <small class="text-secondary">*Todas</small>
+              </div>
+            </div>
           </div>
         </div>
+
         <br>
         <div class="card">
           <div class="card-body text-center">
@@ -319,6 +338,7 @@ onMounted(dataDashboard);
             <small class="text-secondary">*Últimos 60 días</small>
           </div>
         </div>
+
       </div>
       <div class="col-md-4">
         <div class="card">
