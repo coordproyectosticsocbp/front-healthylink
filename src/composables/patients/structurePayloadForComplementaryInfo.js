@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 export default function structurePayloadForComplementaryInfo(surveyID, userID) {
 
     const evolutionInfo = window.localStorage.getItem(`evolutionInfo`)
+    const findingsInfo = window.localStorage.getItem(`findingsInfo`)
     const pathologicalInfo = window.localStorage.getItem(`pathologicalInfo`)
     const othersInfo = window.localStorage.getItem(`othersInfo`)
     const pharmacologicalHistory = window.localStorage.getItem(`pharmacologicalHistory`)
@@ -18,19 +19,10 @@ export default function structurePayloadForComplementaryInfo(surveyID, userID) {
     }
     let data = []
 
-    if (evolutionInfo) {
+
+    if (findingsInfo) {
         data.push(
-            structurePayloadSingle(JSON.parse(evolutionInfo).patientEvolution, 7)
-        )
-    }
-    if (pathologicalInfo) {
-        data.push(
-            structurePayloadSingle(JSON.parse(pathologicalInfo).patientPathologicalHistory, 1)
-        )
-    }
-    if (othersInfo) {
-        data.push(
-            structurePayloadSingle(JSON.parse(othersInfo).patientOtherInfo, 8)
+            structurePayloadSingle(JSON.parse(findingsInfo).patientFindingsHistory, 1)
         )
     }
     if (pharmacologicalHistory) {
@@ -68,6 +60,23 @@ export default function structurePayloadForComplementaryInfo(surveyID, userID) {
             )
         })
     }
+    if (evolutionInfo) {
+        data.push(
+            structurePayloadSingle(JSON.parse(evolutionInfo).patientEvolution, 7)
+        )
+    }
+    if (othersInfo) {
+        data.push(
+            structurePayloadSingle(JSON.parse(othersInfo).patientOtherInfo, 8)
+        )
+    }
+    if (pathologicalInfo) {
+        JSON.parse(pathologicalInfo).map(item => {
+            data.push(
+                structurePayloadMultiple(item, 9)
+            )
+        })
+    }
 
     payload.datos = flattenArray(data)
     return payload
@@ -85,6 +94,7 @@ function structurePayloadSingle(data, questionNumber) {
 
 function structurePayloadMultiple(data, questionNumber) {
     const today = dayjs()
+
     if (questionNumber === 2) {
         return {
             fecha: today.format('YYYY-MM-DD'),
@@ -130,6 +140,14 @@ function structurePayloadMultiple(data, questionNumber) {
             pregunta_id: questionNumber,
             tipo_imagen: data.imageType.toUpperCase()
         }
+    } else if (questionNumber === 9) {
+        return {
+            fecha: null,
+            respuesta: data.ci10.toUpperCase(),
+            pregunta_id: questionNumber,
+            valor: null
+        }
+
     }
 }
 

@@ -11,6 +11,11 @@ export const patientComplementayTabOption = [
     },
     {
         name: 'Hallazgos',
+        value: 'findings',
+        status: false
+    },
+    {
+        name: 'Patologicos',
         value: 'patologicos',
         status: false
     },
