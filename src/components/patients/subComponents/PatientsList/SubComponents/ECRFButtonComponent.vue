@@ -23,10 +23,12 @@ import PatientEvolutionForm
 import clearAllLocalStorage from "@/composables/patients/clearAllComplementaryLocalStorage.js";
 import {useStore} from "vuex";
 import structurePayloadForComplementaryInfo from "@/composables/patients/structurePayloadForComplementaryInfo.js";
-import PatientService from "@/services/patients/Patient.service.js";
-import {getError} from "@/utils/helpers/getError.js";
 import FindingsHistoryForm
   from "@/components/patients/subComponents/PatientsList/Modals/formComponents/FindingsHistoryForm.vue";
+import OthersLaboratoriesForm
+  from "@/components/patients/subComponents/PatientsList/Modals/formComponents/OthersLaboratoriesForm.vue";
+import PatientService from "@/services/patients/Patient.service.js";
+import {getError} from "@/utils/helpers/getError.js";
 
 const props = defineProps({
   itemInformation: Number
@@ -46,6 +48,7 @@ const PatientEvolutionFormRef = ref()
 const FindingsHistoryFormRef = ref()
 const PathologicalHistoryFormRef = ref()
 const PharmacologicalHistoryFormRef = ref()
+const OthersLaboratoriesHistoryFormRef = ref()
 const OthersHistoryFormRef = ref()
 const LaboratoryHistoryFormRef = ref()
 const BiochemicalBackgroundFormRef = ref()
@@ -58,6 +61,7 @@ function executeAllExposeClearFields() {
   FindingsHistoryFormRef.value.clearFields()
   PathologicalHistoryFormRef.value.clearFields()
   PharmacologicalHistoryFormRef.value.clearFields()
+  OthersLaboratoriesHistoryFormRef.value.clearFields()
   OthersHistoryFormRef.value.clearFields()
   LaboratoryHistoryFormRef.value.clearFields()
   BiochemicalBackgroundFormRef.value.clearFields()
@@ -211,6 +215,8 @@ const saveComplementaryInfoForm = (patientID, userID) => {
               <FindingsHistoryForm ref="FindingsHistoryFormRef" :itemIndexVal="props.itemInformation"/>
 
               <PathologicalHistoryForm ref="PathologicalHistoryFormRef" :itemIndexVal="props.itemInformation"/>
+
+              <OthersLaboratoriesForm ref="OthersLaboratoriesHistoryFormRef" :itemIndexVal="props.itemInformation"/>
 
               <PharmacologicalHistoryForm ref="PharmacologicalHistoryFormRef" :itemIndexVal="props.itemInformation"/>
 

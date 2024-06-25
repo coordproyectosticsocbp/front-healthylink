@@ -25,6 +25,11 @@ export const patientComplementayTabOption = [
         status: false
     },
     {
+        name: 'Otros Labs',
+        value: 'otrosLabs',
+        status: false
+    },
+    {
         name: 'Otros',
         value: 'otros',
         status: false
