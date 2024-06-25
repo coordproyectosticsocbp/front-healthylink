@@ -7,6 +7,7 @@ export default function structurePayloadForComplementaryInfo(surveyID, userID) {
     const pathologicalInfo = window.localStorage.getItem(`pathologicalInfo`)
     const othersInfo = window.localStorage.getItem(`othersInfo`)
     const pharmacologicalHistory = window.localStorage.getItem(`pharmacologicalHistory`)
+    const othersLaboratoriesInfo = window.localStorage.getItem(`othersLaboratoriesInfo`)
     const laboratoryHistory = window.localStorage.getItem(`laboratoryHistory`)
     const biochemicalHistory = window.localStorage.getItem(`biochemicalHistory`)
     const hormonalHistory = window.localStorage.getItem(`hormonalHistory`)
@@ -74,6 +75,13 @@ export default function structurePayloadForComplementaryInfo(surveyID, userID) {
         JSON.parse(pathologicalInfo).map(item => {
             data.push(
                 structurePayloadMultiple(item, 9)
+            )
+        })
+    }
+    if (othersLaboratoriesInfo) {
+        JSON.parse(othersLaboratoriesInfo).map((item) => {
+            data.push(
+                structurePayloadMultiple(item, 10)
             )
         })
     }
@@ -146,6 +154,14 @@ function structurePayloadMultiple(data, questionNumber) {
             respuesta: data.ci10.toUpperCase(),
             pregunta_id: questionNumber,
             valor: null
+        }
+
+    } else if (questionNumber === 10) {
+        return {
+            fecha: data.laboratoryDate,
+            respuesta: data.laboratoryName,
+            pregunta_id: questionNumber,
+            valor: data.laboratoryValue
         }
 
     }

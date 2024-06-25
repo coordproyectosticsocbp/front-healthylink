@@ -4,6 +4,7 @@ import {ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
 import {drugsList} from "@/utils/const/drugsList.js";
 import {everyHowOften} from "@/utils/const/everyHowOften.js";
+import {toast} from "vue3-toastify";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -14,12 +15,17 @@ const initialValue = ref({
   drugDosage: 0,
   drugPresentation: '',
   drugConcentration: '',
-  everyHowOften: null
+  everyHowOften: ''
 })
 const pharmacologicalHistory = useLocalStorage([], `pharmacologicalHistory`)
 
 const addItemToPharmArray = () => {
-  //pharmacologicalHistory.value.push({...initialValue.value})
+
+  if (!initialValue.value.drugName[0] || !initialValue.value.drugDosage || !initialValue.value.everyHowOften) {
+    toast.error('Debe diligenciar las variables completas!')
+    return
+  }
+
   pharmacologicalHistory.value.push({
     drugName: initialValue.value.drugName[0].DescripcionComercial,
     drugDosage: initialValue.value.drugDosage,
@@ -99,7 +105,7 @@ defineExpose({
                       class="form-select"
                       required
               >
-                <option :value="null" selected>Seleccione cada cuanto...</option>
+                <option selected value="">Seleccione cada cuanto...</option>
                 <option v-for="gender in everyHowOften"
                         :key="gender.value"
                         :value="gender.value"

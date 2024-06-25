@@ -3,6 +3,7 @@
 import useLocalStorage from "@/composables/useLocalStorage.js";
 import {cie10Diseases} from "@/utils/const/cie10Diseases.js";
 import {ref} from "vue";
+import {toast} from "vue3-toastify";
 
 const props = defineProps({
   itemIndexVal: Number
@@ -12,6 +13,12 @@ const pathology = ref('')
 const pathologicalInfo = useLocalStorage([], `pathologicalInfo`)
 
 const addItemToArray = () => {
+
+  if (!pathology.value) {
+    toast.error('Debe seleccionar por lo menos una patología!')
+    return
+  }
+
   pathologicalInfo.value.push(pathology.value)
   pathology.value = ''
 }
@@ -56,6 +63,7 @@ defineExpose({
               <VueMultiselect
                   id="input-select-pathology"
                   v-model="pathology"
+                  :allow-empty="false"
                   :close-on-select="true"
                   :options="cie10Diseases"
                   label="ci10"
