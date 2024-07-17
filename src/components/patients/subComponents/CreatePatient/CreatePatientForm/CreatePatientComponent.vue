@@ -2,7 +2,7 @@
 
 import {bloodType} from "@/utils/const/bloodType.js";
 import {userGender} from "@/utils/const/userGender.js";
-import {computed, onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
 import useLocalStorage from "@/composables/useLocalStorage.js";
 import {email, maxLength, minLength, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
@@ -11,6 +11,8 @@ import dayjs from "dayjs";
 import {useRouter} from "vue-router";
 import {calculateAgeTwo} from "@/utils/helpers/ageCalculate.js";
 import {useStore} from "vuex";
+import PatientService from "@/services/patients/Patient.service.js";
+import {getError} from "@/utils/helpers/getError.js";
 
 const router = useRouter()
 const store = useStore()
@@ -19,6 +21,7 @@ const storageCountryVal = window.localStorage.getItem('countries')
 const storageStateVal = window.localStorage.getItem('states')
 const storageCitiesVal = window.localStorage.getItem('cities')
 const storageHeadquartersVal = window.localStorage.getItem('headquartersList')
+const validatingPatientStatus = ref(false)
 
 /** Logic */
 
@@ -98,28 +101,65 @@ const rules = computed(() => {
 const v$ = useVuelidate(rules, patient)
 
 const handleSubmit = async () => {
-  const result = await v$.value.$validate()
-  if (!result) {
-    toast.error('Datos personales incompletos')
-    return false
+
+  const payload = {
+    tipo_doc: patient.value.tipo_doc,
+    numero_documento: patient.value.numero_documento,
   }
 
-  const patientAge = calculateAgeTwo(new Date(patient.value.fecha_nacimiento))
+  validatingPatientStatus.value = true
 
-  if (patientAge < 18 || patientAge > 80) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Oooops!',
-      text: `Candidato tiene ${patientAge} años y esta fuera de los rangos de edad permitidos para el proceso.`
+  const patientExist = await PatientService.validateIfPatientExist(payload)
+      .then(response => {
+        if (response.data.statusCode !== 200) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Oooops!',
+            text: response.data.message
+          })
+          validatingPatientStatus.value = false
+          return false;
+        } else {
+          validatingPatientStatus.value = false
+          return true;
+        }
+
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oooops!',
+          text: getError(error)
+        })
+        validatingPatientStatus.value = false
+        return false;
+      })
+
+  if (patientExist) {
+    const result = await v$.value.$validate()
+    if (!result) {
+      toast.error('Datos personales incompletos')
+      return false
+    }
+
+    const patientAge = calculateAgeTwo(new Date(patient.value.fecha_nacimiento))
+
+    if (patientAge < 18 || patientAge > 80) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Oooops!',
+        text: `Candidato tiene ${patientAge} años y esta fuera de los rangos de edad permitidos para el proceso.`
+      })
+      return false
+    }
+
+    // If the form is valid, perform some action with the form data
+    await router.push({
+      name: 'create-patient-informed-consent'
     })
-    return false
+    return true;
   }
 
-  // If the form is valid, perform some action with the form data
-  await router.push({
-    name: 'create-patient-informed-consent'
-  })
-  return true;
 }
 
 function placeFocusOnDocNum() {
@@ -420,11 +460,13 @@ onMounted(() => {
 
       <div class="card-footer bg-white text-end">
         <button
+            :disabled="validatingPatientStatus"
             class="btn btn-sm btn-outline-success"
             @click.prevent="handleSubmit"
         >
-          <font-awesome-icon :icon="['fas', 'file-signature']"/>
-          Ir a Consentimiento
+          <span v-if="validatingPatientStatus" aria-hidden="true" class="spinner-border spinner-border-sm"/>
+          <font-awesome-icon v-else :icon="['fas', 'file-signature']"/>
+          {{ validatingPatientStatus ? 'Validando usuario...' : 'Ir a Consentimiento' }}
         </button>
       </div>
       <!-- /.card-footer -->

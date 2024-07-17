@@ -11,7 +11,6 @@ export default {
     getDetailsStudiesForStatus(id) {
         return API.apiClient.get(`api/v1/encuesta/get/encuestasporestado/${id}`)
     },
-
     //Crear lote
     getLoteWithAperturas() {
         return API.apiClient.get(`api/v1/encuesta/get/tempmuestras/1/1`)
@@ -34,6 +33,9 @@ export default {
     },
     saveComplementaryInformation(payload) {
         return API.apiClient.post(`/api/v1/encuesta/post/registrarinformacionhistoriaclinica`, payload)
+    },
+    validateIfPatientExist(payload) {
+        return API.apiClient.post(`/api/v1/patient/get/valdiarpaciente`, payload)
     }
 
 }
