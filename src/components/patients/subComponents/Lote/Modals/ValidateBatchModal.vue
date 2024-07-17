@@ -28,6 +28,7 @@ const validateBatchModalRef = ref(null)
 const fullPage = ref(true)
 const regexSamples = /^MU([0-9]{1,9})?-\w{1,11}-\d-\d$/
 const regexCounterSamples = /^CM([0-9]{1,9})?-\w{1,11}-\d-\d$/
+const errorOfCompareObjects = ref([])
 
 
 const $loading = useLoading({
@@ -128,6 +129,8 @@ const saveBatchesToDB = () => {
     } else {
 
       //const equalsValues = arrayBatches.every((obj, index) => compareObjects(obj, mainClinicalSamples.value[index]))
+      console.log(arraySamples)
+      console.log(mainClinicalSamples.value)
       const equalsValues = compareObjects(arraySamples, mainClinicalSamples.value)
 
       if (equalsValues) {
@@ -179,8 +182,8 @@ const saveBatchesToDB = () => {
       } else {
         Swal.fire({
           icon: 'error',
-          title: 'Oooops!',
-          text: 'Los arrays contienen objetos diferentes! Verifique!'
+          title: 'Los arrays contienen objetos diferentes! Verifique!',
+          text: `${errorOfCompareObjects.value}`
         })
       }
 
@@ -192,7 +195,16 @@ const saveBatchesToDB = () => {
 
 const compareObjects = (array1, array2) => {
   const prefixText = "MU"
+  errorOfCompareObjects.value = []
   //console.log(array1)
+
+  array2.forEach(item => {
+    if (!array1.includes(prefixText.concat("-", item.code_paciente, "-", item.sede_id, "-", item.user_id))) {
+      errorOfCompareObjects.value.push(prefixText.concat("-", item.code_paciente, "-", item.sede_id, "-", item.user_id))
+    }
+  })
+  console.log(errorOfCompareObjects.value)
+
   return array2.every(element => {
     return array1.includes(prefixText.concat("-", element.code_paciente, "-", element.sede_id, "-", element.user_id))
   })
