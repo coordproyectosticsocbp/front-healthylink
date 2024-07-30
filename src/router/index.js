@@ -94,7 +94,8 @@ const routes = [
                 path: "/patient/create-patient",
                 name: "create-patient",
                 meta: {
-                    middleware: [auth], requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON']
+                    middleware: [auth],
+                    requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON', 'COORDINATOR']
                 },
                 component: PatientsMainComponent,
                 redirect: () => {
@@ -106,7 +107,7 @@ const routes = [
                         name: "create-patient-form",
                         meta: {
                             middleware: [auth],
-                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON']
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON', 'COORDINATOR']
                         },
                         component: CreatePatientComponent,
                     },
@@ -115,7 +116,7 @@ const routes = [
                         name: "create-patient-informed-consent",
                         meta: {
                             middleware: [auth],
-                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON']
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON', 'COORDINATOR']
                         },
                         component: InformedConsentComponent,
                     },
@@ -124,7 +125,7 @@ const routes = [
                         name: "create-patient-survey",
                         meta: {
                             middleware: [auth],
-                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON']
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON', 'COORDINATOR']
                         },
                         component: PatientHealthSurvey,
                     },
@@ -133,7 +134,10 @@ const routes = [
             {
                 path: "/patient/patient-list",
                 name: "patient-list",
-                meta: {middleware: [auth], requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON']},
+                meta: {
+                    middleware: [auth],
+                    requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON', 'COORDINATOR']
+                },
                 component: PatientList,
             },
             {
@@ -141,7 +145,7 @@ const routes = [
                 name: "Follow-up",
                 meta: {
                     middleware: [auth],
-                    requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'AUDITOR']
+                    requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'AUDITOR', 'COORDINATOR']
                 },
                 component: followup,
             },
@@ -161,7 +165,7 @@ const routes = [
                         name: "muestras",
                         meta: {
                             middleware: [auth],
-                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON']
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'HEADQUARTERS-PERSON', 'COORDINATOR']
                         },
                         component: ClinicalSamples,
                     },
@@ -170,7 +174,7 @@ const routes = [
                         name: "contramuestras",
                         meta: {
                             middleware: [auth],
-                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CONVEYOR']
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CONVEYOR', 'COORDINATOR']
                         },
                         component: CounterSamples,
                     },
@@ -181,20 +185,26 @@ const routes = [
                 name: "transport",
                 meta: {
                     middleware: [auth],
-                    requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CONVEYOR']
+                    requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CONVEYOR', 'COORDINATOR']
                 },
                 component: transport,
             },
             {
                 path: "/patient/receivealot",
                 name: "receivealot",
-                meta: {middleware: [auth], requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CUSTODIAN-CENTER']},
+                meta: {
+                    middleware: [auth],
+                    requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CUSTODIAN-CENTER', 'COORDINATOR']
+                },
                 component: Receivealot,
             },
             {
                 path: "/patient/shelf-assignment",
                 name: "shelf-assignment",
-                meta: {middleware: [auth], requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CUSTODIAN-CENTER']},
+                meta: {
+                    middleware: [auth],
+                    requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CUSTODIAN-CENTER', 'COORDINATOR']
+                },
                 component: ShelfAssignment,
                 redirect: () => {
                     return {name: "shelf-assignment-samples"};
@@ -205,7 +215,7 @@ const routes = [
                         name: "shelf-assignment-samples",
                         meta: {
                             middleware: [auth],
-                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CUSTODIAN-CENTER']
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CUSTODIAN-CENTER', 'COORDINATOR']
                         },
                         component: ShelfClinicalSamples,
                     },
@@ -214,7 +224,7 @@ const routes = [
                         name: "shelf-assignment-counter-samples",
                         meta: {
                             middleware: [auth],
-                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CUSTODIAN-CENTER']
+                            requiredRole: ['SUPER-ADMIN', 'GENERAL-OPERATOR', 'CUSTODIAN-CENTER', 'COORDINATOR']
                         },
                         component: ShelfClinicalCounterSamples,
                     },
@@ -227,7 +237,7 @@ const routes = [
         name: "reports",
         meta: {
             middleware: [auth],
-            requiredRole: ['SUPER-ADMIN', 'AUDITOR']
+            requiredRole: ['SUPER-ADMIN', 'AUDITOR', 'COORDINATOR']
         },
         component: DashboardView,
         redirect: () => {
