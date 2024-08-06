@@ -3,7 +3,7 @@ version: '3.9'
 services:
   vueapp:
     container_name: vueapp
-    image: healthylink/vueapp:1.2.1
+    image: healthylink/vueapp:1.2.2
     build:
       context: .
       dockerfile: Dockerfile

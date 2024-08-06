@@ -7,7 +7,7 @@ import {getError} from "@/utils/helpers/getError.js";
 import {useLoading} from "vue-loading-overlay";
 
 const fullPage = ref(true)
-const regex = /^CM([0-9]{1,9})?-\w{1,11}-\d-\d$/
+const regex = /^CM([0-9]{1,9})?-\w{1,11}-\d{1,5}-\d{1,5}$/
 const authUser = computed(() => store.getters["auth/authUser"])
 const clinicalCounterSamples = computed(() => store.state.clinicalCounterSamples.clinicalCounterSamples)
 const counterSampleCode = ref("")
