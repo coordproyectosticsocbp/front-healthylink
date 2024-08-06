@@ -26,8 +26,8 @@ const mainClinicalSamples = computed(() => store.state.clinicalSamples.clinicalS
 const mainClinicalCounterSamples = computed(() => store.state.clinicalCounterSamples.clinicalCounterSamples)
 const validateBatchModalRef = ref(null)
 const fullPage = ref(true)
-const regexSamples = /^MU([0-9]{1,9})?-\w{1,11}-\d-\d$/
-const regexCounterSamples = /^CM([0-9]{1,9})?-\w{1,11}-\d-\d$/
+const regexSamples = /^MU([0-9]{1,9})?-\w{1,11}-\d{1,5}-\d{1,5}$/
+const regexCounterSamples = /^CM([0-9]{1,9})?-\w{1,11}-\d{1,5}-\d{1,5}$/
 const errorOfCompareObjects = ref([])
 
 

@@ -17,7 +17,7 @@ const fullPage = ref(true)
 /**
  * Expresiones regulares de validaciones
  * */
-const regexSamples = /^MU([0-9]{1,9})?-\w{1,20}-\d-\d$/
+const regexSamples = /^MU([0-9]{1,9})?-\w{1,20}-\d{1,5}-\d{1,5}$/
 
 const $loading = useLoading({
   loader: 'dots',
